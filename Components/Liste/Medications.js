@@ -1,85 +1,93 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, FlatList,ImageBackground } from 'react-native';
+import { TouchableOpacity, StyleSheet, Text, View, FlatList, TextInput } from 'react-native';
 
-function Medications() {
-  const [messages, setMessages] = useState([]);
-  const [text, setText] = useState('');
 
-  const handleSend = () => {
-    setMessages([...messages, { id: messages.length, text }]);
-    setText('');
+
+export default function Medications() {
+
+ 
+  const [list, setList] = useState([]);
+
+  const [DDM, setDDM] = useState('');
+
+
+  const handleAddItem = () => {
+    setList([...list, DDM]);
+    setDDM('');
+   
   };
 
-  const renderItem = ({ item }) => (
-    <View style={styles.messageContainer}>
-      <Text style={styles.messageText}>{item.text}</Text>
-    </View>
-  );
-
-  return (
-    <ImageBackground
-      style={styles.background}
-      source={require('./img/back4.png')}
-    >
-     <View style={styles.container}>
-      <FlatList
-        data={messages}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
-      />
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.inputText}
-          placeholder="Type a text..."
-          placeholderTextColor={"white"}
-          value={text}
-          onChangeText={setText}
-          onSubmitEditing={handleSend}
+ return (
+   <View style={styles.container}>
+      <Text style={styles.text1} >Medications</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Enter the Date, the Disease and the Medications"
+        placeholderTextColor="gray"
+        value={DDM}
+        onChangeText={setDDM}
+        color="white"
+        required={true}
+        multiline={true}
+        numberOfLines={10}
         />
-      </View>
-    </View>
-    </ImageBackground>
+     
     
-  );
-}
+<TouchableOpacity onPress={handleAddItem} style={{borderRadius: 5,
+    backgroundColor: "#c2bccf",
+    padding: 5,
+    height: 40,
+    width: '25%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 15,
+  }
+  }>
+      <Text style={{ color: '#14082b', fontSize: 18, fontWeight:'bold' }}>Submit</Text>
+  </TouchableOpacity>
+
+  <FlatList
+        data={list}
+        renderItem={({ item }) => <Text style={styles.listeText} >{item}</Text>}
+      />
+    </View>
+    
+  );}
+
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    //backgroundColor: '#F5FCFF',
-  },
-  messageContainer: {
-    padding: 10,
-    marginVertical: 5,
-    marginHorizontal: 10,
-    borderRadius: 5,
-    backgroundColor: '#EEE',
-  },
-  messageText: {
-    fontSize: 16,
-  },
-  inputContainer: {
-    flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    //backgroundColor: '#DDD',
-  },
-  inputText: {
-    flex: 1,
-    height: 50,
-    color: 'white',
+    justifyContent: 'center',
     backgroundColor: '#14082b',
-    paddingHorizontal: 10,
-    borderRadius: 20,
-    marginRight: 10,
-    borderWidth: 2,
+  },
+  input: {
+    width: '90%',
+    height: 78,
+    borderWidth: 1.5,
     borderColor: '#c2bccf',
+    borderRadius: 4,
+    paddingLeft: 10,
+    marginTop: 18,
+  
   },
-  background: {
-    flex: 1,
-    resizeMode: 'cover', // or 'stretch'
+  listeText: {
+    fontSize: 16,
+    color: 'black' ,
+    padding: 8,
+    margin: 10,
+    backgroundColor: 'white',
   },
-});
+  text1: {
+    fontSize: 30,
+    color: 'white' ,
+    padding: 8,
+    margin: 10,
+}
 
-export default Medications;
+}); 
+
+
+
+

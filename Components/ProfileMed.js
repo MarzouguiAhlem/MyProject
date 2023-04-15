@@ -9,12 +9,12 @@ const ProfileMed = () => {
   ]);
 
   const doctor = {
-    name: 'Dr. John Doe',
-    //photo: require('../assets/doctor.jpg'),
+    name: 'Dr. Hakimi Omar',
+    photo: require('./img/doctor.png'),
     specialty: 'Cardiologist',
-    clinic: 'XYZ Clinic',
-    address: '123 Main St, Anytown USA',
-    phone: '555-555-5555',
+    clinic: 'Chifa Clinic',
+    address: 'Skanes Monastir',
+    phone: '26 500 100',
   };
 
   const renderItem = ({ item }) => {
@@ -36,10 +36,10 @@ const ProfileMed = () => {
         <Image source={doctor.photo} style={styles.photo} />
         <View style={styles.info}>
           <Text style={styles.name}>{doctor.name}</Text>
-          <Text style={styles.specialty}>{doctor.specialty}</Text>
-          <Text style={styles.clinic}>{doctor.clinic}</Text>
-          <Text style={styles.address}>{doctor.address}</Text>
-          <Text style={styles.phone}>{doctor.phone}</Text>
+          <Text style={styles.text1}>{doctor.specialty}</Text>
+          <Text style={styles.text1}>{doctor.clinic}</Text>
+          <Text style={styles.text1}>{doctor.address}</Text>
+          <Text style={styles.text1}>{doctor.phone}</Text>
           <TouchableOpacity style={styles.button} onPress={handleChatPress}>
             <Text style={styles.buttonText}>Chat with Patients</Text>
           </TouchableOpacity>
@@ -58,18 +58,20 @@ const ProfileMed = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
+    padding: 20,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 40,
   },
   photo: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    marginRight: 10,
+    width: 100,
+    height: 120,
+    borderRadius: 10,
+    marginTop: 0,
+    marginLeft: 10,
+    marginRight: 20,
   },
   info: {
     flex: 1,
@@ -78,34 +80,21 @@ const styles = StyleSheet.create({
     color:'white',
     fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 5,
+    marginTop: 15,
+    marginLeft: 5,
+
   },
-  specialty: {
+  text1: {
     color:'white',
     fontSize: 16,
-    marginBottom: 5,
-  },
-  clinic: {
-    color:'white',
-    fontSize: 16,
-    marginBottom: 5,
-  },
-  address: {
-    
-    color:'white',
-    fontSize: 16,
-    marginBottom: 5,
-  },
-  phone: {
-    color:'white',
-    fontSize: 16,
-    marginBottom: 5,
+    margin: 5,
   },
   heading: {
     color:'white',
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 10,
+    
   },
   button: {
     backgroundColor: 'blue',

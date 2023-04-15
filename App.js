@@ -57,7 +57,7 @@ export default function App() {
     <>
     <View style={styles.container}>
       <Header/>
-      <ChatboxPat/>
+      <ProfileMed/>
       <StatusBar style="auto" />
     </View>
     <View style={styles.footerContainer}>

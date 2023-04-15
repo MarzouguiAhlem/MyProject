@@ -1,68 +1,83 @@
 import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, StyleSheet, Text } from 'react-native';
+import { TouchableOpacity, StyleSheet, Text, View, TextInput, FlatList } from 'react-native';
 
-const Vaccination = () => {
-  const [text, setText] = useState('');
 
-  const handleTextChange = (value) => {
-    setText(value);
-  };
 
-  const handleSubmit = () => {
-    // Do something with the text value, such as send it to a server or update state
-    console.log(text);
-  };
+export default function Vaccination() {
+
+const [list, setList] = useState([]);
+const [DV, setDV] = useState('');
+
+const handleAddItem = () => {
+    setList([...list, DV]);
+    setDV('');
+   };
 
   return (
-     <View style={style.container}>
+ 
+<View style={styles.container}>
+<Text style={styles.text1} >Vaccination</Text>
       <TextInput
-       multiline={true}
-       numberOfLines={6}
-        placeholder="Enter text"
-        onChangeText={handleTextChange}
-        value={text}
-        style={style.text}
+        style={styles.input}
+        placeholder="Enter the Date and the vaccination"
+        placeholderTextColor="gray"
+        value={DV}
+        onChangeText={setDV}
+        color="white"
+        required={true}
+        multiline={true}
+        numberOfLines={10}
+
+      />    
+<TouchableOpacity onPress={handleAddItem} style={{borderRadius: 5,
+    backgroundColor: "white",
+    padding: 5,
+    height: 40,
+    width: '25%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 35,
+  }
+  }>
+      <Text style={{ color: '#14082b', fontSize: 18, fontWeight:'bold' }}>Submit</Text>
+  </TouchableOpacity>
+  <FlatList
+        data={list}
+        renderItem={({ item }) => <Text style={styles.listeText} >{item}</Text>}
       />
-      <TouchableOpacity onPress={handleSubmit} style={style.button}>
-        <Text style={style.itemText}>Submit</Text>
-      </TouchableOpacity>
-      
     </View>
     
-  );
-};
-const style = StyleSheet.create({
+  );}
+
+
+const styles = StyleSheet.create({
   container: {
     flex: 1,
-    //alignItems: 'center',
+    alignItems: 'center',
     justifyContent: 'center',
-    //backgroundColor: 'white'
+    backgroundColor: '#14082b',
   },
-  
-  button: {
-  backgroundColor: '#c2bccf',
-    borderRadius: 10,
-    padding: 10,
-    marginHorizontal: 18,
-  },
-  text: {
-    color: '#14082b',
-    fontSize: 18,
-    backgroundColor:'white',
+  input: {
     width: '90%',
-    borderRadius: 8,
-    borderWidth: 2,
-    borderColor: '#c2bccf',
-    height: 100,
-    padding: 10,
-    margin: 15,
+    height: 78,
+    borderWidth: 1.5,
+    borderColor: 'white',
+    borderRadius: 4,
+    paddingLeft: 16,
+    margin: 5,
   },
-  itemText: {
-    fontSize: 16,
-    color: '#14082b',
-    textAlign: 'center',
+  text1: {
+    fontSize: 30,
+    color: 'white' ,
+    padding: 8,
+    margin: 10,
+},
+listeText: {
+  fontSize: 16,
+  color: 'black' ,
+  padding: 8,
+  margin: 10,
+  backgroundColor: 'white',
+},
 
-  },
-})
-
-export default Vaccination;
+}); 
