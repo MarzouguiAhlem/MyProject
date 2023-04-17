@@ -37,6 +37,7 @@ import ProfileMed from './Components/ProfileMed';
 import ProfilePat from './Components/ProfilePat';
 import Submit from './Components/Submit';
 import Input from './Components/Input';
+import Form from './Components/Liste/Form';
 
 
 import Diseases from './Components/Liste/Diseases';
@@ -57,7 +58,7 @@ export default function App() {
     <>
     <View style={styles.container}>
       <Header/>
-      <ProfileMed/>
+      <Form/>
       <StatusBar style="auto" />
     </View>
     <View style={styles.footerContainer}>
