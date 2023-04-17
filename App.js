@@ -38,7 +38,10 @@ import ProfilePat from './Components/ProfilePat';
 import Submit from './Components/Submit';
 import Input from './Components/Input';
 import Form from './Components/Liste/Form';
+import PatientForm from './Components/Liste/PatientForm';
 
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import Diseases from './Components/Liste/Diseases';
 import Allergies from './Components/Liste/Allergies';
@@ -52,19 +55,35 @@ import BasicInformation from './Components/Liste/BasicInformation';
 import MedicalSpecialties from './Components/Liste/MedicalSpecialties';
 
 
-
+const Stack = createStackNavigator();
 export default function App() {
   return (
-    <>
-    <View style={styles.container}>
+    <NavigationContainer>
+      <View style={styles.container}>
       <Header/>
-      <Form/>
+      <Stack.Navigator>
+        <Stack.Screen name="Form" component={Form} />
+        <Stack.Screen name="ProfileMed" component={ProfileMed} />
+        <Stack.Screen name="ChatboxMed" component={ChatboxMed} />
+        <Stack.Screen name="ProfilePat" component={ProfilePat} />
+      </Stack.Navigator>
       <StatusBar style="auto" />
     </View>
     <View style={styles.footerContainer}>
         <Footer/>
       </View>
-   </>
+     
+    </NavigationContainer>
+   /* <>
+    <View style={styles.container}>
+      <Header/>
+      <PatientForm/>
+      <StatusBar style="auto" />
+    </View>
+    <View style={styles.footerContainer}>
+        <Footer/>
+      </View>
+   </>*/
   );
 }
 

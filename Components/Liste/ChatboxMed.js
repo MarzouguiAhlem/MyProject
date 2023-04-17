@@ -11,7 +11,7 @@ const ChatboxMed = () => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor:'white' }}>
+    <View style={{ flex: 1, backgroundColor:'#53599A' }}>
     <FlatList
       data={messages}
       renderItem={({ item }) => (

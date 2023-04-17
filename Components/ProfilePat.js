@@ -27,7 +27,7 @@ export default function ProfilePat  () {
 const menuStyles = StyleSheet.create({
   container: {
     flex: 1,
-    //backgroundColor: '#3A506B'
+    backgroundColor: '#53599A'
   },
   innerContainer: {
     paddingHorizontal: 40,

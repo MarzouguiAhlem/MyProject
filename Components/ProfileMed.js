@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity, Button } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-const ProfileMed = () => {
+
+export default function ProfileMed ({ route }){
+  const { name2, specialty, clinic, address, phone } = route.params;
+
   const [patients, setPatients] = useState([
     { id: 1, name: 'Patient 1'},
     { id: 2, name: 'Patient 2'},
@@ -11,12 +15,7 @@ const ProfileMed = () => {
   ]);
 
   const doctor = {
-    name: 'Dr. Hakimi Omar',
     photo: require('./img/doctor.png'),
-    specialty: 'Cardiologist',
-    clinic: 'Chifa Clinic',
-    address: 'Skanes Monastir',
-    phone: '26 500 100',
   };
 
   const renderItem = ({ item }) => {
@@ -28,26 +27,38 @@ const ProfileMed = () => {
       </View>
     );
   };
+  const navigation = useNavigation();
 
   const handleChatPress = () => {
     // Navigate to chat screen
+    navigation.navigate('ChatboxMed');
   };
   const handlePatientPress = () => {
     // Navigate to PatientProfile screen
+    navigation.navigate('ProfilePat');
+  };
+ const handleFormPress = () => {
+    // Navigate to Form screen
+    navigation.navigate('Form');
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Image source={doctor.photo} style={styles.photo} />
+        <Image source={doctor.photo} style={styles.photo}
+         />
         <View style={styles.info}>
-          <Text style={styles.name}>{doctor.name}</Text>
-          <Text style={styles.text1}>{doctor.specialty}</Text>
-          <Text style={styles.text1}>{doctor.clinic}</Text>
-          <Text style={styles.text1}>{doctor.address}</Text>
-          <Text style={styles.text1}>{doctor.phone}</Text>
+          <Text style={styles.name}>{name2}</Text>
+          <Text style={styles.text1}>{specialty}</Text>
+          <Text style={styles.text1}>{clinic}</Text>
+          <Text style={styles.text1}>{address}</Text>
+          <Text style={styles.text1}>{phone}</Text>
           <TouchableOpacity style={styles.button} onPress={handleChatPress}>
             <Text style={styles.buttonText}>Chat with Patients</Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity style={styles.button} onPress={handleFormPress}>
+            <Text style={styles.buttonText}>Modify informations</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -66,6 +77,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    backgroundColor: '#14082b'
   },
   header: {
     flexDirection: 'row',
@@ -120,5 +132,3 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-
-export default ProfileMed;
