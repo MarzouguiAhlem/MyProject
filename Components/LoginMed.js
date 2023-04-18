@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { TouchableOpacity, StyleSheet, Text, View, TextInput } from 'react-native';
-
+import { useNavigation } from '@react-navigation/native';
 
 export default function LoginMed() {
   const [Email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [number, setNumber] = useState();
 
- 
+  const navigation = useNavigation();
 
   const handleSubmit = () => {
     if (Email === '' || password === '' || number === '') {
@@ -17,7 +17,9 @@ export default function LoginMed() {
       else {alert('You are now connected!');
       console.log(Email);
       console.log(password);
-      console.log(number);}
+      console.log(number);
+      navigation.navigate('DoctorForm');}
+      
     }
   
 

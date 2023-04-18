@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, StyleSheet, Text} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-const IdRF = () => {
+
+const Id = () => {
   const [number, setNumber] = useState();
 
+  const navigation = useNavigation();
+
   const handleSubmit = () => {
-    console.log(number);
+    navigation.navigate('RF');
   };
 
   return (
@@ -24,16 +28,13 @@ const IdRF = () => {
 
 <TouchableOpacity onPress={handleSubmit}
   style={{borderRadius: 6,
-    backgroundColor: "#3498db",
+    backgroundColor: "#53599A",
     flexDirection: "row",
     justifyContent: "center",
-    //padding: 10,
     height: 48,
     width: '80%',
     alignItems: 'center',
-    //justifyContent: 'center',
-  }
-  }>
+  }}>
       <Text style={{ color: 'white', fontSize: 20 }}>Submit</Text>
   </TouchableOpacity>
     </View>
@@ -58,4 +59,4 @@ const styles = StyleSheet.create({
     },
   });
 
-export default IdRF;
+export default Id;

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { TouchableOpacity, StyleSheet, Text, View, TextInput } from 'react-native';
-
+import { useNavigation } from '@react-navigation/native';
 
 
 export default function LoginPat() {
   const [Email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  const navigation = useNavigation();
  
 
   const handleSubmit = () => {
@@ -16,7 +16,8 @@ export default function LoginPat() {
         alert('Please enter a valid email address');}
       else {alert('You are now connected!');
       console.log(Email);
-      console.log(password);}}
+      console.log(password);
+      navigation.navigate('ProfilePat');}}
 
 
   return (

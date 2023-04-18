@@ -9,15 +9,15 @@ export default function Welcome() {
 
   const onPress = () => {
     // Navigate to IdRF screen
-    navigation.navigate('IdRF');
+    navigation.navigate('Id');
   };
   const onPressRight = () => {
     // Navigate to DocPat screen
-    navigation.navigate('DocPat');
+    navigation.navigate('DocPat2');
   };
  const onPressLeft = () => {
     // Navigate to DocPat screen
-    navigation.navigate('DocPat');
+    navigation.navigate('DocPat1');
   };
 
 
