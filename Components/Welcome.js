@@ -1,9 +1,26 @@
 import React from 'react';
 import { View, Text, StyleSheet, Pressable, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 
-export default function Welcome({onPress, onPressLeft, onPressRight}) {
-  
+
+export default function Welcome() {
+  const navigation = useNavigation();
+
+  const onPress = () => {
+    // Navigate to IdRF screen
+    navigation.navigate('IdRF');
+  };
+  const onPressRight = () => {
+    // Navigate to DocPat screen
+    navigation.navigate('DocPat');
+  };
+ const onPressLeft = () => {
+    // Navigate to DocPat screen
+    navigation.navigate('DocPat');
+  };
+
+
   return (
      <View style={styles.container}>
       <Text style={styles.regularText}>
@@ -14,7 +31,7 @@ export default function Welcome({onPress, onPressLeft, onPressRight}) {
       onPress={onPress}
       style={({ pressed }) => [
         {
-          backgroundColor: pressed ? '#888' : '#444',
+          backgroundColor: pressed ? '#888' : '#53599A',
           borderRadius: 10,
           flexDirection: "row",
           padding: 10,
@@ -62,7 +79,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   button: {
-    backgroundColor: '#444',
+    backgroundColor: '#53599A',
     borderRadius: 10,
     padding: 8,
     margin: 8,

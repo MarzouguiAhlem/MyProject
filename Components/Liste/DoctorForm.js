@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ScrollView, Text, TextInput, Pressable, StyleSheet } from 'react-native';
 
-export default function Form({ navigation }) {
+export default function DoctorForm({ navigation }) {
   const [name2, setName2] = useState('');
   const [specialty, setSpecialty] = useState('');
   const [clinic, setClinic] = useState('');
@@ -22,6 +22,7 @@ export default function Form({ navigation }) {
         onChangeText={setName2}
         placeholderTextColor="gray"
         placeholder="Enter your name"
+        color="white"
       />
       <Text style={styles.text1}>Specialty:</Text>
       <TextInput
@@ -30,6 +31,7 @@ export default function Form({ navigation }) {
         onChangeText={setSpecialty}
         placeholder="Enter your Specialty"
         placeholderTextColor="gray"
+        color="white"
       />
       <Text style={styles.text1}>Clinic:</Text>
       <TextInput
@@ -38,6 +40,7 @@ export default function Form({ navigation }) {
         onChangeText={setClinic}
         placeholder="Enter your Clinic"
         placeholderTextColor="gray"
+        color="white"
       />
       <Text style={styles.text1}>Address:</Text>
       <TextInput
@@ -46,6 +49,7 @@ export default function Form({ navigation }) {
         onChangeText={setAddress}
         placeholder="Enter your Address"
         placeholderTextColor="gray"
+        color="white"
       />
       <Text style={styles.text1}>Phone:</Text>
       <TextInput
@@ -55,6 +59,7 @@ export default function Form({ navigation }) {
         keyboardType="numeric"
         placeholderTextColor="gray"
         placeholder="Enter your Phone"
+        color="white"
       />
       <Pressable onPress={handleSubmit} style={styles.button}><Text style={styles.buttonText}>Submit</Text></Pressable>
     </ScrollView>

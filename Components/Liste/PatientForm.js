@@ -1,168 +1,153 @@
-/*import React, { useState } from 'react';
-import { View, Text, TextInput, Button } from 'react-native';
+import React, { useState } from 'react';
+import { ScrollView, Text, TextInput, Pressable, StyleSheet } from 'react-native';
 
-export default function Form({ navigation }) {
-  const [name, setName] = useState('');
+export default function PatientForm({ navigation }) {
+  const [name1, setName1] = useState('');
+  const [BirthDate, setBirthDate] = useState('');
+  const [Gender, setGender] = useState('');
   const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [address, setAddress] = useState('');
+  const [contact, setContact] = useState('');
+  const [blood, setBlood] = useState('');
+  const [height, setHeight] = useState('');
+  const [weight, setWeight] = useState('');
+
 
   const handleSubmit = () => {
-    navigation.navigate('BasicInformation', { name, email });
+    navigation.navigate('BasicInformation', { name1, BirthDate, Gender, email, address, phoneNumber, contact, blood, height, weight });
   }
 
   return (
-    <View>
-      <Text>Name:</Text>
-      <TextInput
-        value={name}
-        onChangeText={setName}
-        placeholder="Enter your name"
-      />
-      <Text>Email:</Text>
-      <TextInput
-        value={email}
-        onChangeText={setEmail}
-        placeholder="Enter your email"
-      />
-      <Button
-        title="Submit"
-        onPress={handleSubmit}
-      />
-    </View>
-  );
-} */
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, Button, ScrollView } from 'react-native';
-
-export default function PatientForm ({}) {
-  const [patient, setPatient] = useState({
-    photo: '',
-    name: '',
-    birthDate: '',
-    gender: '',
-    phoneNumber: '',
-    email: '',
-    address: '',
-    emergencyContact: '',
-    bloodType: '',
-    weight: '',
-    height: '',
-  });
-
-  const handleInputChange = (field, value) => {
-    setPatient({ ...patient, [field]: value });
-  };
-
-  const handleSubmit = () => {
-    console.log(patient);
-    // Submit the form to create/update the patient profile
-  };
-
-  return (
     <ScrollView style={styles.container}>
-      <Text style={styles.label}>Patient Photo URL:</Text>
+      <Text style={styles.text1}>Name :</Text>
       <TextInput
-        style={styles.input}
-        onChangeText={(value) => handleInputChange('photo', value)}
-        value={patient.photo}
+      style={styles.input}
+        value={name1}
+        onChangeText={setName1}
+        placeholderTextColor="gray"
+        placeholder="Enter your name"
+        color="white"
       />
-
-      <Text style={styles.label}>Patient Name:</Text>
+      <Text style={styles.text1}>Birth Date :</Text>
       <TextInput
-        style={styles.input}
-        onChangeText={(value) => handleInputChange('name', value)}
-        value={patient.name}
+      style={styles.input}
+        value={BirthDate}
+        onChangeText={setBirthDate}
+        placeholder="Enter your Birth Date"
+        placeholderTextColor="gray"
+        color="white"
       />
-
-      <Text style={styles.label}>Patient Birth Date:</Text>
+      <Text style={styles.text1}>Gender :</Text>
       <TextInput
-        style={styles.input}
-        onChangeText={(value) => handleInputChange('birthDate', value)}
-        value={patient.birthDate}
+      style={styles.input}
+        value={Gender}
+        onChangeText={setGender}
+        placeholder="Enter your Gender"
+        placeholderTextColor="gray"
+        color="white"
       />
-
-      <Text style={styles.label}>Patient Gender:</Text>
+      <Text style={styles.text1}>Email Address :</Text>
+         <TextInput
+        style={styles.input}
+        placeholder="Enter your Email address"
+        placeholderTextColor="gray"
+        value={email}
+        textContentType="emailAddress"
+        onChangeText={setEmail}
+        color="white"
+      />
+      <Text style={styles.text1}>Address :</Text>
       <TextInput
-        style={styles.input}
-        onChangeText={(value) => handleInputChange('gender', value)}
-        value={patient.gender}
+      style={styles.input}
+        value={address}
+        onChangeText={setAddress}
+        placeholder="Enter your Address"
+        placeholderTextColor="gray"
+        color="white"
       />
-
-      <Text style={styles.label}>Patient Phone Number:</Text>
+      <Text style={styles.text1}>Phone Number :</Text>
       <TextInput
-        style={styles.input}
-        onChangeText={(value) => handleInputChange('phoneNumber', value)}
-        value={patient.phoneNumber}
+      style={styles.input}
+        value={phoneNumber}
+        onChangeText={setPhoneNumber}
+        keyboardType="numeric"
+        placeholderTextColor="gray"
+        placeholder="Enter your Phone Number"
+        color="white"
       />
-
-      <Text style={styles.label}>Patient Email:</Text>
+      <Text style={styles.text1}>Emergency Contact:</Text>
       <TextInput
-        style={styles.input}
-        onChangeText={(value) => handleInputChange('email', value)}
-        value={patient.email}
+      style={styles.input}
+        value={contact}
+        keyboardType="numeric"
+        onChangeText={setContact}
+        placeholder="Enter your Emergency Contact"
+        placeholderTextColor="gray"
+        color="white"
       />
-
-      <Text style={styles.label}>Patient Address:</Text>
+      <Text style={styles.text1}>Blood Type:</Text>
       <TextInput
-        style={styles.input}
-        onChangeText={(value) => handleInputChange('address', value)}
-        value={patient.address}
+      style={styles.input}
+        value={blood}
+        onChangeText={setBlood}
+        placeholder="Enter your Blood Type"
+        placeholderTextColor="gray"
+        color="white"
       />
-
-      <Text style={styles.label}>Emergency Contact:</Text>
+      <Text style={styles.text1}>Height:</Text>
       <TextInput
-        style={styles.input}
-        onChangeText={(value) => handleInputChange('emergencyContact', value)}
-        value={patient.emergencyContact}
+      style={styles.input}
+        value={height}
+        onChangeText={setHeight}
+        placeholder="Enter your Height"
+        placeholderTextColor="gray"
+        color="white"
       />
-
-      <Text style={styles.label}>Blood Type:</Text>
+      <Text style={styles.text1}>Weight:</Text>
       <TextInput
-        style={styles.input}
-        onChangeText={(value) => handleInputChange('bloodType', value)}
-        value={patient.bloodType}
+      style={styles.input}
+        value={weight}
+        onChangeText={setWeight}
+        placeholder="Enter your Weight"
+        placeholderTextColor="gray"
+        color="white"
       />
-
-      <Text style={styles.label}>Weight:</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={(value) => handleInputChange('weight', value)}
-        value={patient.weight}
-      />
-
-      <Text style={styles.label}>Height:</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={(value) => handleInputChange('height', value)}
-        value={patient.height}
-      />
-
-      <View style={styles.buttonContainer}>
-        <Button title="Save" onPress={handleSubmit} />
-      </View>
+      <Pressable onPress={handleSubmit} style={styles.button}><Text style={styles.buttonText}>Submit</Text></Pressable>
     </ScrollView>
   );
-};
+}
 
-
-  const styles = StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
       flex: 1,
-      padding: 20,
-      backgroundColor: '#fff',
+      backgroundColor: '#14082b'
     },
-    label: {
-      fontWeight: 'bold',
-      marginVertical: 8,
+    text1: {
+      color:'white',
+      fontSize: 16,
+      margin: 5,
+    }, 
+    button: {
+      backgroundColor: '#53599A',
+      padding: 10,
+      borderRadius: 5,
+      marginTop: 10,
+    },
+    buttonText: {
+      color: 'white',
+      textAlign: 'center',
+      fontSize: 16,
     },
     input: {
-      height: 40,
-      borderColor: 'gray',
-      borderWidth: 1,
-      marginBottom: 16,
-      paddingHorizontal: 10,
-    },
-    buttonContainer: {
-      marginTop: 20,
-    },
+        width: '80%',
+        height: 38,
+        borderWidth: 1.5,
+        borderColor: 'white',
+        borderRadius: 4,
+        paddingLeft: 16,
+        margin: 10,
+      
+      },
   });
-  
+

@@ -39,7 +39,7 @@ export default function ProfileMed ({ route }){
   };
  const handleFormPress = () => {
     // Navigate to Form screen
-    navigation.navigate('Form');
+    navigation.navigate('DoctorForm');
   };
 
   return (

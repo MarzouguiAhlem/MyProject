@@ -1,24 +1,3 @@
-/*import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});*/
-
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
 
@@ -37,7 +16,7 @@ import ProfileMed from './Components/ProfileMed';
 import ProfilePat from './Components/ProfilePat';
 import Submit from './Components/Submit';
 import Input from './Components/Input';
-import Form from './Components/Liste/Form';
+import DoctorForm from './Components/Liste/DoctorForm';
 import PatientForm from './Components/Liste/PatientForm';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -58,26 +37,57 @@ import MedicalSpecialties from './Components/Liste/MedicalSpecialties';
 const Stack = createStackNavigator();
 export default function App() {
   return (
+    /*<>
     <NavigationContainer>
       <View style={styles.container}>
       <Header/>
       <Stack.Navigator>
-        <Stack.Screen name="Form" component={Form} />
-        <Stack.Screen name="ProfileMed" component={ProfileMed} />
-        <Stack.Screen name="ChatboxMed" component={ChatboxMed} />
-        <Stack.Screen name="ProfilePat" component={ProfilePat} />
-      </Stack.Navigator>
+        <Stack.Screen name="PatientForm" component={PatientForm} />
+        <Stack.Screen name="BasicInformation" component={BasicInformation} />
+     </Stack.Navigator>
       <StatusBar style="auto" />
     </View>
     <View style={styles.footerContainer}>
         <Footer/>
-      </View>
-     
+      </View> 
     </NavigationContainer>
-   /* <>
+  </>*/
+    /*<>
+    <NavigationContainer>
+      <View style={styles.container}>
+      <Header/>
+      <Stack.Navigator>
+        <Stack.Screen name="DoctorForm" component={DoctorForm} />
+        <Stack.Screen name="ProfileMed" component={ProfileMed} />
+        <Stack.Screen name="ChatboxMed" component={ChatboxMed} />
+        <Stack.Screen name="ProfilePat" component={ProfilePat} />
+     </Stack.Navigator>
+      <StatusBar style="auto" />
+    </View>
+    <View style={styles.footerContainer}>
+        <Footer/>
+      </View> 
+    </NavigationContainer>
+   </>*/
+<NavigationContainer>
+      <View style={styles.container}>
+      <Header/>
+      <Stack.Navigator>
+        <Stack.Screen name="Welcome" component={Welcome} />
+        <Stack.Screen name="DocPat" component={DocPat} />
+        <Stack.Screen name="IdRF" component={IdRF} />
+     </Stack.Navigator>
+      <StatusBar style="auto" />
+    </View>
+    <View style={styles.footerContainer}>
+        <Footer/>
+      </View> 
+    </NavigationContainer>
+
+  /*<>
     <View style={styles.container}>
       <Header/>
-      <PatientForm/>
+      <Welcome/>
       <StatusBar style="auto" />
     </View>
     <View style={styles.footerContainer}>
@@ -95,40 +105,3 @@ const styles = StyleSheet.create({
   },
   footerContainer: { backgroundColor: '#14082b' },
 });
-
-
-
-
-//import { NavigationContainer } from '@react-navigation/native';
-//import { createDrawerNavigator } from '@react-navigation/drawer';
-//import Animated from 'react-native-reanimated';
-
-
-/*const Drawer = createDrawerNavigator();
-
-function MyDrawer() {
-  return (
-    <Drawer.Navigator>
-      <Drawer.Screen name="Home" component={Welcome} />
-      <Drawer.Screen name="Doctor Login" component={LoginMed} />
-      <Drawer.Screen name="Patient Login" component={LoginPatient} />
-      <Drawer.Screen name="Doctor SignUp" component={SignUpMed} />
-      <Drawer.Screen name="Patient SignUp" component={SignUpPat} />
-    </Drawer.Navigator>
-  );
-}*/
-
-  /*return (
-    <>
-    <NavigationContainer>
-    <View style={styles.container}>
-      <Header/>
-      <MyDrawer />
-    </View>
-    <View style={styles.footerContainer}>
-        <Footer/>
-      </View>
-    </NavigationContainer>
-   </>
-  );
-}*/
