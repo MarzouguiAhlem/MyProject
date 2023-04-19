@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
 
 const SignUp = () => {
   const [name, setName] = useState('');
@@ -8,12 +10,15 @@ const SignUp = () => {
   const [number, setNumber] = useState();
   const [number1, setNumber1] = useState();
 
+  const navigation = useNavigation();
+
   const handleSignup = () => {
     console.log(name);
     console.log(email);
     console.log(password);
     console.log(number);
     console.log(number1);
+    navigation.navigate('Welcome')
   };
 
   return (

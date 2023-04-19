@@ -1,67 +1,52 @@
 import React, { useState } from 'react';
-import { ScrollView, View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
 
 const MedicalSpecialties = () => {
+ const Items = [
+    { name: 'Family Medicine', screen: 'FamilyMedicine' },
+    { name: 'Cardiology', screen: 'Cardiology' },
+    { name: 'Gynecology', screen: 'Gynecology' },
+    { name: 'Neurology', screen: 'Neurology' },
+    { name: 'Surgery', screen: 'Surgery' },
+    { name: 'Psychiatry', screen: 'Psychiatry' },
+    { name: 'Dermatology', screen: 'Dermatology' },
+    { name: 'Ophthalmology', screen: 'Ophthalmology' },
+    { name: 'Pediatrics', screen: 'Pediatrics' },
+    { name: 'Dentist', screen: 'Dentist' },
+    { name: 'Allergy and immunology', screen: 'AllergyAndImmunology' },
+    { name: 'Gastroenterology', screen: 'Gastroenterology' },
+    { name: 'Oncology', screen: 'Oncology' },
+    { name: 'Pulmonology', screen: 'Pulmonology' },
+    { name: 'Other', screen: 'Other' },
+  ];
 
-    const handleSubmit = () => {
-        // Do something with the text value, such as send it to a server or update state
-      };
-  return (
-    <ScrollView style={style.container}>
- <Text style={style.text}>Medical Specialties</Text>
-      <TouchableOpacity onPress={handleSubmit} style={style.button}>
-        <Text style={style.itemText}>Family Medicine</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleSubmit} style={style.button}>
-        <Text style={style.itemText}>Cardiology</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleSubmit} style={style.button}>
-        <Text style={style.itemText}>Gynecology</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleSubmit} style={style.button}>
-        <Text style={style.itemText}>Neurology</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleSubmit} style={style.button}>
-        <Text style={style.itemText}>Surgery</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleSubmit} style={style.button}>
-        <Text style={style.itemText}>Psychiatry</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleSubmit} style={style.button}>
-        <Text style={style.itemText}>Dermatology</Text>
-      </TouchableOpacity><TouchableOpacity onPress={handleSubmit} style={style.button}>
-        <Text style={style.itemText}>Ophthalmology</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleSubmit} style={style.button}>
-        <Text style={style.itemText}>Pediatrics</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleSubmit} style={style.button}>
-        <Text style={style.itemText}>Dentist</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleSubmit} style={style.button}>
-        <Text style={style.itemText}>Allergy and immunology</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleSubmit} style={style.button}>
-        <Text style={style.itemText}>Gastroenterology</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleSubmit} style={style.button}>
-        <Text style={style.itemText}>Oncology</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleSubmit} style={style.button}>
-        <Text style={style.itemText}>Pulmonology</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleSubmit} style={style.button}>
-        <Text style={style.itemText}>Other..</Text>
-      </TouchableOpacity>
 
-   
-    </ScrollView>
+  const navigation = useNavigation();
+
+  const renderItem = ({ item }) => (
+    <Item name={item.name} onPress={() => navigation.navigate(item.screen)} />
   );
-};
+
+  const Item = ({ name, onPress }) => (
+    <View>
+      <TouchableOpacity style={style.button} onPress={onPress}>
+        <Text style={style.itemText}>{name}</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
+  return (
+    <View style={style.container}>
+      <FlatList data={Items} renderItem={renderItem} />
+    </View>
+  );
+}
 const style = StyleSheet.create({
     container: {
       flex: 1,
-      //backgroundColor: 'white'
+      backgroundColor: '#14082b'
     },
     
     button: {
