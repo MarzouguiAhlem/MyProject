@@ -4,22 +4,39 @@ import { useNavigation } from '@react-navigation/native';
 
 
 export default function LoginPat() {
-  const [Email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const navigation = useNavigation();
- 
+  const [email, setemail] = useState('');
+  const [password, setpassword] = useState('');
 
-  const handleSubmit = () => {
-    if (Email === '' || password === '') {
-      alert('Please enter both email and password');} 
-      else if (!/\S+@\S+\.\S+/.test(Email)) {
+  const navigation = useNavigation();
+  
+  const handleSubmit = async () => {
+    if (email === '' || password === '') {
+      alert('Please enter your Email and Password');} 
+      else if (!/\S+@\S+\.\S+/.test(email)) {
         alert('Please enter a valid email address');}
       else {alert('You are now connected!');
-      console.log(Email);
-      console.log(password);
-      navigation.navigate('ProfilePat');}}
-
-
+      const data = {
+        email: email,
+        password: password,
+      };
+    
+      const response = await fetch('http://192.168.29.7:3000/auth/login/user', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+      console.log(response)
+      if (response.ok) {
+        console.log('Login successful!');
+        navigation.navigate('ProfilePat');
+      } else {
+        console.log('Login failed.');
+      };}
+      
+    }
+  
   return (
    
 <View style={styles.container}>
@@ -28,9 +45,9 @@ export default function LoginPat() {
         style={styles.input}
         placeholder="Email address"
         placeholderTextColor="gray"
-        value={Email}
+        value={email}
         textContentType="emailAddress"
-        onChangeText={setEmail}
+        onChangeText={setemail}
         color="white"
         required={true}
 
@@ -40,7 +57,7 @@ export default function LoginPat() {
         placeholder="Password"
         placeholderTextColor="gray"
         value={password}
-        onChangeText={setPassword}
+        onChangeText={setpassword}
         secureTextEntry
         color="white"
         required={true}

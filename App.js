@@ -102,9 +102,7 @@ export default function App() {
      </Stack.Navigator>
       <StatusBar style="auto" />
     </View>
-    <View style={styles.footerContainer}>
-        <Footer/>
-      </View> 
+    
     </NavigationContainer>
  </>
 

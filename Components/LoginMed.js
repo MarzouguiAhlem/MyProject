@@ -3,22 +3,40 @@ import { TouchableOpacity, StyleSheet, Text, View, TextInput } from 'react-nativ
 import { useNavigation } from '@react-navigation/native';
 
 export default function LoginMed() {
-  const [Email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [number, setNumber] = useState();
+  const [email, setemail] = useState('');
+  const [password, setpassword] = useState('');
+  const [id, setid] = useState();
 
   const navigation = useNavigation();
-
-  const handleSubmit = () => {
-    if (Email === '' || password === '' || number === '') {
+  
+  const handleSubmit = async () => {
+    if (email === '' || password === '' || id === '') {
       alert('Please enter yor Email, Password and ID');} 
-      else if (!/\S+@\S+\.\S+/.test(Email)) {
+      else if (!/\S+@\S+\.\S+/.test(email)) {
         alert('Please enter a valid email address');}
       else {alert('You are now connected!');
-      console.log(Email);
-      console.log(password);
-      console.log(number);
-      navigation.navigate('DoctorForm');}
+      const data = {
+  
+        email: email,
+        password: password,
+        id: id,
+        
+      };
+    
+      const response = await fetch('http://192.168.29.7:3000/auth/login/doctor', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+      console.log(response)
+      if (response.ok) {
+        console.log('Login successful!');
+        navigation.navigate('DoctorForm');
+      } else {
+        console.log('Login failed.');
+      };}
       
     }
   
@@ -32,9 +50,9 @@ export default function LoginMed() {
         style={styles.input}
         placeholder="Email address"
         placeholderTextColor="gray"
-        value={Email}
+        value={email}
         textContentType="emailAddress"
-        onChangeText={setEmail}
+        onChangeText={setemail}
         color="white"
         required={true}
 
@@ -44,7 +62,7 @@ export default function LoginMed() {
         placeholder="Password"
         placeholderTextColor="gray"
         value={password}
-        onChangeText={setPassword}
+        onChangeText={setpassword}
         secureTextEntry
         color="white"
         required={true}
@@ -52,8 +70,8 @@ export default function LoginMed() {
       
       <TextInput
         keyboardType="numeric"
-        onChangeText={setNumber}
-        value={number}
+        onChangeText={setid}
+        value={id}
         style={styles.input}
         placeholder="enter your ID"
         placeholderTextColor="gray"

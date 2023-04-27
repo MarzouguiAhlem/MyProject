@@ -4,30 +4,59 @@ import { useNavigation } from '@react-navigation/native';
 
 
 const SignUpPat = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [number, setNumber] = useState();
+  const [name, setname] = useState('');
+  const [lastname, setlastname] = useState('');
+  const [email, setemail] = useState('');
+  const [password, setpassword] = useState('');
+  const [phonenumber, setphonenumber] = useState();
 
   const navigation = useNavigation();
 
-  const handleSignup = () => {
-    console.log(name);
-    console.log(email);
-    console.log(password);
-    console.log(number);
-    navigation.navigate('Welcome')
+  const handleSignup = async () => {
+    const data = {
+      name: name,
+      lastname: lastname,
+      email: email,
+      password: password,
+      phonenumber: phonenumber,
+      
+    };
+  
+    const response = await fetch('http://192.168.1.129:3000/auth/signup/user', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+    console.log(response)
+    if (response.ok) {
+      console.log('Signup successful!');
+      navigation.navigate('Welcome');
+    } else {
+      console.log('Signup failed.');
+    }
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Sign Up</Text>
       <TextInput
-        label="Name"
+        label="First Name"
         value={name}
-        onChangeText={text => setName(text)}
+        onChangeText={text => setname(text)}
         style={styles.input}
-        placeholder="enter your Full Name"
+        placeholder="enter your First Name"
+        placeholderTextColor="gray"
+        color="white"
+        required={true}
+      />
+      <TextInput
+        label="Last Name"
+        value={lastname}
+        onChangeText={text => setlastname(text)}
+        style={styles.input}
+        placeholder="enter your Last Name"
         placeholderTextColor="gray"
         color="white"
         required={true}
@@ -35,7 +64,7 @@ const SignUpPat = () => {
       <TextInput
         label="Email"
         value={email}
-        onChangeText={text => setEmail(text)}
+        onChangeText={text => setemail(text)}
         style={styles.input}
         keyboardType="email-address"
         placeholder="enter your Email-adress"
@@ -46,7 +75,7 @@ const SignUpPat = () => {
       <TextInput
         label="Password"
         value={password}
-        onChangeText={text => setPassword(text)}
+        onChangeText={text => setpassword(text)}
         style={styles.input}
         placeholder="enter your Password"
         placeholderTextColor="gray"
@@ -54,10 +83,10 @@ const SignUpPat = () => {
         required={true}
         secureTextEntry
       />
-      <TextInput
+       <TextInput
         keyboardType="numeric"
-        onChangeText={setNumber}
-        value={number}
+        onChangeText={setphonenumber}
+        value={phonenumber}
         style={styles.input}
         placeholder="enter your Phone Number"
         placeholderTextColor="gray"

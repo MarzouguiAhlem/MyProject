@@ -4,32 +4,61 @@ import { useNavigation } from '@react-navigation/native';
 
 
 const SignUp = () => {
-  const [name, setName] = useState('');
+  const [name, setname] = useState('');
+  const [lastname, setlastname] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [number, setNumber] = useState();
-  const [number1, setNumber1] = useState();
+  const [password, setpassword] = useState('');
+  const [phonenumber, setphonenumber] = useState();
+  const [doctor_id, setdoctor_id] = useState();
 
   const navigation = useNavigation();
 
-  const handleSignup = () => {
-    console.log(name);
-    console.log(email);
-    console.log(password);
-    console.log(number);
-    console.log(number1);
-    navigation.navigate('Welcome')
+  const handleSignup = async () => {
+    const data = {
+      name: name,
+      lastname: lastname,
+      email: email,
+      password: password,
+      phonenumber: phonenumber,
+      doctor_id: doctor_id,
+    };
+  
+    const response = await fetch('http://192.168.1.129:3000/auth/signup/doctor', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+    console.log(response)
+    if (response.ok) {
+      console.log('Signup successful!');
+      navigation.navigate('Welcome');
+    } else {
+      console.log('Signup failed.');
+    }
   };
+  
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Sign Up</Text>
       <TextInput
-        label="Name"
+        label="First Name"
         value={name}
-        onChangeText={text => setName(text)}
+        onChangeText={text => setname(text)}
         style={styles.input}
-        placeholder="enter your Full Name"
+        placeholder="enter your First Name"
+        placeholderTextColor="gray"
+        color="white"
+        required={true}
+      />
+      <TextInput
+        label="Last Name"
+        value={lastname}
+        onChangeText={text => setlastname(text)}
+        style={styles.input}
+        placeholder="enter your Last Name"
         placeholderTextColor="gray"
         color="white"
         required={true}
@@ -48,7 +77,7 @@ const SignUp = () => {
       <TextInput
         label="Password"
         value={password}
-        onChangeText={text => setPassword(text)}
+        onChangeText={text => setpassword(text)}
         style={styles.input}
         placeholder="enter your Password"
         placeholderTextColor="gray"
@@ -58,8 +87,8 @@ const SignUp = () => {
       />
       <TextInput
         keyboardType="numeric"
-        onChangeText={setNumber}
-        value={number}
+        onChangeText={setphonenumber}
+        value={phonenumber}
         style={styles.input}
         placeholder="enter your Phone Number"
         placeholderTextColor="gray"
@@ -69,8 +98,8 @@ const SignUp = () => {
     
      <TextInput
         keyboardType="numeric"
-        onChangeText={setNumber1}
-        value={number1}
+        onChangeText={setdoctor_id}
+        value={doctor_id}
         style={styles.input}
         placeholder="enter your Doctor ID"
         placeholderTextColor="gray"
