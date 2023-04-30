@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { TouchableOpacity, StyleSheet, Text, View, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function LoginMed() {
   const [email, setemail] = useState('');
   const [password, setpassword] = useState('');
@@ -23,7 +23,7 @@ export default function LoginMed() {
         
       };
     
-      const response = await fetch('http://192.168.29.7:3000/auth/login/doctor', {
+      const response = await fetch('http://192.168.1.129:3000/auth/login/doctor', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -32,8 +32,13 @@ export default function LoginMed() {
       });
       console.log(response)
       if (response.ok) {
+        const token = await response.json(); // parse response to get the token
+      
+      console.log(token)
+      await AsyncStorage.setItem('token', token['access_token']); 
+        
         console.log('Login successful!');
-        navigation.navigate('DoctorForm');
+        navigation.navigate('ProfileMed');
       } else {
         console.log('Login failed.');
       };}

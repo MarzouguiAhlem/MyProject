@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native';
+import { StyleSheet,Alert, Text, TextInput, View, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SignUp = () => {
   const [name, setname] = useState('');
@@ -21,7 +21,19 @@ const SignUp = () => {
       password: password,
       phonenumber: phonenumber,
       doctor_id: doctor_id,
+    
     };
+    
+    const emailCheckResponse = await fetch(`http://192.168.1.129:3000/auth/user/check-email/${email}`);
+  //console.log(emailCheckResponse)
+    const emailCheckData = await emailCheckResponse.json();
+
+  if (emailCheckData.exists) {
+    console.log('Email already in use');
+    Alert.alert('Email already in use', 'The email you entered is already registered. Please use a different email address.');
+  } else {
+    // You can add a Toast or an Alert component to notify the user that the email is already in use
+  
   
     const response = await fetch('http://192.168.1.129:3000/auth/signup/doctor', {
       method: 'POST',
@@ -30,15 +42,19 @@ const SignUp = () => {
       },
       body: JSON.stringify(data)
     });
-    console.log(response)
+   
     if (response.ok) {
+      const token = await response.json(); // parse response to get the token
       console.log('Signup successful!');
-      navigation.navigate('Welcome');
+      console.log(token)
+      await AsyncStorage.setItem('token', token['access_token']); // save token in local storage
+      console.log('Signup successful!');
+      navigation.navigate('DoctorForm');
     } else {
       console.log('Signup failed.');
     }
   };
-  
+}
 
   return (
     <View style={styles.container}>

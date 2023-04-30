@@ -1,74 +1,111 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import jwtDecode from 'jwt-decode';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
+export default function ProfileMed (){
+  const [name, setName] = useState('');
+  const [lastname, setLastName] = useState('');
+  const [specialty, setSpecialty] = useState('');
+  const [phonenumber, setPhoneNumber] = useState('');
+  const [address, setAddress] = useState('');
+  const [email, setEmail] = useState('');
 
-export default function ProfileMed ({ route }){
-  const { name2, specialty, clinic, address, phone } = route.params;
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const token = await AsyncStorage.getItem('token');
+        const decodedToken = jwtDecode(token);
+        const doctorId = decodedToken['sub'];
+        console.log(doctorId)
+        const response = await fetch(`http://192.168.1.129:3000/doctorP/${doctorId}/basic-info`);
+        const data = await response.json();
+        console.log(data)
+        console.log(data['address'])
+        setName(data['name']);
+        setLastName(data['lastname']);
+        setSpecialty(data['specialty']);
+        setPhoneNumber(data['phoneNumber']);
+        setAddress(data['address']);
+        setEmail(data['email']);
+      } catch (error) {
+        console.error(error);
+      }
+    }
 
-  const [patients, setPatients] = useState([
-    { id: 1, name: 'Patient 1'},
-    { id: 2, name: 'Patient 2'},
-    { id: 3, name: 'Patient 3'},
-    { id: 4, name: 'Patient 4'},
-    { id: 5, name: 'Patient 5'},
-  ]);
+    fetchData();
+  }, []);
 
-  const doctor = {
-    photo: require('./img/doctor.png'),
-  };
-
-  const renderItem = ({ item }) => {
-    return (
-      <View>
-        <TouchableOpacity style={styles.button} onPress={handlePatientPress}>
-        <Text style={styles.text2}>{item.name}</Text>
-          </TouchableOpacity>
-      </View>
-    );
-  };
   const navigation = useNavigation();
 
   const handleChatPress = () => {
     // Navigate to chat screen
     navigation.navigate('ChatboxMed');
   };
-  const handlePatientPress = () => {
-    // Navigate to PatientProfile screen
-    navigation.navigate('ProfilePat');
+  const handlePatients = () => {
+    // Navigate to chat screen
+    navigation.navigate('Patients');
   };
- const handleFormPress = () => {
+
+  const handleFormPress = () => {
     // Navigate to Form screen
-    navigation.navigate('DoctorForm');
+    navigation.navigate('DoctorFormMed');
+  };
+
+  const handleLogoutPress = async () => {
+    // Navigate to Form screen
+    const token = await AsyncStorage.getItem('token2');
+
+
+    
+    const response = await fetch('http://192.168.1.129:3000/auth/logout', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`, // Include the token in the Authorization header
+        'Content-Type': 'application/json'
+      },
+     
+    });
+    console.log(response)
+    if(response.ok){
+      navigation.navigate("Welcome")
+    }
+    else{
+      console.log("logout failed")
+      return
+    }
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Image source={doctor.photo} style={styles.photo}
-         />
+        {/* <Image source={require('./path/to/image')} style={styles.photo} /> */}
         <View style={styles.info}>
-          <Text style={styles.name}>{name2}</Text>
+          <Text style={styles.nxme}>{name}</Text>
+          <Text style={styles.text1}>{lastname}</Text>
           <Text style={styles.text1}>{specialty}</Text>
-          <Text style={styles.text1}>{clinic}</Text>
+          <Text style={styles.text1}>{email}</Text>
           <Text style={styles.text1}>{address}</Text>
-          <Text style={styles.text1}>{phone}</Text>
+          <Text style={styles.text1}>{phonenumber}</Text>
           <TouchableOpacity style={styles.button} onPress={handleChatPress}>
             <Text style={styles.buttonText}>Chat with Patients</Text>
           </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} onPress={handlePatients}>
+            <Text style={styles.buttonText}>List of Patients</Text>
+          </TouchableOpacity>
+          
           
           <TouchableOpacity style={styles.button} onPress={handleFormPress}>
             <Text style={styles.buttonText}>Modify informations</Text>
           </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} onPress={handleLogoutPress}>
+            <Text style={styles.buttonText}>Logout</Text>
+          </TouchableOpacity>
         </View>
       </View>
-      <Text style={styles.heading}>Patients</Text>
-      <FlatList
-      backgroundColor='white'
-        data={patients}
-        renderItem={renderItem}
-        keyExtractor={item => item.id.toString()}
-      />
     </View>
   );
 };
@@ -95,7 +132,7 @@ const styles = StyleSheet.create({
   info: {
     flex: 1,
   },
-  name: {
+  nxme: {
     color:'white',
     fontSize: 20,
     fontWeight: 'bold',

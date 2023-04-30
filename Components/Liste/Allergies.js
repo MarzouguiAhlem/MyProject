@@ -1,13 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import jwtDecode from 'jwt-decode';
 export default function Allergies() {
   const [inputText, setInputText] = useState('');
   const [list, setList] = useState([]);
+  
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const token = await AsyncStorage.getItem('token');
+        const decodedToken = jwtDecode(token);
+        const patientId = decodedToken['sub'];
+        
+        const response = await fetch(`http://192.168.1.129:3000/profile/${patientId}/allergies`);
+        const data = await response.json();
+        console.log(data)
+        setInputText(data['allergies'])
+       
+      } catch (error) {
+        console.error(error);
+      }
+    }
 
-  const handleAddItem = () => {
-    setList([...list, inputText]);
-    setInputText('');
+    fetchData();
+  }, []);
+
+
+  const handleAddItem = async () => {
+    const token = await AsyncStorage.getItem('token');
+    
+    const decodedToken = jwtDecode(token);
+     const Id = decodedToken['sub'];
+    const response = await fetch(`http://192.168.1.129:3000/auth/check/${Id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(Id)
+    });
+    if(response.ok){
+      setList([...list, inputText]);
+      setInputText('');
+    }
+    else {
+      console.log("Unauthorized!")
+    }
+    
+    
   };
 
   return (

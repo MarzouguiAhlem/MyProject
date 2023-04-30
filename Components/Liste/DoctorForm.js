@@ -1,25 +1,69 @@
 import React, { useState } from 'react';
 import { ScrollView, Text, TextInput, Pressable, StyleSheet } from 'react-native';
-
-export default function DoctorForm({ navigation }) {
-  const [name2, setName2] = useState('');
+import jwtDecode from 'jwt-decode';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
+export default function DoctorForm() {
+  const [name, setName] = useState('');
+  const [lastname, setlastname] = useState('');
   const [specialty, setSpecialty] = useState('');
-  const [clinic, setClinic] = useState('');
+  const [email, setEmail] = useState('');
   const [address, setAddress] = useState('');
-  const [phone, setPhone] = useState('');
+  const [phonenumber, setPhone] = useState('');
+  const navigation = useNavigation();
 
 
-  const handleSubmit = () => {
-    navigation.navigate('ProfileMed', { name2, specialty, clinic, address, phone });
-  }
+  const handleSubmit = async () => {
+    const data = {
+      name: name,
+      lastname: lastname,
+      
+      address: address,
+      email: email,
+      specialty: specialty,
+      phonenumber: phonenumber,
+     
+      
+    };
+    const token = await AsyncStorage.getItem('token');
+    console.log("slm")
+    const decodedToken = jwtDecode(token);
+     const doctorId = decodedToken['sub']; // Replace with actual doctor ID
+    const url = `http://192.168.1.129:3000/auth/signup/doctor/doctorform/${doctorId}`
+    
+    console.log(url)
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
 
+    
+    if (response.ok) {
+      console.log('Signup successful!');
+      navigation.navigate('Welcome');
+    } else {
+      console.log('Signup failed.');
+    }
+  };
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.text1}>Name:</Text>
       <TextInput
       style={styles.input}
-        value={name2}
-        onChangeText={setName2}
+        value={name}
+        onChangeText={setName}
+        placeholderTextColor="gray"
+        placeholder="Enter your name"
+        color="white"
+      />
+       <Text style={styles.text1}>LastName:</Text>
+      <TextInput
+      style={styles.input}
+        value={lastname}
+        onChangeText={setlastname}
         placeholderTextColor="gray"
         placeholder="Enter your name"
         color="white"
@@ -33,15 +77,7 @@ export default function DoctorForm({ navigation }) {
         placeholderTextColor="gray"
         color="white"
       />
-      <Text style={styles.text1}>Clinic:</Text>
-      <TextInput
-      style={styles.input}
-        value={clinic}
-        onChangeText={setClinic}
-        placeholder="Enter your Clinic"
-        placeholderTextColor="gray"
-        color="white"
-      />
+      
       <Text style={styles.text1}>Address:</Text>
       <TextInput
       style={styles.input}
@@ -51,10 +87,19 @@ export default function DoctorForm({ navigation }) {
         placeholderTextColor="gray"
         color="white"
       />
+      <Text style={styles.text1}>Email:</Text>
+      <TextInput
+      style={styles.input}
+        value={email}
+        onChangeText={setEmail}
+        placeholderTextColor="gray"
+        placeholder="Enter your Email"
+        color="white"
+      />
       <Text style={styles.text1}>Phone:</Text>
       <TextInput
       style={styles.input}
-        value={phone}
+        value={phonenumber}
         onChangeText={setPhone}
         keyboardType="numeric"
         placeholderTextColor="gray"

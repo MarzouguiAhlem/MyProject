@@ -1,23 +1,47 @@
 import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, StyleSheet, Text} from 'react-native';
+import { View, TextInput, TouchableOpacity, StyleSheet, Text, Alert} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Id = () => {
-  const [number, setNumber] = useState();
+  const [id, setNumber] = useState('');
 
   const navigation = useNavigation();
 
-  const handleSubmit = () => {
-    navigation.navigate('RF');
+  const handleSubmit = async () => {
+    const data = {
+      id:id
+    }
+    const response = await fetch('http://192.168.1.129:3000/auth/Emergency/id', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+   console.log(response)
+    if (response.ok) {
+      // const token = await response.json(); // parse response to get the token
+      
+      // console.log(token)
+      // await AsyncStorage.setItem('token3', token['access_token']); // save token in local storage
+     
+      navigation.navigate('RF');
+    }else {
+      console.log('Invalid ID.');
+      const error = await response.json();
+      Alert.alert('Invalid ID', error.message);
+    }
+   
+   
   };
 
   return (
     <View style={styles.container}>
      <TextInput
-        keyboardType="numeric"
+        
         onChangeText={setNumber}
-        value={number}
+        value={id}
         style={styles.input}
         placeholder="Enter your ID"
         placeholderTextColor="gray"

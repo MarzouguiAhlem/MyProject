@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { TouchableOpacity, StyleSheet, Text, View, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function LoginPat() {
   const [email, setemail] = useState('');
@@ -20,7 +20,7 @@ export default function LoginPat() {
         password: password,
       };
     
-      const response = await fetch('http://192.168.29.7:3000/auth/login/user', {
+      const response = await fetch('http://192.168.1.129:3000/auth/login/user', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -29,6 +29,10 @@ export default function LoginPat() {
       });
       console.log(response)
       if (response.ok) {
+        const token = await response.json(); // parse response to get the token
+      
+      console.log(token)
+      await AsyncStorage.setItem('token', token['access_token']); 
         console.log('Login successful!');
         navigation.navigate('ProfilePat');
       } else {
