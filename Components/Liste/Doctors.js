@@ -6,76 +6,75 @@ import { useNavigation } from '@react-navigation/native';
 
 const Doctors = () => {
   
-    const [Doctors, setDoctors] = useState([]);
-    const [chatRoomId, setChatRoomId] = useState('');
-    const fetchDoctors = async () => {
-      try {
-        const token = await AsyncStorage.getItem('token');
-        const decodedToken = jwtDecode(token);
-        const patientId = decodedToken['sub'];
-        const response = await fetch(`http://192.168.1.129:3000/profile/${patientId}/doctors`);
-        const data = await response.json();
-        setDoctors(data);
-        console.log(data)
-      } catch (error) {
-        console.error(error);
-      }
-    };
+  const [doctors, setDoctors] = useState([]);
+  const [chatRoomId, setChatRoomId] = useState('');
   
-    useEffect(() => {
-      fetchDoctors();
-    }, []);
-
-    const navigation = useNavigation();
-  
-    const handleChatPress = async (doctorId) => {
+  const fetchDoctors = async () => {
+    try {
       const token = await AsyncStorage.getItem('token');
       const decodedToken = jwtDecode(token);
       const patientId = decodedToken['sub'];
-      const docId = doctorId;
-    
-      const response = await fetch(`http://192.168.1.129:3000/profile/${patientId}/chatRoom/${docId}`);
+      const response = await fetch(`http://192.168.1.129:3000/profile/${patientId}/doctors`);
       const data = await response.json();
-      console.log(data)
-      setChatRoomId(data['id']);
-          
-      navigation.navigate('Conversation', { chatRoomId: chatRoomId, doctorId: docId});
-    };
-    
-  
-    return (
-      <View style={styles.container}>
-        <FlatList
-          data={Doctors}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <TouchableOpacity style={styles.itemContainer}>
-              <View style={styles.itemContent}>
-                <Image style={styles.avatar} source={{uri: item.avatar}} />
-                <View style={styles.textContainer}>
-                  <Text style={styles.name}>{item.name}</Text>
-                  <Text style={styles.email}>{item.email}</Text>
-                  <Text style={styles.specialty}>{item.specialty}</Text>
-                </View>
-                <TouchableOpacity style={styles.chatButton} onPress={() => handleChatPress(item.user_id)}>
-                  <Text style={styles.chatButtonText}>Chat</Text>
-                </TouchableOpacity>
-              </View>
-            </TouchableOpacity>
-          )}
-        />
-      </View>
-    );
+      setDoctors(data);
+    } catch (error) {
+      console.error(error);
+    }
   };
+  
+  useEffect(() => {
+    fetchDoctors();
+  }, []);
+
+  const navigation = useNavigation();
+  
+  const handleChatPress = async (doctorId) => {
+    const token = await AsyncStorage.getItem('token');
+    const decodedToken = jwtDecode(token);
+    const patientId = decodedToken['sub'];
+    const docId = doctorId;
+  
+    const response = await fetch(`http://192.168.1.129:3000/profile/${patientId}/chatRoom/${docId}`);
+    const data = await response.json();
+    setChatRoomId(data['id']);
+        
+    navigation.navigate('Conversation', { chatRoomId: chatRoomId, doctorId: docId});
+  };
+  
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={doctors}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <TouchableOpacity style={styles.itemContainer}>
+            <View style={styles.itemContent}>
+              <Image style={styles.avatar} source={{uri: item.avatar}} />
+              <View style={styles.textContainer}>
+                <Text style={styles.name}>{item.name}</Text>
+                <Text style={styles.email}>{item.email}</Text>
+                <Text style={styles.specialty}>{item.specialty}</Text>
+              </View>
+              <TouchableOpacity style={styles.chatButton} onPress={() => handleChatPress(item.user_id)}>
+                <Text style={styles.chatButtonText}>Chat</Text>
+              </TouchableOpacity>
+            </View>
+          </TouchableOpacity>
+        )}
+      />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F6F6F6',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
   },
   itemContainer: {
     paddingVertical: 15,
-    paddingHorizontal: 20,
     borderBottomWidth: 1,
     borderBottomColor: '#E5E5E5',
   },

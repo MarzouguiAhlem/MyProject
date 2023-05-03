@@ -8,17 +8,29 @@ export default function Medications() {
   const [list, setList] = useState([]);
   //const [date, setDate] = useState('');
   const [name, setDescription] = useState('');
-
+  const [user, setUser] = useState(null);
   useEffect(() => {
     async function fetchData() {
       try {
         const token = await AsyncStorage.getItem('token');
         const decodedToken = jwtDecode(token);
-        const patientId = decodedToken['sub'];
-        const specialty = 'FamilyMedicine';
-        const response = await fetch(`http://192.168.1.129:3000/profile/${patientId}/diseases`);
+        const Id = decodedToken['sub'];
+       
+        const response = await fetch(`http://192.168.1.129:3000/profile/${Id}/diseases`);
         const data = await response.json();
         setList(data);
+        const response2 = await fetch(`http://192.168.1.129:3000/auth/check/${Id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(Id)
+    });
+    console.log("hi1")
+    const data2 = await response2.json();
+    console.log("hi2")
+    setUser(data2)
+    console.log(data2)
       } catch (error) {
         console.error(error);
       }
@@ -38,7 +50,11 @@ export default function Medications() {
       },
       body: JSON.stringify(Id)
     });
-
+    console.log("hi1")
+    const data = await response.json();
+    console.log("hi2")
+    setUser(data)
+    console.log(data)
     if(response.ok) {
       setList([...list, { name: name }]);
       setDate('');
@@ -64,26 +80,27 @@ export default function Medications() {
         keyExtractor={(item, index) => index.toString()}
         style={styles.listContainer}
       />
-      <View style={styles.form}>
-      
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Name:</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter the name of the disease"
-            placeholderTextColor="#979797"
-            value={name}
-            onChangeText={setDescription}
-            required={true}
-          />
+        {user && user.role === 'DOCTOR' && ( // Only render the input and button for doctors
+        <View style={styles.form}>
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Name:</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter the name of the allergy"
+              placeholderTextColor="#979797"
+              value={name}
+              onChangeText={setDescription}
+              required={true}
+            />
+          </View>
+          <TouchableOpacity onPress={handleAddItem} style={styles.button}>
+            <Text style={styles.buttonText}>Submit</Text>
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={handleAddItem} style={styles.button}>
-          <Text style={styles.buttonText}>Submit</Text>
-        </TouchableOpacity>
-      </View>
+      )}
     </View>
   );
-        }
+}
   const styles = StyleSheet.create({
     container: {
       flex: 1,

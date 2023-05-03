@@ -6,16 +6,16 @@ import jwtDecode from 'jwt-decode';
 export default function Medications() {
 
   const [list, setList] = useState([]);
-  //const [date, setDate] = useState('');
-  const [name, setDescription] = useState('');
-
+  const [name, setName] = useState('');
+  const [user, setUser] = useState(null);
+  
   useEffect(() => {
     async function fetchData() {
       try {
         const token = await AsyncStorage.getItem('token');
         const decodedToken = jwtDecode(token);
         const patientId = decodedToken['sub'];
-        const specialty = 'FamilyMedicine';
+       
         const response = await fetch(`http://192.168.1.129:3000/profile/${patientId}/allergies`);
         const data = await response.json();
         setList(data);
@@ -30,21 +30,29 @@ export default function Medications() {
   const handleAddItem = async () => {
     const token = await AsyncStorage.getItem('token');
     const decodedToken = jwtDecode(token);
-    const Id = decodedToken['sub'];
-    const response = await fetch(`http://192.168.1.129:3000/auth/check/${Id}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(Id)
-    });
-
-    if(response.ok) {
-      setList([...list, { name: name }]);
-      setDate('');
-      setDescription('');
-    } else {
-      console.log('Unauthorized!');
+    const id = decodedToken['sub'];
+    
+    try {
+      const response = await fetch(`http://192.168.1.129:3000/auth/check/${id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(id)
+      });
+      
+      const data = await response.json();
+      setUser(data);
+      
+      if (response.ok) {
+        const newItem = { name: name };
+        setList([...list, newItem]);
+        setName('');
+      } else {
+        console.log('Unauthorized!');
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -55,35 +63,34 @@ export default function Medications() {
         data={list}
         renderItem={({ item }) => (
           <View style={styles.listItem}>
-           
             <Text style={[styles.listItemTitle, {color: '#7C3AED'}]}>Name:</Text>
             <Text style={[styles.listItemText, {color: '#fff'}]}>{item.name}</Text>
-           
           </View>
         )}
         keyExtractor={(item, index) => index.toString()}
         style={styles.listContainer}
       />
-      <View style={styles.form}>
-      
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Name:</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter the name of the allergy"
-            placeholderTextColor="#979797"
-            value={name}
-            onChangeText={setDescription}
-            required={true}
-          />
+      {user && user.role === 'DOCTOR' && ( // Only render the input and button for doctors
+        <View style={styles.form}>
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Name:</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter the name of the allergy"
+              placeholderTextColor="#979797"
+              value={name}
+              onChangeText={setName}
+              required={true}
+            />
+          </View>
+          <TouchableOpacity onPress={handleAddItem} style={styles.button}>
+            <Text style={styles.buttonText}>Submit</Text>
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={handleAddItem} style={styles.button}>
-          <Text style={styles.buttonText}>Submit</Text>
-        </TouchableOpacity>
-      </View>
+      )}
     </View>
   );
-        }
+}
   const styles = StyleSheet.create({
     container: {
       flex: 1,
