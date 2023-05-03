@@ -3,7 +3,7 @@ import { TouchableOpacity, StyleSheet, Text, View, TextInput, FlatList } from 'r
 
 
 
-export default function FamilyMedicine() {
+export default function Dermatology() {
 
 const [list, setList] = useState([]);
 const [DV, setDV] = useState('');

@@ -1,19 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TouchableOpacity, StyleSheet, Text, View, FlatList, TextInput } from 'react-native';
-
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import jwtDecode from 'jwt-decode';
 
 export default function Medications() {
 
- 
   const [list, setList] = useState([]);
-
-  const [DDM, setDDM] = useState('');
-
-
-  const [name, setName] = useState('')
-  const [date, setDate] = useState('')
-  const [disease, setDisease] = useState('')
+  const [date, setDate] = useState('');
+  const [disease, setDescription] = useState('');
+  const [name, setName] = useState('');
 
   useEffect(() => {
     async function fetchData() {
@@ -24,20 +19,17 @@ export default function Medications() {
         
         const response = await fetch(`http://192.168.1.129:3000/profile/${patientId}/medications`);
         const data = await response.json();
-        console.log(data)
-        setList(data);  // update list with fetched data
-       
+        setList(data);
       } catch (error) {
         console.error(error);
       }
     }
-  
+
     fetchData();
   }, []);
 
   const handleAddItem = async () => {
     const token = await AsyncStorage.getItem('token');
-    
     const decodedToken = jwtDecode(token);
     const Id = decodedToken['sub'];
     const response = await fetch(`http://192.168.1.129:3000/auth/check/${Id}`, {
@@ -47,109 +39,139 @@ export default function Medications() {
       },
       body: JSON.stringify(Id)
     });
-    if(response.ok){
-     
-      setList([...list, {date: date, name: name, disease: disease}]); // update list with the new vaccination
-      setDate(''); // reset date input
-      setName(''); // reset name input
-      setDisease('')
-    }
-    else {
-      console.log("Unauthorized!")
+
+    if(response.ok) {
+      setList([...list, { date: date, disease: disease, name: name }]);
+      setDate('');
+      setDescription('');
+    } else {
+      console.log('Unauthorized!');
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text1}>Medications</Text>
+      <Text style={styles.title}>Medications</Text>
       <FlatList
         data={list}
         renderItem={({ item }) => (
-          <View style={{flexDirection: 'row'}}>
-            <Text style={styles.listeText}>Date: {item.date}</Text>
-            <Text style={styles.listeText}>Name: {item.name}</Text>
-            <Text style={styles.listeText}>disease: {item.disease}</Text>
+          <View style={styles.listItem}>
+             <Text style={[styles.listItemTitle, styles.listItemDate]}>Date:</Text>
+            <Text style={[styles.listItemText, {color: '#fff'}]}>{item.date}</Text>
+            <Text style={[styles.listItemTitle, {color: '#7C3AED'}]}>Name:</Text>
+            <Text style={[styles.listItemText, {color: '#fff'}]}>{item.name}</Text>
+            <Text style={[styles.listItemTitle, {color: '#7C3AED'}]}>Disease:</Text>
+            <Text style={[styles.listItemText, {color: '#fff'}]}>{item.disease}</Text>
+           
           </View>
         )}
         keyExtractor={(item, index) => index.toString()}
-        style={{flex: 1, width: '100%'}}
+        style={styles.listContainer}
       />
-      <Text style={styles.text1}>Date</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter the Date of the vaccination"
-        placeholderTextColor="gray"
-        value={date}
-        onChangeText={setDate}
-        color="white"
-        required={true}
-        multiline={true}
-        numberOfLines={10}
-      />
-      <Text style={styles.text1}>Name</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter the name of vaccination"
-        placeholderTextColor="gray"
-        value={name}
-        onChangeText={setName}
-        color="white"
-        required={true}
-        multiline={true}
-        numberOfLines={10}
-      /> 
-       <Text style={styles.text1}>Disease</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter the name of Disease"
-        placeholderTextColor="gray"
-        value={name}
-        onChangeText={setDisease}
-        color="white"
-        required={true}
-        multiline={true}
-        numberOfLines={10}
-      /> 
-      <TouchableOpacity onPress={handleAddItem} style={styles.button}>
-        <Text style={{ color: '#14082b', fontSize: 18, fontWeight:'bold' }}>Submit</Text>
-      </TouchableOpacity>
+      <View style={styles.form}>
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Date:</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter the date of the medication"
+            placeholderTextColor="#979797"
+            value={date}
+            onChangeText={setDate}
+            required={true}
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Name:</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter the name of the Medication"
+            placeholderTextColor="#979797"
+            value={name}
+            onChangeText={setName}
+            required={true}
+          />
+          
+        </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Disease:</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter the name of the disease"
+            placeholderTextColor="#979797"
+            value={disease}
+            onChangeText={setDescription}
+            required={true}
+          />
+          
+        </View>
+        <TouchableOpacity onPress={handleAddItem} style={styles.button}>
+          <Text style={styles.buttonText}>Submit</Text>
+        </TouchableOpacity>
+      </View>
     </View>
-  );}
-
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#14082b',
-  },
-  input: {
-    width: '90%',
-    height: 78,
-    borderWidth: 1.5,
-    borderColor: '#c2bccf',
-    borderRadius: 4,
-    paddingLeft: 10,
-    marginTop: 18,
+  );
+        }
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#14082b',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: 20,
+    },
+    title: {
+      fontSize: 28,
+      fontWeight: 'bold',
+      marginBottom: 20,
+      color: '#fff',
+    },
+    input: {
+      width: '100%',
+      height: 40,
+      borderWidth: 1,
+      borderColor: '#ccc',
+      borderRadius: 4,
+      paddingLeft: 10,
+      marginBottom: 20,
+      color: '#fff',
+    },
+    button: {
+      backgroundColor: '#7C3AED',
+      borderRadius: 30,
+      width: 120,
+      height: 50,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginTop: 20,
+    },
+    buttonText: {
+      color: 'white',
+      fontSize: 18,
+      fontWeight: 'bold',
+    },
+    listContainer: {
+      width: '100%',
+      marginTop: 20,
+    },
+    listItem: {
+      backgroundColor: '#14082b',
+      padding: 20,
+      borderRadius: 8,
+      marginBottom: 10,
+    },
+    listItemTitle: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      marginBottom: 5,
+    },
+    listItemText: {
+      fontSize: 16,
+    },
+    listItemDate: {
+      color: '#7C3AED',
+      marginBottom: 5,
+    },
+  });
   
-  },
-  listeText: {
-    fontSize: 16,
-    color: 'black' ,
-    padding: 8,
-    margin: 10,
-    backgroundColor: 'white',
-  },
-  text1: {
-    fontSize: 30,
-    color: 'white' ,
-    padding: 8,
-    margin: 10,
-}
-
-}); 
-
-
 
 

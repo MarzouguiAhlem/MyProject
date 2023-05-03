@@ -23,7 +23,11 @@
     "react-native": "0.71.6",
     "react-native-date-picker": "^4.2.10",
     "react-native-datepicker": "^1.7.2",
-    "react-native-image-resizer": "^1.4.5"
+    "react-native-image-resizer": "^1.4.5",
+    "react-native-reanimated": "~2.14.4",
+    "react-native-websocket": "^1.0.2",
+    "socket.io-client": "^4.6.1",
+    "stream-chat-react-native": "^5.14.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

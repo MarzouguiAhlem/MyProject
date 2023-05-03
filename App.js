@@ -50,6 +50,7 @@ import Oncology from './Components/Liste/Speciaties/Oncology';
 import Gastroenterology from './Components/Liste/Speciaties/Gastroenterology';
 import AllergyAndImmunology from './Components/Liste/Speciaties/AllergyAndImmunology';
 import Dentist from './Components/Liste/Speciaties/Dentist';
+import Conversation from './Components/Liste/Conversation'
 
 const Stack = createStackNavigator();
 
@@ -99,6 +100,7 @@ export default function App() {
         <Stack.Screen name="Oncology" component={Oncology} />
         <Stack.Screen name="Pulmonology" component={Pulmonology} />
         <Stack.Screen name="Other" component={Other} />
+        <Stack.Screen name ="Conversation" component={Conversation}/>
      </Stack.Navigator>
       <StatusBar style="auto" />
     </View>
