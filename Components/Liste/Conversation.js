@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useCallback, useLayoutEffect } from 'react';
+import React, { useEffect, useState,useCallback,useLayoutEffect } from 'react';
 import { FlatList, Text, TextInput, TouchableOpacity, View, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import jwtDecode from 'jwt-decode';
@@ -7,12 +7,12 @@ import io from 'socket.io-client';
 
 export default function Conversation({ route }) {
   const { chatRoomId, doctorId } = route.params;
-  const [conversation, setConversation] = useState(null);
+
   const [text, setNewMessage] = useState('');
   const [socket, setSocket] = useState(null);
   const [messages, setMessages] = useState([]);
  
-  useLayoutEffect(() => {
+  useEffect(() => {
     
     const connectSocket = async () => {
       try {
@@ -25,10 +25,7 @@ export default function Conversation({ route }) {
         
         setSocket(socket);
         
-        socket.emit('joinChatRoom', chatRoomId);
-        socket.on('messageHistory', (messages) => {
-          setMessages(messages);
-        });
+        socket.emit('join', chatRoomId);
       } catch (error) {
         console.error(error);
       }
@@ -36,20 +33,26 @@ export default function Conversation({ route }) {
     connectSocket();
   
   
-}, []);
-useEffect(() => {
+}, [chatRoomId, socket]);
+useLayoutEffect(() => {
   const fetchConversation = async () => {
     try {
       
       if (socket) {
         socket.on('newMessage', (message) => {
-          setMessages(prevMessages => [...prevMessages, message.content]);
-
+      
+          setMessages([message.content]);
         });
-      
-        
+        socket.emit('joinChatRoom', chatRoomId);
+        socket.on('messageHistory', (messages) => {
+          setMessages(messages);
+        });
       }
-      
+      return () => {
+        if (socket) {
+          socket.off('newMessage');
+        }
+      };
     } catch (error) {
       console.error(error);
     }
@@ -104,7 +107,7 @@ useEffect(() => {
   
   
 
-   const renderChatMessage = ({ item }) => {
+   const renderChatMessage = useCallback(({ item }) => {
     const senderStyle = item.sender === 'patient' ? styles.patient : styles.doctor;
     const justifyContent = item.sender === 'patient' ? 'flex-end' : 'flex-start';
     return (
@@ -112,7 +115,7 @@ useEffect(() => {
         <Text style={[styles.chatMessageText, senderStyle]}>{item.content}</Text>
       </View>
     );
-  };
+  });
   return (
     <View style={styles.container}>
       <FlatList
@@ -128,6 +131,8 @@ useEffect(() => {
           onChangeText={setNewMessage}
           value={text}
         />
+       
+       
         <TouchableOpacity onPress={sendMessage} style={styles.sendButton}>
           <Text style={styles.sendButtonText}>Send</Text>
         </TouchableOpacity>
