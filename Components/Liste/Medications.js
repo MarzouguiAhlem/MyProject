@@ -65,45 +65,44 @@ export default function Medications() {
         data={list}
         renderItem={({ item }) => (
           <View style={styles.listItem}>
-            <Text style={[styles.listItemTitle, {color: '#7C3AED'}]}>Name:</Text>
-            <Text style={[styles.listItemText, {color: '#fff'}]}>{item.name}</Text>
-            <Text style={[styles.listItemTitle, {color: '#7C3AED'}]}>Date:</Text>
-            <Text style={[styles.listItemText, {color: '#fff'}]}>{item.date}</Text>
-            <Text style={[styles.listItemTitle, {color: '#7C3AED'}]}>Disease:</Text>
-            <Text style={[styles.listItemText, {color: '#fff'}]}>{item.disease}</Text>
+            <Text style={styles.listItemTitle}>Date:</Text>
+            <Text style={styles.listItemText}>{item.date}</Text>
+            <Text style={styles.listItemTitle}>Name:</Text>
+            <Text style={styles.listItemText}>{item.name}</Text>
+            <Text style={styles.listItemTitle}>Disease:</Text>
+            <Text style={styles.listItemText}>{item.disease}</Text>
           </View>
         )}
         keyExtractor={(item, index) => index.toString()}
         style={styles.listContainer}
       />
-      {user && user.role === 'DOCTOR' && ( // Only render the input and button for doctors
+      {user && user.role === 'DOCTOR' && (
         <View style={styles.form}>
+          <Text style={styles.formTitle}>Add a New Disease</Text>
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Name:</Text>
             <TextInput
               style={styles.input}
-              placeholder="Enter the name of the Vaccination"
+              placeholder="Enter the name of the disease"
               placeholderTextColor="#979797"
               value={name}
-              onChangeText={setName}
+              onChangeText={setDescription}
               required={true}
             />
-             <Text style={styles.label}>Date:</Text>
             <TextInput
               style={styles.input}
-              placeholder="Enter the date of the Vaccination"
+              placeholder="Enter the name of the disease"
               placeholderTextColor="#979797"
               value={date}
-              onChangeText={setDate}
+              onChangeText={setDescription}
               required={true}
             />
-            <Text style={styles.label}>Disease:</Text>
             <TextInput
               style={styles.input}
-              placeholder="Enter the date of the Vaccination"
+              placeholder="Enter the name of the disease"
               placeholderTextColor="#979797"
               value={disease}
-              onChangeText={setDisease}
+              onChangeText={setDescription}
               required={true}
             />
           </View>
@@ -114,65 +113,83 @@ export default function Medications() {
       )}
     </View>
   );
-}
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#14082b',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    color: '#fff',
-  },
-  input: {
-    width: '100%',
-    height: 40,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 4,
-    paddingLeft: 10,
-    marginBottom: 20,
-    color: '#fff',
-  },
-  button: {
-    backgroundColor: '#7C3AED',
-    borderRadius: 30,
-    width: 120,
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 20,
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  listContainer: {
-    width: '100%',
-    marginTop: 20,
-  },
-  listItem: {
-    backgroundColor: '#14082b',
-    padding: 20,
-    borderRadius: 8,
-    marginBottom: 10,
-  },
-  listItemTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 5,
-  },
-  listItemText: {
-    fontSize: 16,
-  },
-  listItemDate: {
-    color: '#7C3AED',
-    marginBottom: 5,
-  },
-});
+      }
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#14082b',
+      alignItems: 'center',
+      padding: 20,
+    },
+    title: {
+      fontSize: 28,
+      fontWeight: 'bold',
+      color: '#fff',
+      marginBottom: 20,
+      alignSelf: 'flex-start',
+    },
+    input: {
+      width: '100%',
+      height: 40,
+      borderWidth: 1,
+      borderColor: '#ccc',
+      borderRadius: 4,
+      paddingLeft: 10,
+      marginBottom: 20,
+      color: '#fff',
+    },
+    button: {
+      backgroundColor: '#7C3AED',
+      borderRadius: 30,
+      width: 120,
+      height: 50,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginTop: 20,
+    },
+    buttonText: {
+      color: 'white',
+      fontSize: 18,
+      fontWeight: 'bold',
+    },
+    listContainer: {
+      width: '100%',
+    },
+    listItem: {
+      backgroundColor: '#1C1247',
+      padding: 20,
+      borderRadius: 8,
+      marginBottom: 10,
+    },
+    listItemTitle: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      color: '#7C3AED',
+      marginBottom: 5,
+    },
+    listItemText: {
+      fontSize: 16,
+      color: '#fff',
+    },
+    form: {
+      width: '100%',
+      backgroundColor: '#1C1247',
+      borderRadius: 8,
+      padding: 20,
+      marginTop: 20,
+    },
+    formTitle: {
+      fontSize: 20,
+      fontWeight: 'bold',
+      color: '#7C3AED',
+      marginBottom: 10,
+    },
+    inputContainer: {
+      marginBottom: 20,
+    },
+    label: {
+      color: '#7C3AED',
+      fontSize: 16,
+      marginBottom: 5,
+    },
+  });

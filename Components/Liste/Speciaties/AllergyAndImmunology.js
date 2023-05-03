@@ -8,7 +8,7 @@ export default function AllergyAndImmunology() {
   const [list, setList] = useState([]);
   const [date, setDate] = useState('');
   const [name, setDescription] = useState('');
-
+  const [user, setUser] = useState('');
   useEffect(() => {
     async function fetchData() {
       try {
@@ -56,59 +56,68 @@ export default function AllergyAndImmunology() {
         data={list}
         renderItem={({ item }) => (
           <View style={styles.listItem}>
-             <Text style={[styles.listItemTitle, styles.listItemDate]}>Date:</Text>
-            <Text style={[styles.listItemText, {color: '#fff'}]}>{item.date}</Text>
-            <Text style={[styles.listItemTitle, {color: '#7C3AED'}]}>Description</Text>
-            <Text style={[styles.listItemText, {color: '#fff'}]}>{item.description}</Text>
-           
+            <Text style={styles.listItemTitle}>Date:</Text>
+            <Text style={styles.listItemText}>{item.date}</Text>
+            <Text style={styles.listItemTitle}>Name:</Text>
+            <Text style={styles.listItemText}>{item.name}</Text>
+            <Text style={styles.listItemTitle}>Description:</Text>
+            <Text style={styles.listItemText}>{item.description}</Text>
           </View>
         )}
         keyExtractor={(item, index) => index.toString()}
         style={styles.listContainer}
       />
-      <View style={styles.form}>
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Date:</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter the date of the medication"
-            placeholderTextColor="#979797"
-            value={date}
-            onChangeText={setDate}
-            required={true}
-          />
+      {user && user.role === 'DOCTOR' && (
+        <View style={styles.form}>
+          <Text style={styles.formTitle}>Add a New Report</Text>
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Name:</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter the name of the report"
+              placeholderTextColor="#979797"
+              value={name}
+              onChangeText={setDescription}
+              required={true}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Enter the date of the report"
+              placeholderTextColor="#979797"
+              value={date}
+              onChangeText={setDate}
+              required={true}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Enter the description of the report"
+              placeholderTextColor="#979797"
+              value={description}
+              onChangeText={setDescription}
+              required={true}
+            />
+          </View>
+          <TouchableOpacity onPress={handleAddItem} style={styles.button}>
+            <Text style={styles.buttonText}>Submit</Text>
+          </TouchableOpacity>
         </View>
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Name:</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter the name of the disease"
-            placeholderTextColor="#979797"
-            value={name}
-            onChangeText={setDescription}
-            required={true}
-          />
-        </View>
-        <TouchableOpacity onPress={handleAddItem} style={styles.button}>
-          <Text style={styles.buttonText}>Submit</Text>
-        </TouchableOpacity>
-      </View>
+      )}
     </View>
   );
-        }
+      }
   const styles = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: '#14082b',
       alignItems: 'center',
-      justifyContent: 'center',
       padding: 20,
     },
     title: {
       fontSize: 28,
       fontWeight: 'bold',
-      marginBottom: 20,
       color: '#fff',
+      marginBottom: 20,
+      alignSelf: 'flex-start',
     },
     input: {
       width: '100%',
@@ -136,10 +145,9 @@ export default function AllergyAndImmunology() {
     },
     listContainer: {
       width: '100%',
-      marginTop: 20,
     },
     listItem: {
-      backgroundColor: '#14082b',
+      backgroundColor: '#1C1247',
       padding: 20,
       borderRadius: 8,
       marginBottom: 10,
@@ -147,16 +155,34 @@ export default function AllergyAndImmunology() {
     listItemTitle: {
       fontSize: 18,
       fontWeight: 'bold',
+      color: '#7C3AED',
       marginBottom: 5,
     },
     listItemText: {
       fontSize: 16,
+      color: '#fff',
     },
-    listItemDate: {
+    form: {
+      width: '100%',
+      backgroundColor: '#1C1247',
+      borderRadius: 8,
+      padding: 20,
+      marginTop: 20,
+    },
+    formTitle: {
+      fontSize: 20,
+      fontWeight: 'bold',
       color: '#7C3AED',
+      marginBottom: 10,
+    },
+    inputContainer: {
+      marginBottom: 20,
+    },
+    label: {
+      color: '#7C3AED',
+      fontSize: 16,
       marginBottom: 5,
     },
   });
-  
 
 
