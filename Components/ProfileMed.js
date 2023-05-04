@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity, Button } from 'react-native';
+import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity, Button,ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import jwtDecode from 'jwt-decode';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -76,19 +76,41 @@ export default function ProfileMed (){
       return
     }
   };
-
-  return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        {/* <Image source={require('./path/to/image')} style={styles.photo} /> */}
-        <View style={styles.info}>
-          <Text style={styles.nxme}>{name}</Text>
-          <Text style={styles.text1}>{lastname}</Text>
-          <Text style={styles.text1}>{specialty}</Text>
-          <Text style={styles.text1}>{email}</Text>
-          <Text style={styles.text1}>{address}</Text>
-          <Text style={styles.text1}>{phonenumber}</Text>
-          <TouchableOpacity style={styles.button} onPress={handleChatPress}>
+return (
+  <ScrollView style={styles.container}>
+    {/* <Image source={photo} style={styles.photo} /> */}
+    <View style={styles.infoContainer}>
+      <View style={styles.infoRow}>
+        <Text style={styles.infoLabel}>Name:</Text>
+        <Text style={styles.infoText}>{name}</Text>
+      </View>
+      <View style={styles.infoRow}>
+        <Text style={styles.infoLabel}>Last Name:</Text>
+        <Text style={styles.infoText}>{lastname}</Text>
+      </View>
+      <View style={styles.infoRow}>
+        <Text style={styles.infoLabel}>Specialty:</Text>
+        <Text style={styles.infoText}>{specialty}</Text>
+      </View>
+      <View style={styles.infoRow}>
+        <Text style={styles.infoLabel}>Phone number:</Text>
+        <Text style={styles.infoText}>{phonenumber}</Text>
+      </View>
+      <View style={styles.infoRow}>
+        <Text style={styles.infoLabel}>Address:</Text>
+        <Text style={styles.infoText}>{address}</Text>
+      </View>
+      <View style={styles.infoRow}>
+        <Text style={styles.infoLabel}>Email:</Text>
+        <Text style={styles.infoText}>{email}</Text>
+      </View>
+      <View style={styles.infoRow}>
+        <Text style={styles.infoLabel}>Phone Number:</Text>
+        <Text style={styles.infoText}>{phonenumber}</Text>
+      </View>
+     
+    </View>
+    <TouchableOpacity style={styles.button} onPress={handleChatPress}>
             <Text style={styles.buttonText}>Chat with Patients</Text>
           </TouchableOpacity>
 
@@ -104,68 +126,48 @@ export default function ProfileMed (){
           <TouchableOpacity style={styles.button} onPress={handleLogoutPress}>
             <Text style={styles.buttonText}>Logout</Text>
           </TouchableOpacity>
-        </View>
-      </View>
-    </View>
-  );
-};
+  </ScrollView>
+);
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#14082b'
+    backgroundColor: '#14082b',
   },
-  header: {
+  infoContainer: {
+    backgroundColor: '#191b2a',
+    borderRadius: 10,
+    padding: 20,
+    marginBottom: 20,
+  },
+  infoRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 40,
-  },
-  photo: {
-    width: 100,
-    height: 120,
-    borderRadius: 10,
-    marginTop: 0,
-    marginLeft: 10,
-    marginRight: 20,
-  },
-  info: {
-    flex: 1,
-  },
-  nxme: {
-    color:'white',
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginTop: 15,
-    marginLeft: 5,
-
-  },
-  text1: {
-    color:'white',
-    fontSize: 16,
-    margin: 5,
-  },
-  text2: {
-    color:'black',
-    fontSize: 16,
-    margin: 6,
-  },
-  heading: {
-    color:'white',
-    fontSize: 23,
-    fontWeight: 'bold',
     marginBottom: 10,
-    
+  },
+  infoLabel: {
+    color: '#a9abb3',
+    fontSize: 16,
+    marginRight: 10,
+  },
+  infoText: {
+    color: 'white',
+    fontSize: 16,
   },
   button: {
     backgroundColor: '#53599A',
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 10,
+    borderRadius: 30,
+    width: '100%',
+    height: 55,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 20,
   },
   buttonText: {
     color: 'white',
-    textAlign: 'center',
-    fontSize: 16,
+    fontSize: 20,
+    fontWeight: 'bold',
   },
 });

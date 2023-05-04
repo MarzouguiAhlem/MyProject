@@ -14,7 +14,7 @@ export default function LoginPat() {
       alert('Please enter your Email and Password');} 
       else if (!/\S+@\S+\.\S+/.test(email)) {
         alert('Please enter a valid email address');}
-      else {alert('You are now connected!');
+      else {
       const data = {
         email: email,
         password: password,

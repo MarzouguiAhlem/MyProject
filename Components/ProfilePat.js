@@ -61,10 +61,10 @@ export default function ProfilePat() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Patient Profile</Text>
-      <FlatList data={Items} renderItem={renderItem} />
+      <FlatList data={Items} renderItem={renderItem} style={styles.listContainer} />
     </View>
   );
-}
+  }
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -79,16 +79,6 @@ export default function ProfilePat() {
       marginBottom: 20,
       alignSelf: 'flex-start',
     },
-    input: {
-      width: '100%',
-      height: 40,
-      borderWidth: 1,
-      borderColor: '#ccc',
-      borderRadius: 4,
-      paddingLeft: 10,
-      marginBottom: 20,
-      color: '#fff',
-    },
     button: {
       backgroundColor: '#7C3AED',
       borderRadius: 30,
@@ -98,50 +88,18 @@ export default function ProfilePat() {
       justifyContent: 'center',
       marginTop: 20,
     },
-    buttonText: {
-      color: 'white',
+    itemContainer: {
+      width: '100%',
+      marginBottom: 20,
+    },
+    itemText: {
       fontSize: 18,
-      fontWeight: 'bold',
+      color: '#fff',
+      textAlign: 'center',
     },
     listContainer: {
       width: '100%',
     },
-    listItem: {
-      backgroundColor: '#1C1247',
-      padding: 20,
-      borderRadius: 8,
-      marginBottom: 10,
-    },
-    listItemTitle: {
-      fontSize: 30,
-      fontWeight: 'bold',
-      color: '#7C3AED',
-      marginBottom: 5,
-    },
-    listItemText: {
-      fontSize: 30,
-      color: '#fff',
-    },
-    form: {
-      width: '100%',
-      backgroundColor: '#1C1247',
-      borderRadius: 8,
-      padding: 20,
-      marginTop: 20,
-    },
-    formTitle: {
-      fontSize: 20,
-      fontWeight: 'bold',
-      color: '#7C3AED',
-      marginBottom: 10,
-    },
-    inputContainer: {
-      marginBottom: 20,
-    },
-    label: {
-      color: '#7C3AED',
-      fontSize: 16,
-      marginBottom: 5,
-    },
   });
+  
   

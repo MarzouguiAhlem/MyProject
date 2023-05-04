@@ -25,57 +25,62 @@ const MedicalSpecialties = () => {
 
   const navigation = useNavigation();
 
-  const renderItem = ({ item }) => (
-    <Item name={item.name} onPress={() => navigation.navigate(item.screen)} />
-  );
+const renderItem = ({ item }) => (
+  <Item name={item.name} onPress={() => navigation.navigate(item.screen)} />
+);
 
-  const Item = ({ name, onPress }) => (
-    <View>
-      <TouchableOpacity style={style.button} onPress={onPress}>
-        <Text style={style.itemText}>{name}</Text>
-      </TouchableOpacity>
-    </View>
-  );
+const Item = ({ name, onPress }) => (
+  <View style={styles.itemContainer}>
+    <TouchableOpacity style={[styles.button, { height: 60, borderRadius: 50 }]} onPress={onPress}>
+      <Text style={[styles.itemText, { fontSize: 24 }]}>{name}</Text>
+    </TouchableOpacity>
+  </View>
+);
 
-  return (
-    <View style={style.container}>
-      <FlatList data={Items} renderItem={renderItem} />
-    </View>
-  );
+return (
+  <View style={styles.container}>
+    <Text style={styles.title}>Medical Specialties</Text>
+    <FlatList data={Items} renderItem={renderItem} style={styles.listContainer} />
+  </View>
+);
 }
-const style = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#14082b'
-    },
-    
-    button: {
-    //backgroundColor: 'black',
-      //borderRadius: 10,
-      padding: 10,
-      //margin: 12,
-      borderWidth: 2,
-      borderColor: '#c2bccf',
-    },
-    text: {
-      color: '#14082b',
-      fontSize: 25,
-      backgroundColor:'white',
-      width: '100%',
-      //borderRadius: 8,
-      borderWidth: 2,
-      borderColor: '#c2bccf',
-      height: 60,
-      padding: 10,
-      //margin: 15,
-      textAlign: 'center',
-    },
-    itemText: {
-      fontSize: 18,
-      color: 'white',
-      textAlign: 'center',
-      margin: 17,
-    },
-  })
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#14082b',
+    alignItems: 'center',
+    padding: 20,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginBottom: 20,
+    alignSelf: 'flex-start',
+  },
+  button: {
+    backgroundColor: '#7C3AED',
+    borderRadius: 30,
+    width: '100%',
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+  },
+  itemContainer: {
+    width: '100%',
+    marginBottom: 20,
+  },
+  itemText: {
+    fontSize: 18,
+    color: '#fff',
+    textAlign: 'center',
+  },
+  listContainer: {
+    width: '100%',
+  },
+});
+
+
 
 export default MedicalSpecialties;

@@ -51,7 +51,8 @@ import Gastroenterology from './Components/Liste/Speciaties/Gastroenterology';
 import AllergyAndImmunology from './Components/Liste/Speciaties/AllergyAndImmunology';
 import Dentist from './Components/Liste/Speciaties/Dentist';
 import Conversation from './Components/Liste/Conversation'
-
+import Conversation2 from './Components/Liste/Conversation2'
+import Patients from './Components/Liste/Patients'
 const Stack = createStackNavigator();
 
 
@@ -101,23 +102,15 @@ export default function App() {
         <Stack.Screen name="Pulmonology" component={Pulmonology} />
         <Stack.Screen name="Other" component={Other} />
         <Stack.Screen name ="Conversation" component={Conversation}/>
+        <Stack.Screen name ="Conversation2" component={Conversation2}/>
+        <Stack.Screen name ="Patients" component={Patients}/>
+        
      </Stack.Navigator>
       <StatusBar style="auto" />
     </View>
     
     </NavigationContainer>
  </>
-
- /*<>
-    <View style={styles.container}>
-      <Header/>
-      <Doctors/>
-      <StatusBar style="auto" />
-    </View>
-    <View style={styles.footerContainer}>
-        <Footer/>
-      </View>
-   </>*/
   );
 }
 
