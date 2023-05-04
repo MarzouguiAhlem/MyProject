@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-  import { TouchableOpacity, StyleSheet, Text, View, FlatList, TextInput } from 'react-native';
-  import AsyncStorage from '@react-native-async-storage/async-storage';
-  import jwtDecode from 'jwt-decode';
-  
+import { TouchableOpacity, StyleSheet, Text, View, FlatList, TextInput } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import jwtDecode from 'jwt-decode';
+
   export default function Gastroenterology() {
   
     const [list, setList] = useState([]);

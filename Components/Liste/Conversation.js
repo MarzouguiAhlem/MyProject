@@ -1,5 +1,5 @@
 import React, { useEffect, useState,useCallback,useLayoutEffect } from 'react';
-import { FlatList, Text, TextInput, TouchableOpacity, View, StyleSheet } from 'react-native';
+import { TouchableOpacity, StyleSheet, Text, View, FlatList, TextInput } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import jwtDecode from 'jwt-decode';
 import io from 'socket.io-client';
@@ -140,3 +140,62 @@ useLayoutEffect(() => {
     </View>
   );
 }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  chatMessageContainer: {
+    margin: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  chatMessageText: {
+    padding: 10,
+    borderRadius: 10,
+    maxWidth: '80%',
+    fontSize: 16,
+    lineHeight: 24,
+  },
+  patient: {
+    backgroundColor: '#80ADA0',
+    color: 'white',
+    alignSelf: 'flex-end',
+  },
+  doctor: {
+    backgroundColor: 'gray',
+    color: 'white',
+    alignSelf: 'flex-start',
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 5,
+    backgroundColor: '#f7f7f7',
+  },
+  input: {
+    flex: 1,
+    height: 40,
+    backgroundColor: 'white',
+    borderColor: 'gray',
+    borderWidth: 2,
+    margin: 10,
+    borderRadius: 8,
+    padding: 10,
+  },
+  sendButton: {
+    backgroundColor: '#c2bccf',
+    borderRadius: 10,
+    padding: 5,
+    margin: 5,
+    height: 38,
+    width: '15%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  sendButtonText: {
+    color: '#14082b',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+});

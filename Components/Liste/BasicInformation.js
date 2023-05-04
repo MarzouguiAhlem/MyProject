@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { ScrollView, Text, StyleSheet, TouchableOpacity, Image, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import jwtDecode from 'jwt-decode';
@@ -59,56 +59,98 @@ export default function BasicInformation (){
 
   return (
     <ScrollView style={styles.container}>
-        {/* <Image source={photo} style={styles.photo}
-         /> */}
-          <Text style={styles.text1}>Patient Name: {name}</Text>
-          <Text style={styles.text1}>Patient LastName: {lastname}</Text>
-          <Text style={styles.text1}>Birth Date: {birthdate}</Text>
-          <Text style={styles.text1}>Gender: {gender}</Text>
-          <Text style={styles.text1}>Address: {address}</Text>
-          <Text style={styles.text1}>Email: {email}</Text>
-          <Text style={styles.text1}>PhoneNumber: {phone_number}</Text>
-          <Text style={styles.text1}>Emergency contact: {emergency_contact}</Text>
-          <Text style={styles.text1}>Blood Type: {blood_type}</Text>
-          <Text style={styles.text1}>Height: {height}</Text>
-          <Text style={styles.text1}>Weight: {weight}</Text>
-         
-          <TouchableOpacity style={styles.button} onPress={handleForm1Press}>
-            <Text style={styles.buttonText}>Modify informations</Text>
-          </TouchableOpacity>
+      {/* <Image source={photo} style={styles.photo} /> */}
+      <View style={styles.infoContainer}>
+        <View style={styles.infoRow}>
+          <Text style={styles.infoLabel}>Name:</Text>
+          <Text style={styles.infoText}>{name}</Text>
+        </View>
+        <View style={styles.infoRow}>
+          <Text style={styles.infoLabel}>Last Name:</Text>
+          <Text style={styles.infoText}>{lastname}</Text>
+        </View>
+        <View style={styles.infoRow}>
+          <Text style={styles.infoLabel}>Birth Date:</Text>
+          <Text style={styles.infoText}>{birthdate}</Text>
+        </View>
+        <View style={styles.infoRow}>
+          <Text style={styles.infoLabel}>Gender:</Text>
+          <Text style={styles.infoText}>{gender}</Text>
+        </View>
+        <View style={styles.infoRow}>
+          <Text style={styles.infoLabel}>Address:</Text>
+          <Text style={styles.infoText}>{address}</Text>
+        </View>
+        <View style={styles.infoRow}>
+          <Text style={styles.infoLabel}>Email:</Text>
+          <Text style={styles.infoText}>{email}</Text>
+        </View>
+        <View style={styles.infoRow}>
+          <Text style={styles.infoLabel}>Phone Number:</Text>
+          <Text style={styles.infoText}>{phone_number}</Text>
+        </View>
+        <View style={styles.infoRow}>
+          <Text style={styles.infoLabel}>Emergency Contact:</Text>
+          <Text style={styles.infoText}>{emergency_contact}</Text>
+        </View>
+        <View style={styles.infoRow}>
+          <Text style={styles.infoLabel}>Blood Type:</Text>
+          <Text style={styles.infoText}>{blood_type}</Text>
+        </View>
+        <View style={styles.infoRow}>
+          <Text style={styles.infoLabel}>Height:</Text>
+          <Text style={styles.infoText}>{height}</Text>
+        </View>
+        <View style={styles.infoRow}>
+          <Text style={styles.infoLabel}>Weight:</Text>
+          <Text style={styles.infoText}>{weight}</Text>
+        </View>
+      </View>
+      <TouchableOpacity style={styles.button} onPress={handleForm1Press}>
+        <Text style={styles.buttonText}>Modify Information</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: '#14082b'
-  },
-  photo: {
-    width: 100,
-    height: 120,
-    borderRadius: 10,
-    marginTop: 0,
-    marginLeft: 10,
-    marginRight: 20,
-  },
-  text1: {
-    color:'white',
-    fontSize: 16,
-    margin: 5,
-  },
- 
-  button: {
-    backgroundColor: '#53599A',
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 10,
-  },
-  buttonText: {
-    color: 'white',
-    textAlign: 'center',
-    fontSize: 16,
-  },
-});
+  }
+  
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 20,
+      backgroundColor: '#14082b',
+    },
+    infoContainer: {
+      backgroundColor: '#191b2a',
+      borderRadius: 10,
+      padding: 20,
+      marginBottom: 20,
+    },
+    infoRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 10,
+    },
+    infoLabel: {
+      color: '#a9abb3',
+      fontSize: 16,
+      marginRight: 10,
+    },
+    infoText: {
+      color: 'white',
+      fontSize: 16,
+    },
+    button: {
+      backgroundColor: '#53599A',
+      borderRadius: 30,
+      width: '100%',
+      height: 60,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    buttonText: {
+      color: 'white',
+      fontSize: 20,
+      fontWeight: 'bold',
+    },
+  });
+  
