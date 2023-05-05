@@ -1,38 +1,59 @@
-import React, { useState } from 'react';
-import { View, Text, FlatList, TextInput, Pressable } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import jwtDecode from 'jwt-decode';
+import { useNavigation } from '@react-navigation/native';
 
 const ChatboxMed = () => {
-  const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState('');
+  const navigation = useNavigation();
+  const [chatboxes, setChatboxes] = useState([]);
 
-  const handleSend = () => {
-    setMessages([...messages, { text: newMessage, sent: true }]);
-    setNewMessage('');
+  const fetchChatboxes = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      const decodedToken = jwtDecode(token);
+      const patientId = decodedToken['sub'];
+      const response = await fetch(`http://192.168.1.129:3000/doctorP/${patientId}/chatRooms`);
+      
+      const data = await response.json();
+      setChatboxes(data);
+      console.log(data)
+    } catch (error) {
+      console.error(error);
+    }
   };
 
+  useEffect(() => {
+    fetchChatboxes();
+  }, []);
+
   return (
-    <View style={{ flex: 1, backgroundColor:'#53599A' }}>
-    <FlatList
-      data={messages}
-      renderItem={({ item }) => (
-        <Text style={{ alignSelf: item.sent ? 'flex-end' : 'flex-start', backgroundColor: item.sent ? '#80ADA0' : 'gray', color: 'white', padding: 10, margin: 5, borderRadius: 10 }}>
-          {item.text}
-        </Text>
-      )}
-      keyExtractor={(item, index) => index.toString()}
-    />
-    <View style={{ flexDirection: 'row', alignItems: 'center'}}>
-      <TextInput
-        style={{ flex: 1, height: 40, backgroundColor:'white', borderColor: 'gray', borderWidth: 2, margin: 10, borderRadius: 8, padding: 10 }}
-        placeholder="Type your message here"
-        onChangeText={(text) => setNewMessage(text)}
-        value={newMessage}
+    <View style={{ flex: 1, backgroundColor: '#14082b' }}>
+      <FlatList
+        data={chatboxes}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Conversation', { chatRoomId: item.id, doctorId: item.doctorId })}
+            style={{
+              flex: 1,
+              backgroundColor: 'white',
+              margin: 10,
+              borderRadius: 10,
+              shadowColor: '#000',
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.2,
+              shadowRadius: 2,
+              elevation: 2,
+            }}
+          >
+            <Text style={{ fontSize: 20, fontWeight: 'bold', padding: 10, color: '#7C3AED' }}>
+              {item.doctor_name}
+            </Text>
+          </TouchableOpacity>
+        )}
       />
-      <Pressable onPress={handleSend} style={{backgroundColor: '#c2bccf',borderRadius: 10, padding: 5, margin: 5, height: 38, width: '15%'}}><Text style={{color: '#14082b', fontSize: 18, fontWeight: 'bold'}}>Send</Text></Pressable>
-      
     </View>
-  </View>
-   
   );
 };
 

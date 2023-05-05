@@ -3,22 +3,21 @@ import { TouchableOpacity, StyleSheet, Text, View, FlatList, TextInput } from 'r
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import jwtDecode from 'jwt-decode';
 
-export default function Allergies() {
-
+export default function Diseases2({route}) {
+const {patientId, doscSpecialty} = route.params
   const [list, setList] = useState([]);
-  const [name, setName] = useState('');
+  //const [date, setDate] = useState('');
+  const [name, setDescription] = useState('');
   const [user, setUser] = useState(null);
-  
   useEffect(() => {
     async function fetchData() {
       try {
-        const token = await AsyncStorage.getItem('token');
-        const decodedToken = jwtDecode(token);
-        const patientId = decodedToken['sub'];
        
-        const response = await fetch(`http://192.168.1.129:3000/profile/${patientId}/allergies`);
+       
+        const response = await fetch(`http://192.168.1.129:3000/profile/${patientId}/diseases`);
         const data = await response.json();
         setList(data);
+        
       } catch (error) {
         console.error(error);
       }
@@ -28,37 +27,33 @@ export default function Allergies() {
   }, []);
 
   const handleAddItem = async () => {
-    const token = await AsyncStorage.getItem('token');
-    const decodedToken = jwtDecode(token);
-    const id = decodedToken['sub'];
-    
-    try {
-      const response = await fetch(`http://192.168.1.129:3000/auth/check/${id}`, {
+    console.log("pressed")
+    const response = await fetch(`http://192.168.1.129:3000/doctorP/patients/${patientId}/diseases/addDis/${name}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(id)
+        
       });
       
-      const data = await response.json();
-      setUser(data);
+ 
+     console.log(response)
       
       if (response.ok) {
+        console.log("hi")
         const newItem = { name: name };
-        setList([...list, newItem]);
-        setName('');
-      } else {
-        console.log('Unauthorized!');
+        setList([...list, { name: name }]);
+     
+        setDescription('');
       }
-    } catch (error) {
-      console.error(error);
-    }
+  
+      
+   
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Allergies</Text>
+      <Text style={styles.title}>Diseases</Text>
       <FlatList
         data={list}
         renderItem={({ item }) => (
@@ -70,7 +65,7 @@ export default function Allergies() {
         keyExtractor={(item, index) => index.toString()}
         style={styles.listContainer}
       />
-      {user && user.role === 'DOCTOR' && (
+      {(
         <View style={styles.form}>
           <Text style={styles.formTitle}>Add a New Disease</Text>
           <View style={styles.inputContainer}>
@@ -171,7 +166,5 @@ export default function Allergies() {
       marginBottom: 5,
     },
   });
-
-  
 
 

@@ -53,6 +53,13 @@ import Dentist from './Components/Liste/Speciaties/Dentist';
 import Conversation from './Components/Liste/Conversation'
 import Conversation2 from './Components/Liste/Conversation2'
 import Patients from './Components/Liste/Patients'
+import DocPatProfile from './Components/Liste/DocPatProfile'
+import Allergies2 from './Components/Liste/Allergies2'
+import Basic2 from './Components/Liste/Basic2'
+import Vaccinations2 from './Components/Liste/Vaccinations2'
+import Medications2 from './Components/Liste/Medications2'
+import Diseases2 from './Components/Liste/Diseases2'
+import MedicalSpecialties2 from './Components/Liste/MedicalSpecialties2'
 const Stack = createStackNavigator();
 
 
@@ -104,6 +111,13 @@ export default function App() {
         <Stack.Screen name ="Conversation" component={Conversation}/>
         <Stack.Screen name ="Conversation2" component={Conversation2}/>
         <Stack.Screen name ="Patients" component={Patients}/>
+        <Stack.Screen name ="DocPatProfile" component={DocPatProfile}/>
+        <Stack.Screen name ="Vaccinations2" component={Vaccinations2}/>
+        <Stack.Screen name ="Allergies2" component={Allergies2}/>
+        <Stack.Screen name ="Medications2" component={Medications2}/>
+        <Stack.Screen name ="Diseases2" component={Diseases2}/>
+        <Stack.Screen name ="Basic2" component={Basic2}/>
+        <Stack.Screen name ="MedicalSpecialties2" component={MedicalSpecialties2}/>
         
      </Stack.Navigator>
       <StatusBar style="auto" />

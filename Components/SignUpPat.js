@@ -38,6 +38,7 @@ const SignUpPat = () => {
       body: JSON.stringify(data)
     });
     console.log("slmmm")
+    console.log(response)
     if (response.ok) {
       const token = await response.json(); // parse response to get the token
       console.log('Signup successful!');

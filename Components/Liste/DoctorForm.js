@@ -43,7 +43,7 @@ export default function DoctorForm() {
     
     if (response.ok) {
       console.log('Signup successful!');
-      navigation.navigate('Welcome');
+      navigation.navigate('ProfileMed');
     } else {
       console.log('Signup failed.');
     }

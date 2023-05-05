@@ -4,17 +4,19 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import jwtDecode from 'jwt-decode';
 import { useNavigation } from '@react-navigation/native';
 
-const Patients = () => {
-  
+const Patients = ({route}) => {
+  const {docSpecialty} = route.params
   const [patients, setPatients] = useState([]);
   const [chatRoomId, setChatRoomId] = useState('');
   const [email, setEmail] = useState('');
+ 
   const [patId, setpatId] = useState();
   const fetchPatients = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
       const decodedToken = jwtDecode(token);
       const doctorId = decodedToken['sub'];
+      
       const response = await fetch(`http://192.168.1.129:3000/doctorP/${doctorId}/patients`);
       
       const data = await response.json();
@@ -94,6 +96,8 @@ const Patients = () => {
       console.error(error);
     }
   };
+
+ 
   
   
   return (
@@ -117,6 +121,13 @@ const Patients = () => {
                     <Text style={styles.chatButtonText}>Chat</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
+  style={styles.visitProfileButton}
+  onPress={() => navigation.navigate('DocPatProfile', { patId: item.user_id, docSpecialty: docSpecialty})}
+>
+  <Text style={styles.visitProfileButtonText}>Visit Profile</Text>
+</TouchableOpacity>
+
+                  <TouchableOpacity
                     style={styles.deleteButton}
                     onPress={() => handleDeletePress(item.user_id)}
                   >
@@ -128,7 +139,7 @@ const Patients = () => {
           </View>
         )}
       />
-    <View style={styles.addPatientContainer}>
+      <View style={styles.addPatientContainer}>
         <View style={styles.inputContainer}>
           <Text style={styles.patientEmail}>Patient Email:</Text>
           <TextInput
@@ -146,13 +157,8 @@ const Patients = () => {
         </TouchableOpacity>
       </View>
     </View>
-
-
-
- 
   );
-}
-
+        }  
 const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -204,6 +210,7 @@ const styles = StyleSheet.create({
       paddingVertical: 10,
       paddingHorizontal: 20,
       marginRight: 10,
+      marginLeft:-130,
     },
     chatButtonText: {
       color: '#fff',
@@ -255,7 +262,19 @@ const styles = StyleSheet.create({
       fontSize: 18,
       fontWeight: 'bold',
       marginRight: 10,
-    },
+    },visitProfileButton: {
+        backgroundColor: '#007bff',
+        borderRadius: 30,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        marginRight: 10,
+      },
+      visitProfileButtonText: {
+        color: '#fff',
+        fontSize: 18,
+        fontWeight: 'bold',
+      },
+      
   });
   
   

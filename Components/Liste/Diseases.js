@@ -3,7 +3,7 @@ import { TouchableOpacity, StyleSheet, Text, View, FlatList, TextInput } from 'r
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import jwtDecode from 'jwt-decode';
 
-export default function Medications() {
+export default function Diseases2() {
 
   const [list, setList] = useState([]);
   //const [date, setDate] = useState('');

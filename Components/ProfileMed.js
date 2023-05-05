@@ -45,17 +45,18 @@ export default function ProfileMed (){
   };
   const handlePatients = () => {
     // Navigate to chat screen
-    navigation.navigate('Patients');
+    navigation.navigate('Patients', { docSpecialty:specialty})
+    
   };
 
   const handleFormPress = () => {
     // Navigate to Form screen
-    navigation.navigate('DoctorFormMed');
+    navigation.navigate('DoctorForm');
   };
 
   const handleLogoutPress = async () => {
     // Navigate to Form screen
-    const token = await AsyncStorage.getItem('token2');
+    const token = await AsyncStorage.getItem('token');
 
 
     
