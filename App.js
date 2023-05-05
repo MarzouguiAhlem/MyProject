@@ -49,7 +49,23 @@ import Other from './Components/Liste/Speciaties/Other';
 import Oncology from './Components/Liste/Speciaties/Oncology';
 import Gastroenterology from './Components/Liste/Speciaties/Gastroenterology';
 import AllergyAndImmunology from './Components/Liste/Speciaties/AllergyAndImmunology';
-import Dentist from './Components/Liste/Speciaties/Dentist';
+import Dentist  from './Components/Liste/Speciaties/Dentist';
+import Dentist2 from './Components/Liste/Speciaties/Dentist2';
+import FamilyMedicine2 from './Components/Liste/Speciaties/FamilyMedicine2';
+import Cardiology2 from './Components/Liste/Speciaties/Cardiology2';
+import Gynecology2 from './Components/Liste/Speciaties/Gynecology2';
+import Neurology2 from './Components/Liste/Speciaties/Neurology2';
+import Pediatrics2 from './Components/Liste/Speciaties/Pediatrics2';
+import Ophthalmology2 from './Components/Liste/Speciaties/Ophthamology2';
+import Dermatology2 from './Components/Liste/Speciaties/Dermatology2';
+import Surgery2 from './Components/Liste/Speciaties/Surgery2';
+import Psychiatry2 from './Components/Liste/Speciaties/Psychiatry2';
+import Pulmonology2 from './Components/Liste/Speciaties/Pulmonology2';
+import Other2 from './Components/Liste/Speciaties/Other2';
+import Oncology2 from './Components/Liste/Speciaties/Oncology2';
+import Gastroenterology2 from './Components/Liste/Speciaties/Gastroenterology2';
+import AllergyAndImmunology2 from './Components/Liste/Speciaties/AllergyAndImmunology2';
+
 import Conversation from './Components/Liste/Conversation'
 import Conversation2 from './Components/Liste/Conversation2'
 import Patients from './Components/Liste/Patients'
@@ -108,6 +124,22 @@ export default function App() {
         <Stack.Screen name="Oncology" component={Oncology} />
         <Stack.Screen name="Pulmonology" component={Pulmonology} />
         <Stack.Screen name="Other" component={Other} />
+        
+        <Stack.Screen name="FamilyMedicine2" component={FamilyMedicine2} />
+        <Stack.Screen name="Cardiology2" component={Cardiology2} />
+        <Stack.Screen name="Gynecology2" component={Gynecology2} />
+        <Stack.Screen name="Neurology2" component={Neurology2} />
+        <Stack.Screen name="Surgery2" component={Surgery2} />
+        <Stack.Screen name="Psychiatry2" component={Psychiatry2} />
+        <Stack.Screen name="Dermatology2" component={Dermatology2} />
+        <Stack.Screen name="Ophthalmology2" component={Ophthalmology2} />
+        <Stack.Screen name="Pediatrics2" component={Pediatrics2} />
+        <Stack.Screen name="Dentist2" component={Dentist2} />
+        <Stack.Screen name="AllergyAndImmunology2" component={AllergyAndImmunology2} />
+        <Stack.Screen name="Gastroenterology2" component={Gastroenterology2} />
+        <Stack.Screen name="Oncology2" component={Oncology2} />
+        <Stack.Screen name="Pulmonology2" component={Pulmonology2} />
+        <Stack.Screen name="Other2" component={Other2} />
         <Stack.Screen name ="Conversation" component={Conversation}/>
         <Stack.Screen name ="Conversation2" component={Conversation2}/>
         <Stack.Screen name ="Patients" component={Patients}/>

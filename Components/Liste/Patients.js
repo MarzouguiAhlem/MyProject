@@ -17,7 +17,7 @@ const Patients = ({route}) => {
       const decodedToken = jwtDecode(token);
       const doctorId = decodedToken['sub'];
       
-      const response = await fetch(`http://192.168.1.129:3000/doctorP/${doctorId}/patients`);
+      const response = await fetch(`http://192.168.1.17:3000/doctorP/${doctorId}/patients`);
       
       const data = await response.json();
       setEmail(data['email'])
@@ -39,7 +39,7 @@ const Patients = ({route}) => {
     const doctorId = decodedToken['sub'];
     const patId = patientId;
    
-    const response = await fetch(`http://192.168.1.129:3000/doctorP/${doctorId}/chatRoom/${patId}`);
+    const response = await fetch(`http://192.168.1.17:3000/doctorP/${doctorId}/chatRoom/${patId}`);
     const data = await response.json();
     setChatRoomId(data['id']);   
     navigation.navigate('Conversation2', { chatRoomId: chatRoomId, patientId: patId});
@@ -51,7 +51,7 @@ const Patients = ({route}) => {
       const doctorId = decodedToken['sub'];
      
      console.log(patientId)
-      const response = await fetch(`http://192.168.1.129:3000/doctorP/${doctorId}/deletePatient/${patientId}`, {
+      const response = await fetch(`http://192.168.1.17:3000/doctorP/${doctorId}/deletePatient/${patientId}`, {
       
         headers: {
           'Content-Type': 'application/json',
@@ -77,7 +77,7 @@ const Patients = ({route}) => {
       const doctorId = decodedToken['sub'];
    
       
-      const response = await fetch(`http://192.168.1.129:3000/doctorP/${doctorId}/addPatient/${email}`, {
+      const response = await fetch(`http://192.168.1.17:3000/doctorP/${doctorId}/addPatient/${email}`, {
        
         headers: {
           'Content-Type': 'application/json',

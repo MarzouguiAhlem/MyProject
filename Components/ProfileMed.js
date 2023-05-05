@@ -19,7 +19,7 @@ export default function ProfileMed (){
         const decodedToken = jwtDecode(token);
         const doctorId = decodedToken['sub'];
         console.log(doctorId)
-        const response = await fetch(`http://192.168.1.129:3000/doctorP/${doctorId}/basic-info`);
+        const response = await fetch(`http://192.168.1.17:3000/doctorP/${doctorId}/basic-info`);
         const data = await response.json();
         console.log(data)
         console.log(data['address'])
@@ -60,7 +60,7 @@ export default function ProfileMed (){
 
 
     
-    const response = await fetch('http://192.168.1.129:3000/auth/logout', {
+    const response = await fetch('http://192.168.1.17:3000/auth/logout', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`, // Include the token in the Authorization header
