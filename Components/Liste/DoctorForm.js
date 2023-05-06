@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ScrollView, Text, TextInput, Pressable, StyleSheet } from 'react-native';
+import { StyleSheet,Alert, Text, TextInput, View, TouchableOpacity, Image, ScrollView } from 'react-native';
 import jwtDecode from 'jwt-decode';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
@@ -49,97 +49,138 @@ export default function DoctorForm() {
     }
   };
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.text1}>Name:</Text>
-      <TextInput
-      style={styles.input}
-        value={name}
-        onChangeText={setName}
-        placeholderTextColor="gray"
-        placeholder="Enter your name"
-        color="white"
-      />
-       <Text style={styles.text1}>LastName:</Text>
-      <TextInput
-      style={styles.input}
-        value={lastname}
-        onChangeText={setlastname}
-        placeholderTextColor="gray"
-        placeholder="Enter your name"
-        color="white"
-      />
-      <Text style={styles.text1}>Specialty:</Text>
-      <TextInput
-      style={styles.input}
-        value={specialty}
-        onChangeText={setSpecialty}
-        placeholder="Enter your Specialty"
-        placeholderTextColor="gray"
-        color="white"
-      />
-      
-      <Text style={styles.text1}>Address:</Text>
-      <TextInput
-      style={styles.input}
-        value={address}
-        onChangeText={setAddress}
-        placeholder="Enter your Address"
-        placeholderTextColor="gray"
-        color="white"
-      />
-      <Text style={styles.text1}>Email:</Text>
-      <TextInput
-      style={styles.input}
-        value={email}
-        onChangeText={setEmail}
-        placeholderTextColor="gray"
-        placeholder="Enter your Email"
-        color="white"
-      />
-      <Text style={styles.text1}>Phone:</Text>
-      <TextInput
-      style={styles.input}
-        value={phonenumber}
-        onChangeText={setPhone}
-        keyboardType="numeric"
-        placeholderTextColor="gray"
-        placeholder="Enter your Phone"
-        color="white"
-      />
-      <Pressable onPress={handleSubmit} style={styles.button}><Text style={styles.buttonText}>Submit</Text></Pressable>
+  
+     <View style={styles.container}>
+     
+     
+     <ScrollView contentContainerStyle={styles.scrollContainer} style={{flexGrow: 1}}>
+       <Text style={styles.title}>Sign Up</Text>
+       <TextInput
+         label="First Name"
+         value={name}
+         onChangeText={(text) => setName(text)}
+         style={styles.input}
+         placeholder="enter your First Name"
+         placeholderTextColor="gray"
+         color="white"
+         required={true}
+       />
+       <TextInput
+         label="Last Name"
+         value={lastname}
+         onChangeText={(text) => setlastname(text)}
+         style={styles.input}
+         placeholder="enter your Last Name"
+         placeholderTextColor="gray"
+         color="white"
+         required={true}
+       />
+       <TextInput
+         label="Email"
+         value={email}
+         onChangeText={(text) => setEmail(text)}
+         style={styles.input}
+         keyboardType="email-address"
+         placeholder="enter your Email-adress"
+         placeholderTextColor="gray"
+         color="white"
+         required={true}
+       />
+       <TextInput
+         label="Specialty"
+         value={specialty}
+         onChangeText={(text) => setSpecialty(text)}
+         style={styles.input}
+         placeholder="enter your Specialty"
+         placeholderTextColor="gray"
+         color="white"
+         required={true}
+         secureTextEntry
+       />
+       <TextInput
+         keyboardType="numeric"
+         onChangeText={setPhone}
+         value={phonenumber}
+         style={styles.input}
+         placeholder="enter your Phone Number"
+         placeholderTextColor="gray"
+         color="white"
+         required={true}
+       />
+       <TextInput
+         keyboardType="numeric"
+         onChangeText={address}
+         value={setAddress}
+         style={styles.input}
+         placeholder="enter your address"
+         placeholderTextColor="gray"
+         color="white"
+         required={true}
+       />
+      <TouchableOpacity style={styles.button} mode="contained" onPress={handleSubmit}>
+          <Text style={styles.text}>Submit</Text>
+        </TouchableOpacity>
     </ScrollView>
+    </View>
+    
   );
 }
 
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#14082b'
-    },
-    text1: {
-      color:'white',
-      fontSize: 16,
-      margin: 5,
-    }, 
-    button: {
-      backgroundColor: '#53599A',
-      padding: 10,
-      borderRadius: 5,
-      marginTop: 10,
-    },
-    buttonText: {
-      color: 'white',
-      textAlign: 'center',
-      fontSize: 16,
-    },
-    input: {
-        width: '80%',
-        height: 38,
-        borderWidth: 1.5,
-        borderColor: 'white',
-        borderRadius: 4,
-        paddingLeft: 16,
-        margin: 10,
-      
-      },
-  });
+          
+          const styles = StyleSheet.create({
+            container: {
+              flex: 1,
+              backgroundColor: '#14082b',
+              paddingHorizontal: 20,
+              paddingVertical: 30,
+            },
+            scrollContainer: {
+              alignItems: 'center',
+              justifyContent: 'center',
+            },
+            title: {
+              fontSize: 30,
+              fontWeight: 'bold',
+              marginBottom: 30,
+              color: '#7C3AED',
+              textAlign: 'center',
+            },
+            image: {
+              width: 150,
+              height: 150,
+              borderRadius: 100,
+              borderWidth: 5,
+              borderColor: '#7C3AED',
+            },
+            input: {
+              width: '100%',
+              borderRadius: 5,
+              borderWidth: 1,
+              borderColor: '#7C3AED',
+              height: 50,
+              padding: 12,
+              marginVertical: 10,
+              color: 'white',
+              fontSize: 18,
+            },
+            imageContainer: {
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginVertical: 30,
+            },
+            button: {
+              backgroundColor: '#7C3AED',
+              borderRadius: 10,
+              padding: 12,
+              marginVertical: 10,
+              height: 50,
+              width: '45%',
+              alignItems: 'center',
+              justifyContent: 'center',
+            },
+            buttonText: {
+              color: 'white',
+              fontSize: 18,
+            },
+          });
+          

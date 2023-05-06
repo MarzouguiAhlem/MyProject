@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
 import { ActivityIndicator } from 'react-native';
-
+import { Buffer } from 'buffer'
 const SignUp = () => {
   const [name, setname] = useState('');
   const [lastname, setlastname] = useState('');
@@ -83,13 +83,15 @@ const takePicture = async () => {
     const blob = await response.blob();
     const reader = new FileReader();
     reader.onload = () => {
-      setImage(reader.result);
+      const bytes = Buffer.from(reader.result.split(',')[1], 'base64');
+      setImage(bytes);
     };
     
     reader.readAsDataURL(blob);
     setIsLoading(false);
   }
 };
+
 
 const pickImage = async () => {
   setIsLoading(true);
