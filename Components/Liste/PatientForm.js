@@ -1,68 +1,72 @@
 import React, { useState } from 'react';
-import { ScrollView, Text, TextInput, Pressable, StyleSheet } from 'react-native';
-import jwtDecode from 'jwt-decode';
-import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-
-export default function PatientForm() {
-  const [name, setName1] = useState('');
-  const [birthdate, setBirthDate] = useState('');
-  const [gender, setGender] = useState('');
-  const [email, setEmail] = useState('');
-  const [phonenumber, setPhoneNumber] = useState('');
-  const [adress, setAddress] = useState('');
-  const [emergency, setContact] = useState('');
-  const [bloodtype, setBlood] = useState('');
-  const [height, setHeight] = useState(0);
-  const [weight, setWeight] = useState(0);
-  const [lastname, setlastname] = useState('')
-  const navigation = useNavigation();
-const handleSubmit = async () => {
-    const data = {
-      name: name,
-      lastname: lastname,
-      birthdate: birthdate,
-      bloodtype: bloodtype,
-      gender: gender,
-      adress: adress,
-      email: email,
-      emergency: emergency,
-      phonenumber: phonenumber,
-      height: height,
-      weight: weight,
+  import { StyleSheet,Alert, Text, TextInput, View, TouchableOpacity, Image, ScrollView } from 'react-native';
+  import jwtDecode from 'jwt-decode';
+  import AsyncStorage from '@react-native-async-storage/async-storage';
+  import { useNavigation } from '@react-navigation/native';
+  
+  
+  export default function PatientForm() {
+    const [name, setName1] = useState('');
+    const [birthdate, setBirthDate] = useState('');
+    const [gender, setGender] = useState('');
+    const [email, setEmail] = useState('');
+    const [phonenumber, setPhoneNumber] = useState('');
+    const [adress, setAddress] = useState('');
+    const [emergency, setContact] = useState('');
+    const [bloodtype, setBlood] = useState('');
+    const [height, setHeight] = useState(0);
+    const [weight, setWeight] = useState(0);
+    const [lastname, setlastname] = useState('')
+    const navigation = useNavigation();
+  const handleSubmit = async () => {
+      const data = {
+        name: name,
+        lastname: lastname,
+        birthdate: birthdate,
+        bloodtype: bloodtype,
+        gender: gender,
+        adress: adress,
+        email: email,
+        emergency: emergency,
+        phonenumber: phonenumber,
+        height: height,
+        weight: weight,
+        
+      };
+      const token = await AsyncStorage.getItem('token');
+      console.log("slm")
+      const decodedToken = jwtDecode(token);
+      console.log(token)
+       const patientId = decodedToken['sub']; // Replace with actual patient ID
+      const url = `http://192.168.1.17:3000/auth/signup/user/patientform/${patientId}`
       
+      console.log(url)
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+  
+      
+      if (response.ok) {
+        console.log('Signup successful!');
+        navigation.navigate('ProfilePat');
+      } else {
+        console.log('Signup failed.');
+      }
     };
-    const token = await AsyncStorage.getItem('token');
-    console.log("slm")
-    const decodedToken = jwtDecode(token);
-    console.log(token)
-     const patientId = decodedToken['sub']; // Replace with actual patient ID
-    const url = `http://192.168.1.129:3000/auth/signup/user/patientform/${patientId}`
+  
+  
+    return (
     
-    console.log(url)
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    });
-
-    
-    if (response.ok) {
-      console.log('Signup successful!');
-      navigation.navigate('ProfilePat');
-    } else {
-      console.log('Signup failed.');
-    }
-  };
-
-
-  return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.text1}>Name :</Text>
-      <TextInput
+      <View style={styles.container}>
+      
+      
+      <ScrollView contentContainerStyle={styles.scrollContainer} style={{flexGrow: 1}}>
+        <Text style={styles.title}>Sign Up</Text>
+        <TextInput
       style={styles.input}
         value={name}
         onChangeText={setName1}
@@ -70,7 +74,7 @@ const handleSubmit = async () => {
         placeholder="Enter your name"
         color="white"
       />
-      <Text style={styles.text1}>LastName :</Text>
+      <Text style={styles.title}>LastName :</Text>
       <TextInput
       style={styles.input}
         value={lastname}
@@ -79,7 +83,7 @@ const handleSubmit = async () => {
         placeholder="Enter your Last name"
         color="white"
       />
-      <Text style={styles.text1}>Birth Date :</Text>
+      <Text style={styles.title}>Birth Date :</Text>
       <TextInput
       style={styles.input}
         value={birthdate}
@@ -88,7 +92,7 @@ const handleSubmit = async () => {
         placeholderTextColor="gray"
         color="white"
       />
-      <Text style={styles.text1}>Gender :</Text>
+      <Text style={styles.title}>Gender :</Text>
       <TextInput
       style={styles.input}
         value={gender}
@@ -97,7 +101,7 @@ const handleSubmit = async () => {
         placeholderTextColor="gray"
         color="white"
       />
-      <Text style={styles.text1}>Email Address :</Text>
+      <Text style={styles.title}>Email Address :</Text>
          <TextInput
         style={styles.input}
         placeholder="Enter your Email address"
@@ -107,7 +111,7 @@ const handleSubmit = async () => {
         onChangeText={setEmail}
         color="white"
       />
-      <Text style={styles.text1}>Address :</Text>
+      <Text style={styles.title}>Address :</Text>
       <TextInput
       style={styles.input}
         value={adress}
@@ -116,7 +120,7 @@ const handleSubmit = async () => {
         placeholderTextColor="gray"
         color="white"
       />
-      <Text style={styles.text1}>Phone Number :</Text>
+      <Text style={styles.title}>Phone Number :</Text>
       <TextInput
       style={styles.input}
         value={phonenumber}
@@ -126,7 +130,7 @@ const handleSubmit = async () => {
         placeholder="Enter your Phone Number"
         color="white"
       />
-      <Text style={styles.text1}>Emergency Contact:</Text>
+      <Text style={styles.title}>Emergency Contact:</Text>
       <TextInput
       style={styles.input}
         value={emergency}
@@ -136,7 +140,7 @@ const handleSubmit = async () => {
         placeholderTextColor="gray"
         color="white"
       />
-      <Text style={styles.text1}>Blood Type:</Text>
+      <Text style={styles.title}>Blood Type:</Text>
       <TextInput
       style={styles.input}
         value={bloodtype}
@@ -145,7 +149,7 @@ const handleSubmit = async () => {
         placeholderTextColor="gray"
         color="white"
       />
-      <Text style={styles.text1}>Height:</Text>
+      <Text style={styles.title}>Height:</Text>
       <TextInput
       style={styles.input}
       value={height.toString()}
@@ -158,7 +162,7 @@ const handleSubmit = async () => {
         color="white"
   
       />
-      <Text style={styles.text1}>Weight:</Text>
+      <Text style={styles.title}>Weight:</Text>
       <TextInput
       style={styles.input}
       value={weight.toString()}
@@ -171,41 +175,69 @@ const handleSubmit = async () => {
         color="white"
        
       />
-      <Pressable onPress={handleSubmit} style={styles.button}><Text style={styles.buttonText}>Submit</Text></Pressable>
-    </ScrollView>
-  );
-}
-
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#14082b'
-    },
-    text1: {
-      color:'white',
-      fontSize: 16,
-      margin: 5,
-    }, 
-    button: {
-      backgroundColor: '#53599A',
-      padding: 10,
-      borderRadius: 5,
-      marginTop: 10,
-    },
-    buttonText: {
-      color: 'white',
-      textAlign: 'center',
-      fontSize: 16,
-    },
-    input: {
-        width: '80%',
-        height: 38,
-        borderWidth: 1.5,
-        borderColor: 'white',
-        borderRadius: 4,
-        paddingLeft: 16,
-        margin: 10,
-      
-      },
-  });
-
+       <TouchableOpacity style={styles.button} mode="contained" onPress={handleSubmit}>
+           <Text style={styles.text}>Submit</Text>
+         </TouchableOpacity>
+     </ScrollView>
+     </View>
+     
+   );
+  }
+  
+           
+           const styles = StyleSheet.create({
+             container: {
+               flex: 1,
+               backgroundColor: '#14082b',
+               paddingHorizontal: 20,
+               paddingVertical: 30,
+             },
+             scrollContainer: {
+               alignItems: 'center',
+               justifyContent: 'center',
+             },
+             title: {
+               fontSize: 30,
+               fontWeight: 'bold',
+               marginBottom: 30,
+               color: '#7C3AED',
+               textAlign: 'center',
+             },
+             image: {
+               width: 150,
+               height: 150,
+               borderRadius: 100,
+               borderWidth: 5,
+               borderColor: '#7C3AED',
+             },
+             input: {
+               width: '100%',
+               borderRadius: 5,
+               borderWidth: 1,
+               borderColor: '#7C3AED',
+               height: 50,
+               padding: 12,
+               marginVertical: 10,
+               color: 'white',
+               fontSize: 18,
+             },
+             imageContainer: {
+               alignItems: 'center',
+               justifyContent: 'center',
+               marginVertical: 30,
+             },
+             button: {
+               backgroundColor: '#7C3AED',
+               borderRadius: 10,
+               padding: 12,
+               marginVertical: 10,
+               height: 50,
+               width: '45%',
+               alignItems: 'center',
+               justifyContent: 'center',
+             },
+             buttonText: {
+               color: 'white',
+               fontSize: 18,
+             },
+           });

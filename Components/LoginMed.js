@@ -23,7 +23,7 @@ export default function LoginMed() {
         
       };
     
-      const response = await fetch('http://192.168.1.17:3000/auth/login/doctor', {
+      const response = await fetch('http://192.168.43.210:3000/auth/login/doctor', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

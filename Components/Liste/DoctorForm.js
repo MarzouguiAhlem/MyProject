@@ -29,7 +29,7 @@ export default function DoctorForm() {
     console.log("slm")
     const decodedToken = jwtDecode(token);
      const doctorId = decodedToken['sub']; // Replace with actual doctor ID
-    const url = `http://192.168.1.129:3000/auth/signup/doctor/doctorform/${doctorId}`
+    const url = `http://192.168.43.210:3000/auth/signup/doctor/doctorform/${doctorId}`
     
     console.log(url)
     const response = await fetch(url, {
@@ -95,7 +95,7 @@ export default function DoctorForm() {
          placeholderTextColor="gray"
          color="white"
          required={true}
-         secureTextEntry
+        
        />
        <TextInput
          keyboardType="numeric"
@@ -108,9 +108,9 @@ export default function DoctorForm() {
          required={true}
        />
        <TextInput
-         keyboardType="numeric"
-         onChangeText={address}
-         value={setAddress}
+        
+         onChangeText={setAddress}
+         value={address}
          style={styles.input}
          placeholder="enter your address"
          placeholderTextColor="gray"

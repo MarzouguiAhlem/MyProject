@@ -6,6 +6,7 @@ import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
 import { ActivityIndicator } from 'react-native';
 import { Buffer } from 'buffer'
+import { storage, firebase } from '../config';
 const SignUp = () => {
   const [name, setname] = useState('');
   const [lastname, setlastname] = useState('');
@@ -29,97 +30,126 @@ const SignUp = () => {
       doctor_id: doctor_id,
       image: image
     };
-    
-    const emailCheckResponse = await fetch(`http://192.168.1.17:3000/auth/user/check-email/${email}`);
-  //console.log(emailCheckResponse)
+    console.log(image)
+    const emailCheckResponse = await fetch(`http://192.168.43.210:3000/auth/user/check-email/${email}`);
+    //console.log(emailCheckResponse)
     const emailCheckData = await emailCheckResponse.json();
-
-  if (emailCheckData.exists) {
-    console.log('Email already in use');
-    Alert.alert('Email already in use', 'The email you entered is already registered. Please use a different email address.');
-  } else {
-    // You can add a Toast or an Alert component to notify the user that the email is already in use
   
-  
-    const response = await fetch('http://192.168.1.17:3000/auth/signup/doctor', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    });
-   
-    if (response.ok) {
-      const token = await response.json(); // parse response to get the token
-      console.log('Signup successful!');
-      console.log(token)
-      await AsyncStorage.setItem('token', token['access_token']); // save token in local storage
-      console.log('Signup successful!');
-      navigation.navigate('DoctorForm');
+    if (emailCheckData.exists) {
+      console.log('Email already in use');
+      Alert.alert('Email already in use', 'The email you entered is already registered. Please use a different email address.');
     } else {
-      console.log('Signup failed.');
+      // You can add a Toast or an Alert component to notify the user that the email is already in use
+  
+      const response = await fetch('http://192.168.43.210:3000/auth/signup/doctor', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+      console.log(response)
+      if (response.ok) {
+        const token = await response.json(); // parse response to get the token
+        console.log('Signup successful!');
+        console.log(token)
+        await AsyncStorage.setItem('token', token['access_token']); // save token in local storage
+        console.log('Signup successful!');
+        navigation.navigate('DoctorForm');
+  
+        // Store image URL and email in Firebase Firestore
+        const userRef = firebase.firestore().collection('users').doc(email);
+        await userRef.set({
+          imageUrl: image,
+          email: email
+        });
+      } else {
+        console.log('Signup failed.');
+      }
+    };
+  }
+  
+  const takePicture = async (email) => {
+    try {
+      setIsLoading(true);
+      let result = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+        base64: false,
+      });
+  
+      if (!result.canceled) {
+        const compressedImage = await ImageManipulator.manipulateAsync(
+          result.uri,
+          [{ resize: { width: 400 } }],
+          { compress: 0.5, format: ImageManipulator.SaveFormat.JPEG }
+        );
+  
+        const response = await fetch(compressedImage.uri);
+        const blob = await response.blob();
+        setSelectedImageUri(compressedImage.uri);
+        // Upload image to Firebase Storage
+        const ref = storage.ref().child(`images/${email}/${new Date().toISOString()}`);
+        await ref.put(blob);
+  
+        // Get image URL from Firebase Storage
+        const imageUrl = await ref.getDownloadURL();
+        console.log(email);
+        // Set image URL state
+        setImage(imageUrl);
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
-}
-const takePicture = async () => {
-  setIsLoading(true);
-  let result = await ImagePicker.launchCameraAsync({
-    mediaTypes: ImagePicker.MediaTypeOptions.All,
-    allowsEditing: true,
-    aspect: [4, 3],
-    quality: 1,
-    base64: false,
-  });
+  
 
-  if (!result.canceled) {
-    const compressedImage = await ImageManipulator.manipulateAsync(
-      result.assets[0].uri,
-      [{ resize: { width: 400 } }],
-      { compress: 0.5, format: ImageManipulator.SaveFormat.JPEG }
-    );
-    
-    const response = await fetch(compressedImage.uri);
-    setSelectedImageUri(compressedImage.uri);
-    const blob = await response.blob();
-    const reader = new FileReader();
-    reader.onload = () => {
-      const bytes = Buffer.from(reader.result.split(',')[1], 'base64');
-      setImage(bytes);
-    };
-    
-    reader.readAsDataURL(blob);
-    setIsLoading(false);
-  }
-};
+const pickImage = async (email) => {
+  
+  try {
+    setIsLoading(true);
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+      base64: false,
+    });
 
+    if (!result.canceled) {
+      const compressedImage = await ImageManipulator.manipulateAsync(
+        result.uri,
+        [{ resize: { width: 400 } }],
+        { compress: 0.5, format: ImageManipulator.SaveFormat.JPEG }
+      );
 
-const pickImage = async () => {
-  setIsLoading(true);
-  let result = await ImagePicker.launchImageLibraryAsync({
-    mediaTypes: ImagePicker.MediaTypeOptions.All,
-    allowsEditing: true,
-    aspect: [4, 3],
-    quality: 1,
-    base64: false,
-  });
+      const response = await fetch(compressedImage.uri);
+      const blob = await response.blob();
+      setSelectedImageUri(compressedImage.uri);
+      // Upload image to Firebase Storage
+      const ref = storage.ref().child(`images/${email}/${new Date().toISOString()}`);
+      await ref.put(blob);
 
-  if (!result.canceled) {
-    const compressedImage = await ImageManipulator.manipulateAsync(
-      result.assets[0].uri,
-      [{ resize: { width: 400 } }],
-      { compress: 0.5, format: ImageManipulator.SaveFormat.JPEG }
-    );
+      // Get image URL from Firebase Storage
+      const imageUrl = await ref.getDownloadURL();
 
-    const response = await fetch(compressedImage.uri);
-    setSelectedImageUri(compressedImage.uri);
-    const blob = await response.blob();
-    const reader = new FileReader();
-    reader.onload = () => {
-      setImage(reader.result);
-    };
-    
-    reader.readAsDataURL(blob);
-    setIsLoading(false);
+      // Set image URL state
+      setImage(imageUrl);
+      console.log(email);
+       // Store image URL and email in Firebase Firestore
+       const userRef = firebase.firestore().collection('users').doc(email);
+       await userRef.update({
+         imageUrl: imageUrl,
+         email: email
+       });
+     }
+      setIsLoading(false);
+    }
+   catch (error) {
+    console.error(error);
   }
 };
 

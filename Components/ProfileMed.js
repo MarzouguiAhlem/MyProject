@@ -3,6 +3,8 @@ import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity, Button,Scrol
 import { useNavigation } from '@react-navigation/native';
 import jwtDecode from 'jwt-decode';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { storage, firebase } from '../config';
+import { initializeFirestore } from 'firebase/firestore'
 
 export default function ProfileMed (){
   const [name, setName] = useState('');
@@ -11,7 +13,7 @@ export default function ProfileMed (){
   const [phonenumber, setPhoneNumber] = useState('');
   const [address, setAddress] = useState('');
   const [email, setEmail] = useState('');
-
+  const [image, setImageuri] = useState('')
   useEffect(() => {
     async function fetchData() {
       try {
@@ -19,7 +21,7 @@ export default function ProfileMed (){
         const decodedToken = jwtDecode(token);
         const doctorId = decodedToken['sub'];
         console.log(doctorId)
-        const response = await fetch(`http://192.168.1.17:3000/doctorP/${doctorId}/basic-info`);
+        const response = await fetch(`http://192.168.43.210:3000/doctorP/${doctorId}/basic-info`);
         const data = await response.json();
         console.log(data)
         console.log(data['address'])
@@ -29,6 +31,34 @@ export default function ProfileMed (){
         setPhoneNumber(data['phoneNumber']);
         setAddress(data['address']);
         setEmail(data['email']);
+        
+
+const firestore = firebase.firestore();
+
+const getImageUrlAndEmail = async (email) => {
+  try {
+    const em = email.toString()
+    const userRef = firestore.collection('users').doc("D99@test.com");
+    
+    const userDoc = await userRef.get({ source: 'default' });
+
+    console.log(userDoc)
+    if (userDoc.exists) {
+      const imageUrl = userDoc.data().imageUrl;
+      const userEmail = userDoc.data().email;
+      return { imageUrl, userEmail };
+    } else {
+      console.log('User does not exist in Firestore');
+      return null;
+    }
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+        const { imageUrl, userEmail } = await getImageUrlAndEmail(email);
+        console.log(imageUrl)
+        setImageuri(imageUrl);
       } catch (error) {
         console.error(error);
       }
@@ -60,7 +90,7 @@ export default function ProfileMed (){
 
 
     
-    const response = await fetch('http://192.168.1.17:3000/auth/logout', {
+    const response = await fetch('http://192.168.43.210:3000/auth/logout', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`, // Include the token in the Authorization header
@@ -109,6 +139,16 @@ return (
         <Text style={styles.infoLabel}>Phone Number:</Text>
         <Text style={styles.infoText}>{phonenumber}</Text>
       </View>
+      <View style={styles.imageContainer}>
+        {image ? (
+          <Image
+            source={{ uri: image }}
+            style={styles.image}
+            resizeMode="contain"
+           
+          />
+        ) : null}
+      </View>
      
     </View>
     <TouchableOpacity style={styles.button} onPress={handleChatPress}>
@@ -136,6 +176,18 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: '#14082b',
+  },
+  imageContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 30,
+  },
+  image: {
+    width: 150,
+    height: 150,
+    borderRadius: 100,
+    borderWidth: 5,
+    borderColor: '#7C3AED',
   },
   infoContainer: {
     backgroundColor: '#191b2a',

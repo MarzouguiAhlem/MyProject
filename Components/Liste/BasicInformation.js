@@ -16,7 +16,7 @@ export default function BasicInformation (){
   const [phone_number, setPhoneNumber] = useState('');
   const [address, setAddress] = useState('');
   const [email, setEmail] = useState('');
-  const [photo, setPhoto] = useState('')
+  const [base64Image, setBase64] = useState('')
 
   useEffect(() => {
     async function fetchData() {
@@ -25,7 +25,7 @@ export default function BasicInformation (){
         const decodedToken = jwtDecode(token);
         const patientId = decodedToken['sub'];
         console.log(patientId)
-        const response = await fetch(`http://192.168.1.129:3000/profile/${patientId}/basic-info`);
+        const response = await fetch(`http://192.168.1.17:3000/profile/${patientId}/basic-info`);
         const data = await response.json();
         console.log(data)
       
@@ -35,12 +35,28 @@ export default function BasicInformation (){
         setPhoneNumber(data['phone_number']);
         setAddress(data['address']);
         setEmail(data['email']);
-        setPhoto(data['photo'])
+        
         setWeight(data['weight'])
         setHeight(data['height'])
         setGender(data['gender'])
         setBirthdate(data['birthdate'])
         setBloodType(data['blood_type'])
+        console.log("hi")
+        const response2 = await fetch(`http://192.168.1.17:3000/auth/image/${patientId}`);
+        const blob = await response2.blob();
+        const reader = new FileReader();
+        
+        reader.onload = () => {
+          const dataUrl = reader.result;
+          
+          const base64URI = `data:image/png;base64,${dataUrl.split(",")[1]}`
+          console.log(base64URI)
+          setBase64(base64URI);
+        };
+        
+        reader.readAsDataURL(blob);
+        console.log(base64Image)
+
       } catch (error) {
         console.error(error);
       }
@@ -59,7 +75,7 @@ export default function BasicInformation (){
 
   return (
     <ScrollView style={styles.container}>
-      {/* <Image source={photo} style={styles.photo} /> */}
+      
       <View style={styles.infoContainer}>
         <View style={styles.infoRow}>
           <Text style={styles.infoLabel}>Name:</Text>
@@ -105,6 +121,13 @@ export default function BasicInformation (){
           <Text style={styles.infoLabel}>Weight:</Text>
           <Text style={styles.infoText}>{weight}</Text>
         </View>
+
+        <View style={styles.imageContainer}>
+        <Image source={{ uri: base64Image }} style={{ width: 200, height: 200 }} />
+
+      </View>
+
+
       </View>
       <TouchableOpacity style={styles.button} onPress={handleForm1Press}>
         <Text style={styles.buttonText}>Modify Information</Text>
@@ -114,6 +137,11 @@ export default function BasicInformation (){
   }
   
   const styles = StyleSheet.create({
+    imageContainer: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginVertical: 30,
+    },
     container: {
       flex: 1,
       padding: 20,
@@ -151,6 +179,13 @@ export default function BasicInformation (){
       color: 'white',
       fontSize: 20,
       fontWeight: 'bold',
+    },
+    image: {
+      width: 150,
+      height: 150,
+      borderRadius: 100,
+      borderWidth: 5,
+      borderColor: '#7C3AED',
     },
   });
   

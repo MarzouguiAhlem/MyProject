@@ -20,7 +20,7 @@ export default function LoginPat() {
         password: password,
       };
     
-      const response = await fetch('http://192.168.1.129:3000/auth/login/user', {
+      const response = await fetch('http://192.168.1.17:3000/auth/login/user', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
