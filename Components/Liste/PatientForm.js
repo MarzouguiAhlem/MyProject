@@ -38,7 +38,7 @@ import React, { useState } from 'react';
       const decodedToken = jwtDecode(token);
       console.log(token)
        const patientId = decodedToken['sub']; // Replace with actual patient ID
-      const url = `http://192.168.1.17:3000/auth/signup/user/patientform/${patientId}`
+      const url = `http://192.168.43.210:3000/auth/signup/user/patientform/${patientId}`
       
       console.log(url)
       const response = await fetch(url, {
@@ -74,7 +74,7 @@ import React, { useState } from 'react';
         placeholder="Enter your name"
         color="white"
       />
-      <Text style={styles.title}>LastName :</Text>
+ 
       <TextInput
       style={styles.input}
         value={lastname}
@@ -83,7 +83,7 @@ import React, { useState } from 'react';
         placeholder="Enter your Last name"
         color="white"
       />
-      <Text style={styles.title}>Birth Date :</Text>
+     
       <TextInput
       style={styles.input}
         value={birthdate}
@@ -92,7 +92,7 @@ import React, { useState } from 'react';
         placeholderTextColor="gray"
         color="white"
       />
-      <Text style={styles.title}>Gender :</Text>
+     
       <TextInput
       style={styles.input}
         value={gender}
@@ -101,7 +101,7 @@ import React, { useState } from 'react';
         placeholderTextColor="gray"
         color="white"
       />
-      <Text style={styles.title}>Email Address :</Text>
+   
          <TextInput
         style={styles.input}
         placeholder="Enter your Email address"
@@ -111,7 +111,7 @@ import React, { useState } from 'react';
         onChangeText={setEmail}
         color="white"
       />
-      <Text style={styles.title}>Address :</Text>
+   
       <TextInput
       style={styles.input}
         value={adress}
@@ -120,7 +120,7 @@ import React, { useState } from 'react';
         placeholderTextColor="gray"
         color="white"
       />
-      <Text style={styles.title}>Phone Number :</Text>
+      
       <TextInput
       style={styles.input}
         value={phonenumber}
@@ -140,7 +140,7 @@ import React, { useState } from 'react';
         placeholderTextColor="gray"
         color="white"
       />
-      <Text style={styles.title}>Blood Type:</Text>
+     
       <TextInput
       style={styles.input}
         value={bloodtype}
@@ -149,7 +149,7 @@ import React, { useState } from 'react';
         placeholderTextColor="gray"
         color="white"
       />
-      <Text style={styles.title}>Height:</Text>
+     
       <TextInput
       style={styles.input}
       value={height.toString()}
@@ -162,7 +162,7 @@ import React, { useState } from 'react';
         color="white"
   
       />
-      <Text style={styles.title}>Weight:</Text>
+     
       <TextInput
       style={styles.input}
       value={weight.toString()}
@@ -184,60 +184,59 @@ import React, { useState } from 'react';
    );
   }
   
-           
-           const styles = StyleSheet.create({
-             container: {
-               flex: 1,
-               backgroundColor: '#14082b',
-               paddingHorizontal: 20,
-               paddingVertical: 30,
-             },
-             scrollContainer: {
-               alignItems: 'center',
-               justifyContent: 'center',
-             },
-             title: {
-               fontSize: 30,
-               fontWeight: 'bold',
-               marginBottom: 30,
-               color: '#7C3AED',
-               textAlign: 'center',
-             },
-             image: {
-               width: 150,
-               height: 150,
-               borderRadius: 100,
-               borderWidth: 5,
-               borderColor: '#7C3AED',
-             },
-             input: {
-               width: '100%',
-               borderRadius: 5,
-               borderWidth: 1,
-               borderColor: '#7C3AED',
-               height: 50,
-               padding: 12,
-               marginVertical: 10,
-               color: 'white',
-               fontSize: 18,
-             },
-             imageContainer: {
-               alignItems: 'center',
-               justifyContent: 'center',
-               marginVertical: 30,
-             },
-             button: {
-               backgroundColor: '#7C3AED',
-               borderRadius: 10,
-               padding: 12,
-               marginVertical: 10,
-               height: 50,
-               width: '45%',
-               alignItems: 'center',
-               justifyContent: 'center',
-             },
-             buttonText: {
-               color: 'white',
-               fontSize: 18,
-             },
-           });
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#14082b',
+      paddingHorizontal: 20,
+      paddingVertical: 30,
+    },
+    scrollContainer: {
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    title: {
+      fontSize: 30,
+      fontWeight: 'bold',
+      marginBottom: 30,
+      color: '#7C3AED',
+      textAlign: 'center',
+    },
+    image: {
+      width: 150,
+      height: 150,
+      borderRadius: 100,
+      borderWidth: 5,
+      borderColor: '#7C3AED',
+    },
+    input: {
+      width: '100%',
+      borderRadius: 5,
+      borderWidth: 1,
+      borderColor: '#7C3AED',
+      height: 50,
+      padding: 12,
+      marginVertical: 10,
+      color: 'white',
+      fontSize: 18,
+    },
+    imageContainer: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginVertical: 30,
+    },
+    button: {
+      backgroundColor: '#7C3AED',
+      borderRadius: 10,
+      padding: 12,
+      marginVertical: 10,
+      height: 50,
+      width: '45%',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    buttonText: {
+      color: 'white',
+      fontSize: 18,
+    },
+  });

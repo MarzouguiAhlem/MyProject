@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import jwtDecode from 'jwt-decode';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { storage, firebase } from '../config';
-import { initializeFirestore } from 'firebase/firestore'
+
 
 export default function ProfileMed (){
   const [name, setName] = useState('');
@@ -14,56 +14,64 @@ export default function ProfileMed (){
   const [address, setAddress] = useState('');
   const [email, setEmail] = useState('');
   const [image, setImageuri] = useState('')
+  const firestore = firebase.firestore();
+  const getImageUrlAndEmail = async (email) => {
+    try {
+      const em = email.toString();
+      const userRef = firestore.collection('users').doc(email);
+      
+      const userDoc = await userRef.get({ source: 'default' });
+    
+      console.log(userDoc);
+      if (userDoc.exists) {
+        const imageUrl = userDoc.data().imageUrl;
+        const userEmail = userDoc.data().email;
+        return { imageUrl, userEmail };
+      } else {
+        console.log('User does not exist in Firestore');
+        return null;
+      }
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  };
+  
   useEffect(() => {
     async function fetchData() {
       try {
         const token = await AsyncStorage.getItem('token');
         const decodedToken = jwtDecode(token);
-        const doctorId = decodedToken['sub'];
-        console.log(doctorId)
-        const response = await fetch(`http://192.168.43.210:3000/doctorP/${doctorId}/basic-info`);
+        const patientId = decodedToken['sub'];
+        console.log(patientId)
+        const response = await fetch(`http://192.168.43.210:3000/profile/${patientId}/basic-info`);
         const data = await response.json();
         console.log(data)
-        console.log(data['address'])
+      
         setName(data['name']);
         setLastName(data['lastname']);
-        setSpecialty(data['specialty']);
-        setPhoneNumber(data['phoneNumber']);
+        setEmergency(data['Emergency']);
+        setPhoneNumber(data['phone_number']);
         setAddress(data['address']);
         setEmail(data['email']);
         
-
-const firestore = firebase.firestore();
-
-const getImageUrlAndEmail = async (email) => {
-  try {
-    const em = email.toString()
-    const userRef = firestore.collection('users').doc("D99@test.com");
-    
-    const userDoc = await userRef.get({ source: 'default' });
-
-    console.log(userDoc)
-    if (userDoc.exists) {
-      const imageUrl = userDoc.data().imageUrl;
-      const userEmail = userDoc.data().email;
-      return { imageUrl, userEmail };
-    } else {
-      console.log('User does not exist in Firestore');
-      return null;
-    }
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
-};
-        const { imageUrl, userEmail } = await getImageUrlAndEmail(email);
-        console.log(imageUrl)
-        setImageuri(imageUrl);
-      } catch (error) {
-        console.error(error);
+        setWeight(data['weight'])
+        setHeight(data['height'])
+        setGender(data['gender'])
+        setBirthdate(data['birthdate'])
+        setBloodType(data['blood_type'])
+  
+        if (email) {
+          console.log(email);
+          const { imageUrl } = await getImageUrlAndEmail(email);
+          setImageuri(imageUrl);
+        }
+      }
+      catch(error){
+        console.log(error)
       }
     }
-
+          
     fetchData();
   }, []);
 
@@ -107,120 +115,120 @@ const getImageUrlAndEmail = async (email) => {
       return
     }
   };
-return (
-  <ScrollView style={styles.container}>
-    {/* <Image source={photo} style={styles.photo} /> */}
-    <View style={styles.infoContainer}>
-      <View style={styles.infoRow}>
-        <Text style={styles.infoLabel}>Name:</Text>
-        <Text style={styles.infoText}>{name}</Text>
+  return (
+    <ScrollView style={styles.container}>
+      {/* <Image source={photo} style={styles.photo} /> */}
+      <View style={styles.infoContainer}>
+        <View style={styles.infoRow}>
+          <Text style={styles.infoLabel}>Name:</Text>
+          <Text style={styles.infoText}>{name}</Text>
+        </View>
+        <View style={styles.infoRow}>
+          <Text style={styles.infoLabel}>Last Name:</Text>
+          <Text style={styles.infoText}>{lastname}</Text>
+        </View>
+        <View style={styles.infoRow}>
+          <Text style={styles.infoLabel}>Specialty:</Text>
+          <Text style={styles.infoText}>{specialty}</Text>
+        </View>
+        <View style={styles.infoRow}>
+          <Text style={styles.infoLabel}>Phone number:</Text>
+          <Text style={styles.infoText}>{phonenumber}</Text>
+        </View>
+        <View style={styles.infoRow}>
+          <Text style={styles.infoLabel}>Address:</Text>
+          <Text style={styles.infoText}>{address}</Text>
+        </View>
+        <View style={styles.infoRow}>
+          <Text style={styles.infoLabel}>Email:</Text>
+          <Text style={styles.infoText}>{email}</Text>
+        </View>
+        <View style={styles.infoRow}>
+          <Text style={styles.infoLabel}>Phone Number:</Text>
+          <Text style={styles.infoText}>{phonenumber}</Text>
+        </View>
+        <View style={styles.imageContainer}>
+          {image ? (
+            <Image
+              source={{ uri: image }}
+              style={styles.image}
+              resizeMode="contain"
+             
+            />
+          ) : null}
+        </View>
+       
       </View>
-      <View style={styles.infoRow}>
-        <Text style={styles.infoLabel}>Last Name:</Text>
-        <Text style={styles.infoText}>{lastname}</Text>
-      </View>
-      <View style={styles.infoRow}>
-        <Text style={styles.infoLabel}>Specialty:</Text>
-        <Text style={styles.infoText}>{specialty}</Text>
-      </View>
-      <View style={styles.infoRow}>
-        <Text style={styles.infoLabel}>Phone number:</Text>
-        <Text style={styles.infoText}>{phonenumber}</Text>
-      </View>
-      <View style={styles.infoRow}>
-        <Text style={styles.infoLabel}>Address:</Text>
-        <Text style={styles.infoText}>{address}</Text>
-      </View>
-      <View style={styles.infoRow}>
-        <Text style={styles.infoLabel}>Email:</Text>
-        <Text style={styles.infoText}>{email}</Text>
-      </View>
-      <View style={styles.infoRow}>
-        <Text style={styles.infoLabel}>Phone Number:</Text>
-        <Text style={styles.infoText}>{phonenumber}</Text>
-      </View>
-      <View style={styles.imageContainer}>
-        {image ? (
-          <Image
-            source={{ uri: image }}
-            style={styles.image}
-            resizeMode="contain"
-           
-          />
-        ) : null}
-      </View>
-     
-    </View>
-    <TouchableOpacity style={styles.button} onPress={handleChatPress}>
-            <Text style={styles.buttonText}>Chat with Patients</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.button} onPress={handlePatients}>
-            <Text style={styles.buttonText}>List of Patients</Text>
-          </TouchableOpacity>
-          
-          
-          <TouchableOpacity style={styles.button} onPress={handleFormPress}>
-            <Text style={styles.buttonText}>Modify informations</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.button} onPress={handleLogoutPress}>
-            <Text style={styles.buttonText}>Logout</Text>
-          </TouchableOpacity>
-  </ScrollView>
-);
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: '#14082b',
-  },
-  imageContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginVertical: 30,
-  },
-  image: {
-    width: 150,
-    height: 150,
-    borderRadius: 100,
-    borderWidth: 5,
-    borderColor: '#7C3AED',
-  },
-  infoContainer: {
-    backgroundColor: '#191b2a',
-    borderRadius: 10,
-    padding: 20,
-    marginBottom: 20,
-  },
-  infoRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  infoLabel: {
-    color: '#a9abb3',
-    fontSize: 16,
-    marginRight: 10,
-  },
-  infoText: {
-    color: 'white',
-    fontSize: 16,
-  },
-  button: {
-    backgroundColor: '#53599A',
-    borderRadius: 30,
-    width: '100%',
-    height: 55,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 20,
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-});
+      <TouchableOpacity style={styles.button} onPress={handleChatPress}>
+              <Text style={styles.buttonText}>Chat with Patients</Text>
+            </TouchableOpacity>
+  
+            <TouchableOpacity style={styles.button} onPress={handlePatients}>
+              <Text style={styles.buttonText}>List of Patients</Text>
+            </TouchableOpacity>
+            
+            
+            <TouchableOpacity style={styles.button} onPress={handleFormPress}>
+              <Text style={styles.buttonText}>Modify informations</Text>
+            </TouchableOpacity>
+  
+            <TouchableOpacity style={styles.button} onPress={handleLogoutPress}>
+              <Text style={styles.buttonText}>Logout</Text>
+            </TouchableOpacity>
+    </ScrollView>
+  );
+  }
+  
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 20,
+      backgroundColor: '#14082b',
+    },
+    imageContainer: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginVertical: 30,
+    },
+    image: {
+      width: 150,
+      height: 150,
+      borderRadius: 100,
+      borderWidth: 5,
+      borderColor: '#7C3AED',
+    },
+    infoContainer: {
+      backgroundColor: '#191b2a',
+      borderRadius: 10,
+      padding: 20,
+      marginBottom: 20,
+    },
+    infoRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 10,
+    },
+    infoLabel: {
+      color: '#a9abb3',
+      fontSize: 16,
+      marginRight: 10,
+    },
+    infoText: {
+      color: 'white',
+      fontSize: 16,
+    },
+    button: {
+      backgroundColor: '#53599A',
+      borderRadius: 30,
+      width: '100%',
+      height: 55,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: 20,
+    },
+    buttonText: {
+      color: 'white',
+      fontSize: 20,
+      fontWeight: 'bold',
+    },
+  });

@@ -2,7 +2,8 @@ import React from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { storage, firebase } from '../config';
+import { initializeFirestore } from 'firebase/firestore'
 export default function ProfilePat() {
   const Items = [
     { name: 'Basic Information', screen: 'BasicInformation' },

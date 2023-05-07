@@ -3,6 +3,7 @@ import { ScrollView, Text, StyleSheet, TouchableOpacity, Image, View } from 'rea
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import jwtDecode from 'jwt-decode';
+import { storage, firebase } from '../../config';
 export default function BasicInformation (){
   
   const [name, setName] = useState('');
@@ -16,8 +17,30 @@ export default function BasicInformation (){
   const [phone_number, setPhoneNumber] = useState('');
   const [address, setAddress] = useState('');
   const [email, setEmail] = useState('');
-  const [base64Image, setBase64] = useState('')
-
+  const [image, setImageuri] = useState('')
+  const firestore = firebase.firestore();
+  const getImageUrlAndEmail = async (email) => {
+    try {
+      const em = email.toString();
+      const userRef = firestore.collection('users').doc(email);
+      
+      const userDoc = await userRef.get({ source: 'default' });
+    
+      console.log(userDoc);
+      if (userDoc.exists) {
+        const imageUrl = userDoc.data().imageUrl;
+        const userEmail = userDoc.data().email;
+        return { imageUrl, userEmail };
+      } else {
+        console.log('User does not exist in Firestore');
+        return null;
+      }
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  };
+  
   useEffect(() => {
     async function fetchData() {
       try {
@@ -25,7 +48,7 @@ export default function BasicInformation (){
         const decodedToken = jwtDecode(token);
         const patientId = decodedToken['sub'];
         console.log(patientId)
-        const response = await fetch(`http://192.168.1.17:3000/profile/${patientId}/basic-info`);
+        const response = await fetch(`http://192.168.43.210:3000/profile/${patientId}/basic-info`);
         const data = await response.json();
         console.log(data)
       
@@ -41,30 +64,21 @@ export default function BasicInformation (){
         setGender(data['gender'])
         setBirthdate(data['birthdate'])
         setBloodType(data['blood_type'])
-        console.log("hi")
-        const response2 = await fetch(`http://192.168.1.17:3000/auth/image/${patientId}`);
-        const blob = await response2.blob();
-        const reader = new FileReader();
-        
-        reader.onload = () => {
-          const dataUrl = reader.result;
-          
-          const base64URI = `data:image/png;base64,${dataUrl.split(",")[1]}`
-          console.log(base64URI)
-          setBase64(base64URI);
-        };
-        
-        reader.readAsDataURL(blob);
-        console.log(base64Image)
-
-      } catch (error) {
-        console.error(error);
+  
+        if (email) {
+          console.log(email);
+          const { imageUrl } = await getImageUrlAndEmail(email);
+          setImageuri(imageUrl);
+        }
+      }
+      catch(error){
+        console.log(error)
       }
     }
-
+          
     fetchData();
   }, []);
-
+  
   const navigation = useNavigation();
  
  const handleForm1Press = () => {
@@ -123,10 +137,15 @@ export default function BasicInformation (){
         </View>
 
         <View style={styles.imageContainer}>
-        <Image source={{ uri: base64Image }} style={{ width: 200, height: 200 }} />
-
-      </View>
-
+          {image ? (
+            <Image
+              source={{ uri: image }}
+              style={styles.image}
+              resizeMode="contain"
+             
+            />
+          ) : null}
+        </View>
 
       </View>
       <TouchableOpacity style={styles.button} onPress={handleForm1Press}>
