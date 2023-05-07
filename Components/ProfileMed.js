@@ -6,13 +6,16 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { storage, firebase } from '../config';
 
 
-export default function ProfileMed (){
+export default function ProfileMed ({route}){
+  const {wlh} = route.params
+  console.log(route.params)
   const [name, setName] = useState('');
   const [lastname, setLastName] = useState('');
   const [specialty, setSpecialty] = useState('');
   const [phonenumber, setPhoneNumber] = useState('');
   const [address, setAddress] = useState('');
   const [email, setEmail] = useState('');
+
   const [image, setImageuri] = useState('')
   const firestore = firebase.firestore();
   const getImageUrlAndEmail = async (email) => {
@@ -22,7 +25,7 @@ export default function ProfileMed (){
       
       const userDoc = await userRef.get({ source: 'default' });
     
-      console.log(userDoc);
+      //console.log(userDoc);
       if (userDoc.exists) {
         const imageUrl = userDoc.data().imageUrl;
         const userEmail = userDoc.data().email;
@@ -36,42 +39,37 @@ export default function ProfileMed (){
       return null;
     }
   };
-  
   useEffect(() => {
     async function fetchData() {
       try {
         const token = await AsyncStorage.getItem('token');
         const decodedToken = jwtDecode(token);
-        const patientId = decodedToken['sub'];
-        console.log(patientId)
-        const response = await fetch(`http://192.168.43.210:3000/profile/${patientId}/basic-info`);
+        const doctorId = decodedToken['sub'];
+        console.log(doctorId)
+        const response = await fetch(`http://192.168.43.210:3000/doctorP/${doctorId}/basic-info`);
         const data = await response.json();
-        console.log(data)
-      
+        //console.log(data)
+        console.log(data['address'])
         setName(data['name']);
         setLastName(data['lastname']);
-        setEmergency(data['Emergency']);
-        setPhoneNumber(data['phone_number']);
+        setSpecialty(data['specialty']);
+        setPhoneNumber(data['phoneNumber']);
         setAddress(data['address']);
         setEmail(data['email']);
-        
-        setWeight(data['weight'])
-        setHeight(data['height'])
-        setGender(data['gender'])
-        setBirthdate(data['birthdate'])
-        setBloodType(data['blood_type'])
-  
-        if (email) {
+        console.log(email)
+        if (wlh) {
           console.log(email);
-          const { imageUrl } = await getImageUrlAndEmail(email);
+          const { imageUrl } = await getImageUrlAndEmail(wlh);
           setImageuri(imageUrl);
         }
-      }
-      catch(error){
-        console.log(error)
+
+
+
+      } catch (error) {
+        console.error(error);
       }
     }
-          
+
     fetchData();
   }, []);
 
@@ -106,7 +104,7 @@ export default function ProfileMed (){
       },
      
     });
-    console.log(response)
+    //console.log(response)
     if(response.ok){
       navigation.navigate("Welcome")
     }

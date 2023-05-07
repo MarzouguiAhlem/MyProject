@@ -21,7 +21,7 @@ export default function ProfilePat() {
 
   const onPressLogout = async () => {    
     const token = await AsyncStorage.getItem('token');
-    const response = await fetch('http://192.168.1.129:3000/auth/logout', {
+    const response = await fetch('http://192.168.43.210:3000/auth/logout', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`, // Include the token in the Authorization header

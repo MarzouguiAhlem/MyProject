@@ -36,9 +36,9 @@ export default function LoginMed() {
       
       console.log(token)
       await AsyncStorage.setItem('token', token['access_token']); 
-        
+      
         console.log('Login successful!');
-        navigation.navigate('ProfileMed');
+        navigation.navigate('ProfileMed', {wlh: email});
       } else {
         console.log('Login failed.');
       };}

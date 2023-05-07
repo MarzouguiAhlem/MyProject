@@ -6,37 +6,39 @@ import { useNavigation } from '@react-navigation/native';
 import { storage, firebase } from '../../config';
 
 const Patients = ({route}) => {
+  const firestore = firebase.firestore();
   const {docSpecialty} = route.params
   const [patients, setPatients] = useState([]);
   const [chatRoomId, setChatRoomId] = useState('');
   const [email, setEmail] = useState('');
   const [photo, setImageuri] = useState('');
   const [patId, setpatId] = useState();
-  const fetchPatients = async () => {
-    try {
-      const token = await AsyncStorage.getItem('token');
-      const decodedToken = jwtDecode(token);
-      const doctorId = decodedToken['sub'];
-      
-      const response = await fetch(`http://192.168.43.210:3000/doctorP/${doctorId}/patients`);
-      
-      const data = await response.json();
-      setPatients(data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const [images, setImages] = useState([]);
+  useEffect(() => {
+    const fetchPatients = async () => {
+      try {
+        const token = await AsyncStorage.getItem('token');
+        const decodedToken = jwtDecode(token);
+        const doctorId = decodedToken['sub'];
+        const response = await fetch(`http://192.168.43.210:3000/doctorP/${doctorId}/patients`);
+        const data = await response.json();
+        setPatients(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchPatients();
+  }, []);
   
   const getImageUrlAndEmail = async (email) => {
     try {
-      const firestore = firebase.firestore();
-      const em = email.toString()
-      console.log(email)
-      const userRef = firestore.collection('users').doc(em);
+      
+    
+      const userRef = firestore.collection('users').doc(email);
       
       const userDoc = await userRef.get({ source: 'default' });
-  
-      console.log(userDoc)
+    
+      
       if (userDoc.exists) {
         const imageUrl = userDoc.data().imageUrl;
         const userEmail = userDoc.data().email;
@@ -51,25 +53,30 @@ const Patients = ({route}) => {
     }
   };
   
+
   useEffect(() => {
     const getImageUrls = async () => {
-      const urls = await Promise.all(patients.map(async (patient) => {
-        const email = patient.email;
-        const { imageUrl } = await getImageUrlAndEmail(email);
-        return imageUrl;
-      }));
-      setImages(urls);
+  const updatedPatients = await Promise.all(patients.map(async (patient) => {
+    const email = patient.email;
+    const { imageUrl } = await getImageUrlAndEmail(email);
+    return {
+      ...patient,
+      imageUrl: imageUrl
     };
+  }));
+  setPatients(updatedPatients);
+};
+
+    
   
     if (patients.length > 0) {
-      console.log(patients)
+     // console.log(patients)
       getImageUrls();
     }
   }, [patients]);
   
-  useEffect(() => {
-    fetchPatients();
-  }, []);
+
+  
   
 
   const navigation = useNavigation();
@@ -91,7 +98,7 @@ const Patients = ({route}) => {
       const decodedToken = jwtDecode(token);
       const doctorId = decodedToken['sub'];
      
-     console.log(patientId)
+     //console.log(patientId)
       const response = await fetch(`http://192.168.43.210:3000/doctorP/${doctorId}/deletePatient/${patientId}`, {
       
         headers: {
@@ -117,7 +124,6 @@ const Patients = ({route}) => {
       const decodedToken = jwtDecode(token);
       const doctorId = decodedToken['sub'];
    
-      
       const response = await fetch(`http://192.168.43.210:3000/doctorP/${doctorId}/addPatient/${email}`, {
        
         headers: {
@@ -125,14 +131,18 @@ const Patients = ({route}) => {
           'Authorization': `Bearer ${token}`
         }
       });
+      console.log(response)
+
+      //console.log(newPatient)
       const newPatient = await response.json();
-      setEmail('')
+      
+
+      
       if (newPatient) {
         // Add the new patient to the list
         setPatients([...patients, newPatient]);
       } 
-      console.log("patients array")
-      console.log(patients)
+      setEmail('')
     } catch (error) {
       console.error(error);
     }
@@ -146,10 +156,10 @@ const Patients = ({route}) => {
       <FlatList
         data={patients}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
+        renderItem={({ item, index }) => (
           <View style={styles.itemContainer}>
             <View style={styles.itemContent}>
-              <Image style={styles.avatar} source={{ uri: photo }} />
+              <Image style={styles.avatar} source={{ uri: item.imageUrl }} />
               <View style={styles.textContainer}>
                 <Text style={styles.name}>{item.name}</Text>
                 <Text style={styles.lastname}>{item.lastname}</Text>
@@ -162,12 +172,11 @@ const Patients = ({route}) => {
                     <Text style={styles.chatButtonText}>Chat</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
-  style={styles.visitProfileButton}
-  onPress={() => navigation.navigate('DocPatProfile', { patId: item.user_id, docSpecialty: docSpecialty})}
->
-  <Text style={styles.visitProfileButtonText}>Visit Profile</Text>
-</TouchableOpacity>
-
+                    style={styles.visitProfileButton}
+                    onPress={() => navigation.navigate('DocPatProfile', { patId: item.user_id, docSpecialty: docSpecialty})}
+                  >
+                    <Text style={styles.visitProfileButtonText}>Visit Profile</Text>
+                  </TouchableOpacity>
                   <TouchableOpacity
                     style={styles.deleteButton}
                     onPress={() => handleDeletePress(item.user_id)}
@@ -199,7 +208,7 @@ const Patients = ({route}) => {
       </View>
     </View>
   );
-        }  
+        }   
 const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -221,6 +230,7 @@ const styles = StyleSheet.create({
       height: 60,
       borderRadius: 30,
       marginRight: 15,
+      marginBottom: 40,
     },
     textContainer: {
       flex: 1,
