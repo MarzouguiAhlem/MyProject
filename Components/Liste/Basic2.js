@@ -3,11 +3,11 @@ import { ScrollView, Text, StyleSheet, TouchableOpacity, Image, View } from 'rea
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import jwtDecode from 'jwt-decode';
+import { storage, firebase } from '../../config';
 export default function Basic2({route}){
-  const {patientId, docSpecialty} = route.params
-  console.log(route.params)
+  const {patientId, docSpecialty, email} = route.params
+  console.log(route)
   const patId = patientId
-  console.log(docSpecialty)
   const [name, setName] = useState('');
   const [lastname, setLastName] = useState('');
   const [birthdate, setBirthdate] = useState('')
@@ -18,15 +18,39 @@ export default function Basic2({route}){
   const [emergency_contact, setEmergency] = useState('');
   const [phone_number, setPhoneNumber] = useState('');
   const [address, setAddress] = useState('');
-  const [email, setEmail] = useState('');
-  const [photo, setPhoto] = useState('')
-
+  const [email2, setEmail] = useState('');
+  const [image, setImageuri] = useState('')
+  const firestore = firebase.firestore();
+  const getImageUrlAndEmail = async (email) => {
+    try {
+      const em = email.toString();
+      const userRef = firestore.collection('users').doc(email);
+      
+      const userDoc = await userRef.get({ source: 'default' });
+    
+      console.log(userDoc);
+      if (userDoc.exists) {
+        const imageUrl = userDoc.data().imageUrl;
+        const userEmail = userDoc.data().email;
+        return { imageUrl, userEmail };
+      } else {
+        console.log('User does not exist in Firestore');
+        return null;
+      }
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  };
+  
   useEffect(() => {
     async function fetchData() {
       try {
-     
-        
-        const response = await fetch(`http://192.168.1.129:3000/profile/${patId}/basic-info`);
+        const token = await AsyncStorage.getItem('token');
+        const decodedToken = jwtDecode(token);
+        const patientId = decodedToken['sub'];
+        console.log(patientId)
+        const response = await fetch(`http://192.168.43.210:3000/profile/${patId}/basic-info`);
         const data = await response.json();
         console.log(data)
       
@@ -36,20 +60,27 @@ export default function Basic2({route}){
         setPhoneNumber(data['phone_number']);
         setAddress(data['address']);
         setEmail(data['email']);
-        setPhoto(data['photo'])
+        
         setWeight(data['weight'])
         setHeight(data['height'])
         setGender(data['gender'])
         setBirthdate(data['birthdate'])
         setBloodType(data['blood_type'])
-      } catch (error) {
-        console.error(error);
+  
+        if (email) {
+          console.log(email);
+          const { imageUrl } = await getImageUrlAndEmail(email);
+          setImageuri(imageUrl);
+        }
+      }
+      catch(error){
+        console.log(error)
       }
     }
-
+          
     fetchData();
   }, []);
-
+  
   const navigation = useNavigation();
  
  const handleForm1Press = () => {
@@ -60,7 +91,7 @@ export default function Basic2({route}){
 
   return (
     <ScrollView style={styles.container}>
-      {/* <Image source={photo} style={styles.photo} /> */}
+      
       <View style={styles.infoContainer}>
         <View style={styles.infoRow}>
           <Text style={styles.infoLabel}>Name:</Text>
@@ -84,7 +115,7 @@ export default function Basic2({route}){
         </View>
         <View style={styles.infoRow}>
           <Text style={styles.infoLabel}>Email:</Text>
-          <Text style={styles.infoText}>{email}</Text>
+          <Text style={styles.infoText}>{email2}</Text>
         </View>
         <View style={styles.infoRow}>
           <Text style={styles.infoLabel}>Phone Number:</Text>
@@ -106,6 +137,18 @@ export default function Basic2({route}){
           <Text style={styles.infoLabel}>Weight:</Text>
           <Text style={styles.infoText}>{weight}</Text>
         </View>
+
+        <View style={styles.imageContainer}>
+          {image ? (
+            <Image
+              source={{ uri: image }}
+              style={styles.image}
+              resizeMode="contain"
+             
+            />
+          ) : null}
+        </View>
+
       </View>
       <TouchableOpacity style={styles.button} onPress={handleForm1Press}>
         <Text style={styles.buttonText}>Modify Information</Text>
@@ -115,6 +158,11 @@ export default function Basic2({route}){
   }
   
   const styles = StyleSheet.create({
+    imageContainer: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginVertical: 30,
+    },
     container: {
       flex: 1,
       padding: 20,
@@ -152,6 +200,13 @@ export default function Basic2({route}){
       color: 'white',
       fontSize: 20,
       fontWeight: 'bold',
+    },
+    image: {
+      width: 150,
+      height: 150,
+      borderRadius: 100,
+      borderWidth: 5,
+      borderColor: '#7C3AED',
     },
   });
   

@@ -12,7 +12,7 @@ const Id = () => {
     const data = {
       id:id
     }
-    const response = await fetch('http://192.168.1.129:3000/auth/Emergency/id', {
+    const response = await fetch('http://192.168.43.210:3000/auth/Emergency/id', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

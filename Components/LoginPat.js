@@ -34,7 +34,7 @@ export default function LoginPat() {
       console.log(token)
       await AsyncStorage.setItem('token', token['access_token']); 
         console.log('Login successful!');
-        navigation.navigate('ProfilePat');
+        navigation.navigate('ProfilePat', {email: email});
       } else {
         console.log('Login failed.');
       };}

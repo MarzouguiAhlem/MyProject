@@ -173,7 +173,7 @@ const Patients = ({route}) => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={styles.visitProfileButton}
-                    onPress={() => navigation.navigate('DocPatProfile', { patId: item.user_id, docSpecialty: docSpecialty})}
+                    onPress={() => navigation.navigate('DocPatProfile', { patId: item.user_id, docSpecialty: docSpecialty, email: item.email})}
                   >
                     <Text style={styles.visitProfileButtonText}>Visit Profile</Text>
                   </TouchableOpacity>

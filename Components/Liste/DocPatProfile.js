@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function DocPatProfile({route}) {
-  const {patId, docSpecialty} = route.params
+  const {patId, docSpecialty, email} = route.params
   const Items = [
     { name: 'Basic Information', screen: 'Basic2' },
     { name: 'Diseases', screen: 'Diseases2' },
@@ -20,7 +20,7 @@ export default function DocPatProfile({route}) {
     // Check for the Logout item and render the Logout button accordingly
     if (item.name === 'Basic Information') {
       return (
-        <TouchableOpacity style={[styles.button, { marginTop: 20, height: 60, borderRadius: 50 }]} onPress={() => navigation.navigate('Basic2', { patientId: patId, docSpecialty: docSpecialty})}>
+        <TouchableOpacity style={[styles.button, { marginTop: 20, height: 60, borderRadius: 50 }]} onPress={() => navigation.navigate('Basic2', { patientId: patId, docSpecialty: docSpecialty, email: email})}>
           <Text style={[styles.buttonText, { fontSize: 24 }]}>
             {item.name}
           </Text>

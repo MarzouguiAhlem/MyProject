@@ -4,8 +4,8 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import jwtDecode from 'jwt-decode';
 import { storage, firebase } from '../../config';
-export default function BasicInformation (){
-  
+export default function BasicInformation ({route}){
+  const {email} = route.params
   const [name, setName] = useState('');
   const [lastname, setLastName] = useState('');
   const [birthdate, setBirthdate] = useState('')
@@ -16,7 +16,7 @@ export default function BasicInformation (){
   const [emergency_contact, setEmergency] = useState('');
   const [phone_number, setPhoneNumber] = useState('');
   const [address, setAddress] = useState('');
-  const [email, setEmail] = useState('');
+  const [email2, setEmail] = useState('');
   const [image, setImageuri] = useState('')
   const firestore = firebase.firestore();
   const getImageUrlAndEmail = async (email) => {
@@ -113,7 +113,7 @@ export default function BasicInformation (){
         </View>
         <View style={styles.infoRow}>
           <Text style={styles.infoLabel}>Email:</Text>
-          <Text style={styles.infoText}>{email}</Text>
+          <Text style={styles.infoText}>{email2}</Text>
         </View>
         <View style={styles.infoRow}>
           <Text style={styles.infoLabel}>Phone Number:</Text>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ActivityIndicator, TouchableOpacity, Image, Platform, StyleSheet, Text, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from '@react-navigation/native';
-
+import { storage, firebase } from '../config';
 export default function RF() {
   const [selectedImageUri, setSelectedImageUri] = useState(null);
 
@@ -50,28 +50,50 @@ export default function RF() {
   };
 
   const handleSubmit = async () => {
-    const base64Img = await convertImgToBase64(selectedImageUri);
+    console.log("pressed")
+    const storageRef = firebase.storage().ref();
+    const listRef = storageRef.child('/images/[object Object]');
   
-    // Make a POST request to the backend
-    const response = await fetch('http://192.168.1.129:3000/auth/Emergency/RF', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ image: base64Img })
-    });
+
+    const imageUrls = [];
+    let nextBatch = null;
   
-    // Handle response from the backend
-    const responseData = await response.json();
-    console.log(responseData);
-    if(response.ok){
-      navigation.navigate('ProfilePat');
-    }
-    else {
-      console.log("Patient doesn't exist")
+    // Get download URLs of all images
+    do {
+      const batch = await listRef.list({ maxResults: 10, pageToken: nextBatch });
+     
+      nextBatch = batch.nextPageToken;
+      for (const item of batch.items) {
+        const url = await item.getDownloadURL();
+        imageUrls.push(url);
+      }
+    } while (nextBatch);
+  
+    // Test each image using the backend face API functionality
+    for (const imageUrl of imageUrls) {
+     
+      const base64Img = await convertImgToBase64(imageUrl);
+  
+      // Make a POST request to the backend
+      const response = await fetch('http://192.168.43.210:3000/auth/Emergency/RF', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ image: base64Img })
+      });
+  
+      // Handle response from the backend
+      const responseData = await response.json();
+      console.log(responseData);
+      if (response.ok) {
+        navigation.navigate('ProfilePat');
+        break; // Stop testing images if a match is found
+      } else {
+        console.log("Patient doesn't exist");
+      }
     }
   };
-  
   
   const convertImgToBase64 = async (imgUri) => {
     const imgData = await fetch(imgUri);
@@ -89,6 +111,8 @@ export default function RF() {
 
   const handleImageLoad = () => {
     console.log('Image loaded');
+    console.log(selectedImageUri)
+
   };
 
   const handleImageError = () => {
