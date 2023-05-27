@@ -14,7 +14,7 @@ const {patientId, doscSpecialty} = route.params
       try {
        
        
-        const response = await fetch(`http://192.168.1.129:3000/profile/${patientId}/diseases`);
+        const response = await fetch(`http://192.168.42.7:3000/profile/${patientId}/diseases`);
         const data = await response.json();
         setList(data);
         
@@ -28,7 +28,7 @@ const {patientId, doscSpecialty} = route.params
 
   const handleAddItem = async () => {
     console.log("pressed")
-    const response = await fetch(`http://192.168.1.129:3000/doctorP/patients/${patientId}/diseases/addDis/${name}`, {
+    const response = await fetch(`http://192.168.42.7:3000/doctorP/patients/${patientId}/diseases/addDis/${name}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

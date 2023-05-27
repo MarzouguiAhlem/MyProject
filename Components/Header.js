@@ -40,8 +40,8 @@ const headerStyles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   logo: {
-    width: 40,
-    height: 40,
+    width: 60,
+    height: 60,
     marginRight: 10,
     borderRadius: 20,
   },
@@ -49,7 +49,7 @@ const headerStyles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: '#fff',
-    textTransform: 'uppercase',
+   
     letterSpacing: 1,
     marginLeft: 5,
   },

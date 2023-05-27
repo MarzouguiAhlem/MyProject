@@ -13,7 +13,7 @@ const ChatboxMed = () => {
       const token = await AsyncStorage.getItem('token');
       const decodedToken = jwtDecode(token);
       const patientId = decodedToken['sub'];
-      const response = await fetch(`http://192.168.1.129:3000/doctorP/${patientId}/chatRooms`);
+      const response = await fetch(`http://192.168.42.7:3000/doctorP/${patientId}/chatRooms`);
       
       const data = await response.json();
       setChatboxes(data);

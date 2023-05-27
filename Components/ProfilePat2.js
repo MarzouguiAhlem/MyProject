@@ -4,39 +4,28 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { storage, firebase } from '../config';
 import { initializeFirestore } from 'firebase/firestore'
-export default function ProfilePat({route}) {
+export default function ProfilePat2({route}) {
   const {email} = route.params;
   const Items = [
-    { name: 'Basic Information', screen: 'BasicInformation' },
-    { name: 'Diseases', screen: 'Diseases' },
-    { name: 'Allergies', screen: 'Allergies' },
-    { name: 'Vaccination', screen: 'Vaccination' },
-    { name: 'Medical Specialties', screen: 'MedicalSpecialties' },
-    { name: 'Doctors', screen: 'Doctors' },
-    { name: 'Medications', screen: 'Medications' },
-    { name: 'ChatBox', screen: 'ChatboxPat' },
+    { name: 'Basic Information', screen: 'Basic3' },
+    //{ name: 'Diseases', screen: 'Diseases' },
+    { name: 'Allergies', screen: 'Allergies3' },
+    //{ name: 'Vaccination', screen: 'Vaccination' },
+    //{ name: 'Medical Specialties', screen: 'MedicalSpecialties' },
+    { name: 'Doctors', screen: 'Doctors2' },
+    { name: 'Medications', screen: 'Medications3' },
+    
     { name: 'Logout', screen: 'Welcome' },
   ];
 
   const navigation = useNavigation();
 
   const onPressLogout = async () => {    
-    const token = await AsyncStorage.getItem('token');
-    const response = await fetch('http://192.168.1.129:3000/auth/logout', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`, // Include the token in the Authorization header
-        'Content-Type': 'application/json'
-      },
-    });
     
-    if (response.ok) {
       navigation.navigate("Welcome")
-    } else {
-      console.log("Logout failed")
-      return
-    }
-  }                                                                                   
+    } 
+     
+                                                                                   
 
   const renderItem = ({ item }) => {
     // Check for the Logout item and render the Logout button accordingly
@@ -58,6 +47,33 @@ export default function ProfilePat({route}) {
         </TouchableOpacity>
       );
     }
+    if (item.name === 'Doctors') {
+        return (
+          <TouchableOpacity style={[styles.button, { marginTop: 20, height: 60, borderRadius: 50 }]} onPress={() => { navigation.navigate(item.screen, { email2: email }); }}>
+            <Text style={[styles.buttonText, { fontSize: 24 }]}>
+              {item.name}
+            </Text>
+          </TouchableOpacity>
+        );
+      }
+      if (item.name === 'Allergies') {
+        return (
+          <TouchableOpacity style={[styles.button, { marginTop: 20, height: 60, borderRadius: 50 }]} onPress={() => { navigation.navigate(item.screen, { email: email }); }}>
+            <Text style={[styles.buttonText, { fontSize: 24 }]}>
+              {item.name}
+            </Text>
+          </TouchableOpacity>
+        );
+      }
+      if (item.name === 'Medications') {
+        return (
+          <TouchableOpacity style={[styles.button, { marginTop: 20, height: 60, borderRadius: 50 }]} onPress={() => { navigation.navigate(item.screen, { email: email }); }}>
+            <Text style={[styles.buttonText, { fontSize: 24 }]}>
+              {item.name}
+            </Text>
+          </TouchableOpacity>
+        );
+      }
     return <Item name={item.name} onPress={() => navigation.navigate(item.screen)} />;
   };
   

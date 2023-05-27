@@ -4,10 +4,9 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import jwtDecode from 'jwt-decode';
 import { storage, firebase } from '../../config';
-export default function Basic2({route}){
-  const {patientId, docSpecialty, email} = route.params
-  console.log(route)
-  const patId = patientId
+export default function Basic3 ({route}){
+  const {email} = route.params
+  console.log(email)
   const [name, setName] = useState('');
   const [lastname, setLastName] = useState('');
   const [birthdate, setBirthdate] = useState('')
@@ -28,7 +27,7 @@ export default function Basic2({route}){
       
       const userDoc = await userRef.get({ source: 'default' });
     
-      console.log(userDoc);
+      
       if (userDoc.exists) {
         const imageUrl = userDoc.data().imageUrl;
         const userEmail = userDoc.data().email;
@@ -46,11 +45,7 @@ export default function Basic2({route}){
   useEffect(() => {
     async function fetchData() {
       try {
-        const token = await AsyncStorage.getItem('token');
-        const decodedToken = jwtDecode(token);
-        const patientId = decodedToken['sub'];
-        console.log(patientId)
-        const response = await fetch(`http://192.168.42.7:3000/profile/${patId}/basic-info`);
+        const response = await fetch(`http://192.168.42.7:3000/profile/${email}/basic-inf`);
         const data = await response.json();
         console.log(data)
       
@@ -66,7 +61,7 @@ export default function Basic2({route}){
         setGender(data['gender'])
         setBirthdate(data['birthdate'])
         setBloodType(data['blood_type'])
-        console.log(data['name'])
+  
         if (email) {
           console.log(email);
           const { imageUrl } = await getImageUrlAndEmail(email);
@@ -150,9 +145,7 @@ export default function Basic2({route}){
         </View>
 
       </View>
-      <TouchableOpacity style={styles.button} onPress={handleForm1Press}>
-        <Text style={styles.buttonText}>Modify Information</Text>
-      </TouchableOpacity>
+     
     </ScrollView>
   );
   }

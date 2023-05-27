@@ -16,7 +16,7 @@ import React, { useState, useEffect } from 'react';
             const decodedToken = jwtDecode(token);
             const patientId = decodedToken['sub'];
             
-            const response = await fetch(`http://192.168.43.210:3000/profile/${patientId}/doctors`);
+            const response = await fetch(`http://192.168.1.129:3000/profile/${patientId}/doctors`);
             
             const data = await response.json();
             setDoctors(data);
@@ -34,7 +34,7 @@ import React, { useState, useEffect } from 'react';
             
             const userDoc = await userRef.get({ source: 'default' });
           
-            console.log(userDoc)
+           // console.log(userDoc)
             if (userDoc.exists) {
               const imageUrl = userDoc.data().imageUrl;
               const userEmail = userDoc.data().email;
@@ -53,6 +53,7 @@ import React, { useState, useEffect } from 'react';
           const getImageUrls = async () => {
             const urls = await Promise.all(doctors.map(async (patient) => {
               const email = patient.email;
+              console.log(email)
               const { imageUrl } = await getImageUrlAndEmail(email);
               return imageUrl;
             }));
@@ -60,7 +61,7 @@ import React, { useState, useEffect } from 'react';
           };
         
           if (doctors.length > 0) {
-            console.log(doctors)
+            //console.log(doctors)
             getImageUrls();
           }
         }, [doctors]);
@@ -77,10 +78,10 @@ import React, { useState, useEffect } from 'react';
           const patientId = decodedToken['sub'];
           const docId = doctorId;
         
-          const response = await fetch(`http://192.168.43.210:3000/profile/${patientId}/chatRoom/${docId}`);
+          const response = await fetch(`http://192.168.1.129:3000/profile/${patientId}/chatRoom/${docId}`);
           const data = await response.json();
           setChatRoomId(data['id']);
-          console.log(chatRoomId)   
+          //console.log(chatRoomId)   
           navigation.navigate('Conversation', { chatRoomId: chatRoomId, doctorId: docId});
         };
         

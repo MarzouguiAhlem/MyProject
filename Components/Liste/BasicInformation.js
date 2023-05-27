@@ -6,6 +6,7 @@ import jwtDecode from 'jwt-decode';
 import { storage, firebase } from '../../config';
 export default function BasicInformation ({route}){
   const {email} = route.params
+  console.log(email)
   const [name, setName] = useState('');
   const [lastname, setLastName] = useState('');
   const [birthdate, setBirthdate] = useState('')
@@ -48,7 +49,7 @@ export default function BasicInformation ({route}){
         const decodedToken = jwtDecode(token);
         const patientId = decodedToken['sub'];
         console.log(patientId)
-        const response = await fetch(`http://192.168.43.210:3000/profile/${patientId}/basic-info`);
+        const response = await fetch(`http://192.168.1.129:3000/profile/${patientId}/basic-info`);
         const data = await response.json();
         console.log(data)
       
@@ -81,11 +82,7 @@ export default function BasicInformation ({route}){
   
   const navigation = useNavigation();
  
- const handleForm1Press = () => {
-    // Navigate to Form screen
 
-    navigation.navigate('PatientForm');
-  };
 
   return (
     <ScrollView style={styles.container}>
@@ -148,9 +145,7 @@ export default function BasicInformation ({route}){
         </View>
 
       </View>
-      <TouchableOpacity style={styles.button} onPress={handleForm1Press}>
-        <Text style={styles.buttonText}>Modify Information</Text>
-      </TouchableOpacity>
+     
     </ScrollView>
   );
   }

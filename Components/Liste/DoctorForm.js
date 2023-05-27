@@ -54,7 +54,7 @@ export default function DoctorForm() {
      
      
      <ScrollView contentContainerStyle={styles.scrollContainer} style={{flexGrow: 1}}>
-       <Text style={styles.title}>Sign Up</Text>
+       <Text style={styles.title}>Modify information</Text>
        <TextInput
          label="First Name"
          value={name}
@@ -157,11 +157,11 @@ export default function DoctorForm() {
               borderRadius: 5,
               borderWidth: 1,
               borderColor: '#7C3AED',
-              height: 50,
+              height: 40,
               padding: 12,
               marginVertical: 10,
               color: 'white',
-              fontSize: 18,
+              fontSize: 15,
             },
             imageContainer: {
               alignItems: 'center',

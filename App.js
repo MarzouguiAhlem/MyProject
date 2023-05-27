@@ -17,6 +17,7 @@ import DocPat1 from './Components/DocPat1';
 import DocPat2 from './Components/DocPat2';
 import ProfileMed from './Components/ProfileMed';
 import ProfilePat from './Components/ProfilePat';
+import ProfilePat2 from './Components/ProfilePat2';
 import Submit from './Components/Submit';
 import Input from './Components/Input';
 
@@ -29,6 +30,7 @@ import ChatboxPat from './Components/Liste/ChatboxPat';
 import Vaccination from './Components/Liste/Vaccination';
 import Medications from './Components/Liste/Medications';
 import Doctors from './Components/Liste/Doctors';
+import Doctors2 from './Components/Liste/Doctors2';
 import BasicInformation from './Components/Liste/BasicInformation';
 import MedicalSpecialties from './Components/Liste/MedicalSpecialties';
 import DoctorForm from './Components/Liste/DoctorForm';
@@ -71,9 +73,12 @@ import Conversation2 from './Components/Liste/Conversation2'
 import Patients from './Components/Liste/Patients'
 import DocPatProfile from './Components/Liste/DocPatProfile'
 import Allergies2 from './Components/Liste/Allergies2'
+import Allergies3 from './Components/Liste/Allergies3'
 import Basic2 from './Components/Liste/Basic2'
+import Basic3 from './Components/Liste/Basic3'
 import Vaccinations2 from './Components/Liste/Vaccinations2'
 import Medications2 from './Components/Liste/Medications2'
+import Medications3 from './Components/Liste/Medications3'
 import Diseases2 from './Components/Liste/Diseases2'
 import MedicalSpecialties2 from './Components/Liste/MedicalSpecialties2'
 const Stack = createStackNavigator();
@@ -101,6 +106,7 @@ export default function App() {
         <Stack.Screen name="ProfileMed" component={ProfileMed} />
         <Stack.Screen name="ChatboxMed" component={ChatboxMed} />
         <Stack.Screen name="ProfilePat" component={ProfilePat} />
+        <Stack.Screen name="ProfilePat2" component={ProfilePat2} />
         <Stack.Screen name="PatientForm" component={PatientForm} />
         <Stack.Screen name="BasicInformation" component={BasicInformation} />
         <Stack.Screen name="Diseases" component={Diseases} />
@@ -108,6 +114,7 @@ export default function App() {
         <Stack.Screen name="Vaccination" component={Vaccination} />
         <Stack.Screen name="MedicalSpecialties" component={MedicalSpecialties} />
         <Stack.Screen name="Doctors" component={Doctors} />
+        <Stack.Screen name="Doctors2" component={Doctors2} />
         <Stack.Screen name="Medications" component={Medications} />
         <Stack.Screen name="ChatboxPat" component={ChatboxPat} />
         <Stack.Screen name="FamilyMedicine" component={FamilyMedicine} />
@@ -147,9 +154,12 @@ export default function App() {
         <Stack.Screen name ="DocPatProfile" component={DocPatProfile}/>
         <Stack.Screen name ="Vaccinations2" component={Vaccinations2}/>
         <Stack.Screen name ="Allergies2" component={Allergies2}/>
+        <Stack.Screen name ="Allergies3" component={Allergies3}/>
         <Stack.Screen name ="Medications2" component={Medications2}/>
+        <Stack.Screen name ="Medications3" component={Medications3}/>
         <Stack.Screen name ="Diseases2" component={Diseases2}/>
         <Stack.Screen name ="Basic2" component={Basic2}/>
+        <Stack.Screen name ="Basic3" component={Basic3}/>
         <Stack.Screen name ="MedicalSpecialties2" component={MedicalSpecialties2}/>
         
      </Stack.Navigator>

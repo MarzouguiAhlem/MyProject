@@ -12,7 +12,8 @@ const Id = () => {
     const data = {
       id:id
     }
-    const response = await fetch('http://192.168.43.210:3000/auth/Emergency/id', {
+    console.log("pressed")
+    const response = await fetch('http://192.168.42.7:3000/auth/Emergency/id', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -66,21 +67,24 @@ const Id = () => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#14082b',
-      },
-    input: {
-      width: '80%',
-      height: 58,
-      borderWidth: 1,
-      borderColor: '#c2bccf',
-      borderRadius: 6,
-      paddingLeft: 20,
-      marginBottom:15,
-    },
-  });
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#14082B',
+    padding: 20,
+  },
+  input: {
+    width: '80%',
+    height: 58,
+    borderWidth: 1,
+    borderColor: '#7C3AED',
+    borderRadius: 6,
+    paddingLeft: 20,
+    marginBottom: 15,
+    color: 'white',
+  },
+});
+
 
 export default Id;

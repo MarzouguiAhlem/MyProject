@@ -20,7 +20,7 @@ export default function LoginPat() {
         password: password,
       };
     
-      const response = await fetch('http://192.168.43.210:3000/auth/login/user', {
+      const response = await fetch('http://192.168.1.129:3000/auth/login/user', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -41,72 +41,79 @@ export default function LoginPat() {
       
     }
   
-  return (
-   
-<View style={styles.container}>
-      <Text style={styles.title}>Welcome back !</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Email address"
-        placeholderTextColor="gray"
-        value={email}
-        textContentType="emailAddress"
-        onChangeText={setemail}
-        color="white"
-        required={true}
-
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        placeholderTextColor="gray"
-        value={password}
-        onChangeText={setpassword}
-        secureTextEntry
-        color="white"
-        required={true}
-      />
-      
+    return (
+      <View style={styles.container}>
+        <Text style={styles.title}>Welcome back!</Text>
     
-<TouchableOpacity onPress={handleSubmit} style={{borderRadius: 5,
-    backgroundColor: "white",
-    padding: 5,
-    height: 40,
-    width: '25%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    margin: 35,
-  }
-  }>
-      <Text style={{ color: '#14082b', fontSize: 18, fontWeight:'bold' }}>Login</Text>
-  </TouchableOpacity>
-    </View>
+        <TextInput
+          style={styles.input}
+          placeholder="Email address"
+          placeholderTextColor="gray"
+          value={email}
+          textContentType="emailAddress"
+          onChangeText={setemail}
+          color="white"
+          required={true}
+        />
     
-  );
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          placeholderTextColor="gray"
+          value={password}
+          onChangeText={setpassword}
+          secureTextEntry
+          color="white"
+          required={true}
+        />
+    
+        <TouchableOpacity
+          onPress={handleSubmit}
+          style={styles.loginButton}
+        >
+          <Text style={styles.loginButtonText}>Login</Text>
+        </TouchableOpacity>
+      </View>
+    );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#14082b',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    margin: 30,
-    color: 'white',
-  },
-  input: {
-    width: '80%',
-    height: 48,
-    borderWidth: 1.5,
-    borderColor: 'white',
-    borderRadius: 4,
-    paddingLeft: 16,
-    margin: 10,
-  
-  },
-
-});
+    const styles = StyleSheet.create({
+      container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#14082B',
+      },
+      title: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        margin: 30,
+        color: 'white',
+      },
+      input: {
+        width: '80%',
+        height: 48,
+        borderWidth: 1.5,
+        borderColor: '#7C3AED',
+        borderRadius: 4,
+        paddingLeft: 16,
+        margin: 10,
+        color: 'white',
+      },
+      loginButton: {
+        borderRadius: 5,
+        backgroundColor: '#7C3AED',
+        flexDirection: 'row',
+        padding: 5,
+        height: 50,
+        width: '50%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin: 35,
+      },
+      loginButtonText: {
+        color: 'white',
+        fontSize: 25,
+        fontWeight: 'bold',
+      },
+    });
+    

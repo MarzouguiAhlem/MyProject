@@ -13,7 +13,7 @@ export default function Allergies2({route}) {
       try {
      
        
-        const response = await fetch(`http://192.168.1.129:3000/profile/${patientId}/allergies`);
+        const response = await fetch(`http://192.168.42.7:3000/profile/${patientId}/allergies`);
         const data = await response.json();
         setList(data);
       } catch (error) {
@@ -26,7 +26,7 @@ export default function Allergies2({route}) {
 
   const handleAddItem = async () => {
     console.log("pressed")
-    const response = await fetch(`http://192.168.1.129:3000/doctorP/patients/${patientId}/diseases/addDis/${name}`, {
+    const response = await fetch(`http://192.168.42.7:3000/doctorP/patients/${patientId}/diseases/addDis/${name}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -51,7 +51,7 @@ export default function Allergies2({route}) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Diseases</Text>
+      <Text style={styles.title}>Allergies</Text>
       <FlatList
         data={list}
         renderItem={({ item }) => (
@@ -65,12 +65,12 @@ export default function Allergies2({route}) {
       />
       {(
         <View style={styles.form}>
-          <Text style={styles.formTitle}>Add a New Disease</Text>
+          <Text style={styles.formTitle}>Add a New Allergy</Text>
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Name:</Text>
             <TextInput
               style={styles.input}
-              placeholder="Enter the name of the disease"
+              placeholder="Enter the name of the allergy"
               placeholderTextColor="#979797"
               value={name}
               onChangeText={setName}

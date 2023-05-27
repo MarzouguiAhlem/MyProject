@@ -31,7 +31,7 @@ const SignUp = () => {
       image: image
     };
     console.log(image)
-    const emailCheckResponse = await fetch(`http://192.168.43.210:3000/auth/user/check-email/${email}`);
+    const emailCheckResponse = await fetch(`http://192.168.1.129:3000/auth/user/check-email/${email}`);
     //console.log(emailCheckResponse)
     const emailCheckData = await emailCheckResponse.json();
   
@@ -41,7 +41,7 @@ const SignUp = () => {
     } else {
       // You can add a Toast or an Alert component to notify the user that the email is already in use
   
-      const response = await fetch('http://192.168.43.210:3000/auth/signup/doctor', {
+      const response = await fetch('http://192.168.1.129:3000/auth/signup/doctor', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -289,11 +289,11 @@ return (
             borderRadius: 5,
             borderWidth: 1,
             borderColor: '#7C3AED',
-            height: 50,
+            height: 40,
             padding: 12,
             marginVertical: 10,
             color: 'white',
-            fontSize: 18,
+            fontSize: 15,
           },
           imageContainer: {
             alignItems: 'center',

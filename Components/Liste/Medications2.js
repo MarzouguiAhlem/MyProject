@@ -17,7 +17,7 @@ export default function Medications2({route}) {
       try {
        
        
-        const response = await fetch(`http://192.168.1.129:3000/profile/${patientId}/medications`);
+        const response = await fetch(`http://192.168.42.7:3000/profile/${patientId}/medications`);
         const data = await response.json();
         setList(data);
         console.log(response)
@@ -33,7 +33,7 @@ export default function Medications2({route}) {
   
     
     try {
-        const response = await fetch(`http://192.168.1.129:3000/doctorP/patients/${patientId}/medications/addMeds`, {
+        const response = await fetch(`http://192.168.42.7:3000/doctorP/patients/${patientId}/medications/addMeds`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'

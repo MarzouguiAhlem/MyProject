@@ -30,8 +30,8 @@ const SignUp = () => {
       
       image: image
     };
-    console.log(image)
-    const emailCheckResponse = await fetch(`http://192.168.43.210:3000/auth/user/check-email/${email}`);
+    
+    const emailCheckResponse = await fetch(`http://192.168.1.129:3000/auth/user/check-email/${email}`);
     //console.log(emailCheckResponse)
     const emailCheckData = await emailCheckResponse.json();
   
@@ -39,9 +39,9 @@ const SignUp = () => {
       console.log('Email already in use');
       Alert.alert('Email already in use', 'The email you entered is already registered. Please use a different email address.');
     } else {
-      // You can add a Toast or an Alert component to notify the user that the email is already in use
+      
   
-      const response = await fetch('http://192.168.43.210:3000/auth/signup/user', {
+      const response = await fetch('http://192.168.1.129:3000/auth/signup/user', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -50,14 +50,14 @@ const SignUp = () => {
       });
       console.log(response)
       if (response.ok) {
-        const token = await response.json(); // parse response to get the token
+        const token = await response.json();
         console.log('Signup successful!');
-        console.log(token)
-        await AsyncStorage.setItem('token', token['access_token']); // save token in local storage
+        
+        await AsyncStorage.setItem('token', token['access_token']); 
         console.log('Signup successful!');
         navigation.navigate('PatientForm');
   
-        // Store image URL and email in Firebase Firestore
+        
         const userRef = firebase.firestore().collection('users').doc(email);
         await userRef.set({
           imageUrl: image,
@@ -90,14 +90,13 @@ const SignUp = () => {
         const response = await fetch(compressedImage.uri);
         const blob = await response.blob();
         setSelectedImageUri(compressedImage.uri);
-        // Upload image to Firebase Storage
+      
         const ref = storage.ref().child(`images/${email}/${new Date().toISOString()}`);
         await ref.put(blob);
   
-        // Get image URL from Firebase Storage
+        
         const imageUrl = await ref.getDownloadURL();
-        console.log(email);
-        // Set image URL state
+       
         setImage(imageUrl);
         setIsLoading(false);
       }
@@ -136,9 +135,9 @@ const pickImage = async (email) => {
       // Get image URL from Firebase Storage
       const imageUrl = await ref.getDownloadURL();
 
-      // Set image URL state
+    
       setImage(imageUrl);
-      console.log(email);
+    
        // Store image URL and email in Firebase Firestore
        const userRef = firebase.firestore().collection('users').doc(email);
        await userRef.update({
@@ -280,11 +279,11 @@ return (
             borderRadius: 5,
             borderWidth: 1,
             borderColor: '#7C3AED',
-            height: 50,
+            height: 40,
             padding: 12,
             marginVertical: 10,
             color: 'white',
-            fontSize: 18,
+            fontSize: 15,
           },
           imageContainer: {
             alignItems: 'center',

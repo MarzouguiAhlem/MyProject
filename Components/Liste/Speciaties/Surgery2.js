@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
   import AsyncStorage from '@react-native-async-storage/async-storage';
   import jwtDecode from 'jwt-decode';
   
-  export default function Surgery() {
+  export default function Surgery2() {
   
     const [list, setList] = useState([]);
     const [description, setDescription] = useState('');
@@ -17,8 +17,8 @@ import React, { useState, useEffect } from 'react';
           const token = await AsyncStorage.getItem('token');
           const decodedToken = jwtDecode(token);
           const patientId = decodedToken['sub'];
-         
-          const response = await fetch(`http://192.168.1.129:3000/profile/${patientId}/specialties/Surgery/MedicalFiles`);
+          console.log(patientId)
+          const response = await fetch(`http://192.168.42.7:3000/profile/38/specialties/Surgery/MedicalFiles`);
           const data = await response.json();
           setList(data);
         } catch (error) {
@@ -35,7 +35,7 @@ import React, { useState, useEffect } from 'react';
       const id = decodedToken['sub'];
       
       try {
-        const response = await fetch(`http://192.168.1.129:3000/auth/check/${id}`, {
+        const response = await fetch(`http://192.168.42.7:3000/auth/check/${id}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -77,13 +77,13 @@ import React, { useState, useEffect } from 'react';
           keyExtractor={(item, index) => index.toString()}
           style={styles.listContainer}
         />
-        {user && user.role === 'DOCTOR' && ( // Only render the input and button for doctors
+        { // Only render the input and button for doctors
           <View style={styles.form}>
             <View style={styles.inputContainer}>
               <Text style={styles.label}>Description:</Text>
               <TextInput
                 style={styles.input}
-                placeholder="Enter the name of the Vaccination"
+                placeholder="Enter the Description of the report"
                 placeholderTextColor="#979797"
                 value={name}
                 onChangeText={setName}
@@ -92,27 +92,20 @@ import React, { useState, useEffect } from 'react';
                <Text style={styles.label}>Date:</Text>
               <TextInput
                 style={styles.input}
-                placeholder="Enter the date of the Vaccination"
+                placeholder="Enter the date of the report"
                 placeholderTextColor="#979797"
                 value={date}
                 onChangeText={setDate}
                 required={true}
               />
-               <Text style={styles.label}>Date:</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Enter the date of the Vaccination"
-                placeholderTextColor="#979797"
-                value={description}
-                onChangeText={setDescription}
-                required={true}
-              />
+              
+             
             </View>
             <TouchableOpacity onPress={handleAddItem} style={styles.button}>
               <Text style={styles.buttonText}>Submit</Text>
             </TouchableOpacity>
           </View>
-        )}
+        }
       </View>
     );
   }

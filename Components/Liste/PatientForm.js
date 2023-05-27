@@ -65,7 +65,7 @@ import React, { useState } from 'react';
       
       
       <ScrollView contentContainerStyle={styles.scrollContainer} style={{flexGrow: 1}}>
-        <Text style={styles.title}>Sign Up</Text>
+        <Text style={styles.title}>Modify information</Text>
         <TextInput
       style={styles.input}
         value={name}
@@ -130,7 +130,7 @@ import React, { useState } from 'react';
         placeholder="Enter your Phone Number"
         color="white"
       />
-      <Text style={styles.title}>Emergency Contact:</Text>
+     
       <TextInput
       style={styles.input}
         value={emergency}

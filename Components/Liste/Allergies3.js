@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { TouchableOpacity, StyleSheet, Text, View, FlatList, TextInput } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import jwtDecode from 'jwt-decode';
 
-export default function Vaccinations2({route}) {
-    const {patientId, doscSpecialty} = route.params
-    console.log(patientId)
+
+export default function Allergies3({route}) {
+    const {email} = route.params
+    console.log(email)
   const [list, setList] = useState([]);
   const [name, setName] = useState('');
-  const [user, setUser] = useState(null);
-  const [date, setDate] = useState('')
-
+ 
+  
   useEffect(() => {
     async function fetchData() {
       try {
-      
-        const response = await fetch(`http://192.168.42.7:3000/profile/${patientId}/vaccinations`);
+     
+       
+        const response = await fetch(`http://192.168.42.7:3000/profile/${email}/allergie`);
         const data = await response.json();
         setList(data);
       } catch (error) {
@@ -26,67 +25,22 @@ export default function Vaccinations2({route}) {
     fetchData();
   }, []);
 
-  const handleAddItem = async () => {
-    
-    try {
-    
-      
-        const response = await fetch(`http://192.168.42.7:3000/doctorP/patients/${patientId}/vaccinations/addVacc/${name}`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            
-          });
-      console.log(response)
-      if (response.ok) {
-       
-        setList([...list, {name: name}]);
-        setName('');
-      } 
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Vaccinations</Text>
+      <Text style={styles.title}>Allergies</Text>
       <FlatList
         data={list}
         renderItem={({ item }) => (
           <View style={styles.listItem}>
-            <Text style={styles.listItemTitle}>Date:</Text>
-            <Text style={styles.listItemText}>{item.date}</Text>
             <Text style={styles.listItemTitle}>Name:</Text>
             <Text style={styles.listItemText}>{item.name}</Text>
-            
           </View>
         )}
         keyExtractor={(item, index) => index.toString()}
         style={styles.listContainer}
       />
-      {(
-        <View style={styles.form}>
-          <Text style={styles.formTitle}>Add a New Vaccination</Text>
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Name:</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter the name of the Vaccination"
-              placeholderTextColor="#979797"
-              value={name}
-              onChangeText={setName}
-              required={true}
-            />
-           
-            
-          </View>
-          <TouchableOpacity onPress={handleAddItem} style={styles.button}>
-            <Text style={styles.buttonText}>Submit</Text>
-          </TouchableOpacity>
-        </View>
-      )}
+     
     </View>
   );
       }
@@ -169,3 +123,7 @@ export default function Vaccinations2({route}) {
       marginBottom: 5,
     },
   });
+
+  
+
+

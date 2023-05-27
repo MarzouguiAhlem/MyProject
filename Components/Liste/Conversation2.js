@@ -19,7 +19,7 @@ export default function Conversation({ route }) {
         const token = await AsyncStorage.getItem('token');
         const decodedToken = jwtDecode(token);
         const patientId = decodedToken['sub'];
-        const socket = io('http://192.168.1.129:3000', {
+        const socket = io('http://192.168.42.7:3000', {
           query: { patientId, chatRoomId, doctorId },
         });
         

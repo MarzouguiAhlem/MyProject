@@ -14,7 +14,7 @@ export default function LoginMed() {
       alert('Please enter yor Email, Password and ID');} 
       else if (!/\S+@\S+\.\S+/.test(email)) {
         alert('Please enter a valid email address');}
-      else {alert('You are now connected!');
+      else {
       const data = {
   
         email: email,
@@ -23,7 +23,7 @@ export default function LoginMed() {
         
       };
     
-      const response = await fetch('http://192.168.43.210:3000/auth/login/doctor', {
+      const response = await fetch('http://192.168.42.7:3000/auth/login/doctor', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -47,83 +47,87 @@ export default function LoginMed() {
   
 
 
-  return (
-
-<View style={styles.container}>
-      <Text style={styles.title}>Welcome back !</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Email address"
-        placeholderTextColor="gray"
-        value={email}
-        textContentType="emailAddress"
-        onChangeText={setemail}
-        color="white"
-        required={true}
-
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        placeholderTextColor="gray"
-        value={password}
-        onChangeText={setpassword}
-        secureTextEntry
-        color="white"
-        required={true}
-      />
-      
-      <TextInput
-        keyboardType="numeric"
-        onChangeText={setid}
-        value={id}
-        style={styles.input}
-        placeholder="enter your ID"
-        placeholderTextColor="gray"
-        color="white"
-        required={true}
-      />
-
-<TouchableOpacity onPress={handleSubmit} style={{borderRadius: 5,
-    backgroundColor: "white",
-    flexDirection: "row",
-    padding: 5,
-    height: 40,
-    width: '25%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    margin: 35,
-  }
-  }>
-      <Text style={{ color: '#14082b', fontSize: 18, fontWeight:'bold' }}>Login</Text>
-  </TouchableOpacity>
-  </View>
-
+    return (
+      <View style={styles.container}>
+        <Text style={styles.title}>Welcome back!</Text>
     
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#14082b',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    margin: 30,
-    color: 'white',
-  },
-  input: {
-    width: '80%',
-    height: 48,
-    borderWidth: 1.5,
-    borderColor: 'white',
-    borderRadius: 4,
-    paddingLeft: 16,
-    margin: 10,
-  
-  },
-});
+        <TextInput
+          style={styles.input}
+          placeholder="Email address"
+          placeholderTextColor="#A8A8A8"
+          value={email}
+          textContentType="emailAddress"
+          onChangeText={setemail}
+          required={true}
+        />
+    
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          placeholderTextColor="#A8A8A8"
+          value={password}
+          onChangeText={setpassword}
+          secureTextEntry
+          required={true}
+        />
+    
+        <TextInput
+          keyboardType="numeric"
+          onChangeText={setid}
+          value={id}
+          style={styles.input}
+          placeholder="Enter your ID"
+          placeholderTextColor="#A8A8A8"
+          required={true}
+        />
+    
+        <TouchableOpacity
+          onPress={handleSubmit}
+          style={styles.loginButton}
+        >
+          <Text style={styles.loginButtonText}>Login</Text>
+        </TouchableOpacity>
+      </View>
+    );
+    }  
+    const styles = StyleSheet.create({
+      container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#14082B',
+      },
+      title: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        margin: 30,
+        color: 'white',
+      },
+      input: {
+        width: '80%',
+        height: 48,
+        borderWidth: 1.5,
+        borderColor: '#7C3AED',
+        borderRadius: 4,
+        paddingLeft: 16,
+        margin: 10,
+        color: 'white',
+      },
+      loginButton: {
+        borderRadius: 5,
+        backgroundColor: '#7C3AED',
+        flexDirection: 'row',
+        padding: 5,
+        height: 50,
+        width: '50%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin: 35,
+      },
+      loginButtonText: {
+        color: 'white',
+        fontSize: 25,
+        fontWeight: 'bold',
+      },
+    });
+    
